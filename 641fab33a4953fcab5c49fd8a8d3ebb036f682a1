@@ -1,0 +1,9 @@
+Code-Review+2: Jesse Pretorius (odyssey4me) <jesse.pretorius@rackspace.co.uk>
+Code-Review+2: Donovan Francesco <donovan.francesco@gmail.com>
+Workflow+1: Donovan Francesco <donovan.francesco@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Thu, 25 Aug 2016 14:54:44 +0000
+Reviewed-on: https://review.openstack.org/360459
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
