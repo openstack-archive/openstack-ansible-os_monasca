@@ -84,8 +84,7 @@ case "$1" in
     # Start Daemon
     start-stop-daemon --start -b --chdir "$WORK_DIR" --user "$GRAFANA_USER" -c "$GRAFANA_USER" --pidfile "$PID_FILE" --exec $DAEMON -- $DAEMON_OPTS
     return=$?
-    if [ $return -eq 0 ]
-    then
+    if [ $return -eq 0 ]; then
       sleep 1
 
     # check if pid file has been written two
@@ -97,14 +96,13 @@ case "$1" in
         i=0
         timeout=10
         # Wait for the process to be properly started before exiting
-        until { cat "$PID_FILE" | xargs kill -0; } >/dev/null 2>&1
-        do
-            sleep 1
-            i=$(($i + 1))
-      if [ $i -gt $timeout ]; then
-              log_end_msg 1
-              exit 1
-            fi
+        until { cat "$PID_FILE" | xargs kill -0; } >/dev/null 2>&1; do
+          sleep 1
+          i=$(($i + 1))
+          if [ $i -gt $timeout ]; then
+            log_end_msg 1
+            exit 1
+          fi
         done
   fi
   log_end_msg $return
