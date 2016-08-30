@@ -32,7 +32,7 @@
   until: install_deps | success
   retries: 5
   delay: 2
-  with_items: "{{ apt_packages }}"
+  with_items: "{{ monasca_distro_packages }}"
 
 - name: Add a kafka user with temp sudo permissions     # sudo removed in post-install.yml
   user:
