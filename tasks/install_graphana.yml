@@ -42,7 +42,7 @@
     repo: "deb https://packagecloud.io/grafana/stable/debian/ wheezy main"
     state: "present"
   register: add_graphana_apt
-  until: add_grapha_apt | success
+  until: add_graphana_apt | success
   retries: 5
   delay: 3
 

@@ -39,7 +39,7 @@
   tags:
     - os_monasca
 
-- incude: configure_kafka.yml
+- include: configure_kafka.yml
   tags:
     - os_monasca
 

@@ -41,8 +41,7 @@
       dest: "/etc/init/storm-supervisor.conf"
       owner: "root"
       group: "root"
-  register: storm_config
-  register: copy_templates
-  until: copy_templates | success
+  register: storm_config_templates
+  until: storm_config_templates | success
   retries: 5
   delay: 3
