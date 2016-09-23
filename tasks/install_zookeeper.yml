@@ -16,23 +16,23 @@
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 #
-- name: Download Apache Kafka
+- name: Download Apache Zookeeper
   get_url:
-    url: "{{ monasca_kafka_source_mirror }}/{{ monasca_kafka_base_version }}/{{ monasca_kafka_version }}.tgz"
-    dest: /tmp/{{ monasca_kafka_version }}
+    url: "{{ monasca_zookeeper_source_mirror }}/{{ monasca_zookeeper_version }}.tar.gz"
+    dest: "/tmp/{{ monasca_zookeeper_version }}.tar.gz"
     mode: 0600
-  register: download_monasca_kafka_binary
-  until: download_monasca_kafka_binary | success
+  register: download_monasca_zookeeper
+  until: download_monasca_zookeeper | success
   retries: 5
-  delay: 5
+  delay: 3
 
-- name: Extract Apache Kafka archive
+- name: Extract Apache Zookeeper
   unarchive:
-    src: "/tmp/{{ monasca_kafka_version }}"
+    src: "/tmp/{{ monasca_zookeeper_version }}.tar.gz"
     dest: "/opt"
-    creates: "/opt/kafka"
+    creates: "/opt/{{ monasca_zookeeper_version }}"
     copy: "no"
-  register: extract_binary_monasca_kafka
-  until: extract_binary_monasca_kafka | success
+  register: extract_monasca_zookeeper
+  until: extract_monasca_zookeeper | success
   retries: 5
   delay: 3
