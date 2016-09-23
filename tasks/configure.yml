@@ -15,24 +15,3 @@
 #
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
-#
-- name: Download Apache Storm
-  get_url:
-    url: "https://github.com/apache/storm/archive/{{ storm_version }}.tar.gz"
-    dest: "/root/apache-storm-{{ storm_version }}.tar.gz"
-    mode: 0600
-  register: download_storm
-  until: download_storm | success
-  retries: 5
-  delay: 3
-
-- name: Extract Apache Storm
-  unarchive:
-    src: "/root/apache-storm-{{ storm_version }}.tar.gz"
-    dest: "/opt"
-    creates: "/opt/apache-storm-{{ storm_version }}"
-    copy: "no"
-  register: extract_storm
-  until: extract_storm | success
-  retries: 5
-  delay: 3
