@@ -22,7 +22,6 @@ monasca_distro_packages:
   - build-essential
   - chrony
   - git
-  - libmysqlclient-dev
   - mailutils
   - mariadb-client
   - maven
@@ -32,4 +31,3 @@ monasca_distro_packages:
   - python-dev
   - python-mysqldb
   - python-pip
-  - zookeeperd
