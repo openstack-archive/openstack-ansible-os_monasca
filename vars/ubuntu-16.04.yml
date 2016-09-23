@@ -16,29 +16,18 @@
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 #
-allow_duplicates: yes
-
-galaxy_info:
-  author: "Donovan Francesco, Paul Stevens"
-  description: "Openstack Monasca"
-  company: "Internet Solutions"
-  license: "license (Apache)"
-  min_ansible_install: 1.9
-  platforms:
-    - name: Ubuntu
-      versions:
-        - trusty
-        - xenial
-  categories:
-    - cloud
-    - python
-    - development
-    - openstack
-
-dependencies:
-  - sansible.users_and_groups
-  - zookeeper
-  - { role: kafka, tags: skip_ansible_lint }
-  - { role: storm, tags: skip_ansible_lint }
-  - { role: influxdb, tags: skip_ansible_lint }
-  - { role: monasca-ui, tags: skip_ansible_lint }
+# Originally obtained from https://github.com/elastic/ansible-elasticsearch
+#
+monasca_distro_packages:
+  - build-essential
+  - chrony
+  - git
+  - mailutils
+  - mariadb-client
+  - maven
+  - nodejs
+  - openjdk-8-jdk
+  - python-software-properties
+  - python-dev
+  - python-mysqldb
+  - python-pip
