@@ -18,8 +18,8 @@
 #
 - name: Download Apache Storm
   get_url:
-    url: "https://github.com/apache/storm/archive/{{ storm_version }}.tar.gz"
-    dest: "/root/apache-storm-{{ storm_version }}.tar.gz"
+    url: "{{ storm_source_mirror }}/{{ storm_version }}/{{ storm_verson }}.tar.gz"
+    dest: "/tmp/{{ storm_version }}.tar.gz"
     mode: 0600
   register: download_storm
   until: download_storm | success
@@ -28,9 +28,9 @@
 
 - name: Extract Apache Storm
   unarchive:
-    src: "/root/apache-storm-{{ storm_version }}.tar.gz"
+    src: "/tmp/{{ storm_version }}.tar.gz"
     dest: "/opt"
-    creates: "/opt/apache-storm-{{ storm_version }}"
+    creates: "/opt/{{ storm_version }}"
     copy: "no"
   register: extract_storm
   until: extract_storm | success
