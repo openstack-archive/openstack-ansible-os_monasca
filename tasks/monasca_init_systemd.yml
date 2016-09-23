@@ -1,0 +1,56 @@
+---
+# Copyright 2016 Internet Solutions (Pty) Ltd
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Create TEMP run dir
+  file:
+    path: "/var/run/{{ item.value.service_name }}"
+    state: directory
+    owner: "{{ monasca_system_user_name }}"
+    group: "{{ monasca_system_group_name }}"
+    mode: "02755"
+  with_dict: "{{ monasca_services }}"
+  when: inventory_hostname in groups[item.value.group]
+
+- name: Create TEMP lock dir
+  file:
+    path: "/var/lock/{{ item.value.service_name }}"
+    state: directory
+    owner: "{{ monasca_system_user_name }}"
+    group: "{{ monasca_system_group_name }}"
+    mode: "02755"
+  with_dict: "{{ monasca_services }}"
+  when: inventory_hostname in groups[item.value.group]
+
+- name: Create tempfile.d entry
+  template:
+    src: "monasca-systemd-tempfiles.j2"
+    dest: "/etc/tmpfiles.d/monasca.conf"
+    mode: "0644"
+    owner: "root"
+    group: "root"
+  with_dict: "{{ monasca_services }}"
+  when: inventory_hostname in groups[item.value.group]
+
+- name: Place the systemd init script
+  template:
+    src: "monasca-systemd-init.j2"
+    dest: "/etc/systemd/system/{{ item.value.service_name }}.service"
+    mode: "0644"
+    owner: "root"
+    group: "root"
+  with_dict: "{{ monasca_services }}"
+  when: inventory_hostname in groups[item.value.group]
+  notify:
+    - Reload systemd daemon
