@@ -45,7 +45,7 @@ log4j.appender.CONSOLE.layout.ConversionPattern=%d{ISO8601} - %-5p [%t:%C{1}@%L]
 #    Log DEBUG level and above messages to a log file
 log4j.appender.ROLLINGFILE=org.apache.log4j.RollingFileAppender
 log4j.appender.ROLLINGFILE.Threshold=WARN
-log4j.appender.ROLLINGFILE.File=${zookeeper.log.dir}/zookeeper.log
+log4j.appender.ROLLINGFILE.File={{ monasca_zookeeper_log_directory }}/zookeeper.log
 
 # Max log file size of 10MB
 log4j.appender.ROLLINGFILE.MaxFileSize=10MB
@@ -61,7 +61,7 @@ log4j.appender.ROLLINGFILE.layout.ConversionPattern=%d{ISO8601} - %-5p [%t:%C{1}
 #    Log DEBUG level and above messages to a log file
 log4j.appender.TRACEFILE=org.apache.log4j.FileAppender
 log4j.appender.TRACEFILE.Threshold=TRACE
-log4j.appender.TRACEFILE.File=${zookeeper.log.dir}/zookeeper_trace.log
+log4j.appender.TRACEFILE.File={{ monasca_zookeeper_log_directory }}/zookeeper_trace.log
 
 log4j.appender.TRACEFILE.layout=org.apache.log4j.PatternLayout
 ### Notice we are including log4j's NDC here (%x)
