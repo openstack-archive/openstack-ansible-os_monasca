@@ -18,21 +18,23 @@
 #
 - name: Download Apache Kafka
   get_url:
-    url: http://apache.is.co.za/kafka/0.10.0.0/kafka_2.11-0.10.0.0.tgz
-    dest: /root/{{ kafka_version }}
+    url: "{{ monasca_kafka_source_mirror }}/{{ monasca_kafka_base_version }}/{{ monasca_kafka_version }}.tgz"
+    dest: "/tmp/{{ monasca_kafka_version }}.tgz"
     mode: 0600
-  register: download_kafka_binary
-  until: download_kafka_binary | success
+  register: download_monasca_kafka_binary
+  until: download_monasca_kafka_binary | success
   retries: 5
   delay: 5
 
 - name: Extract Apache Kafka archive
-  unarchive:
-    src: "/root/{{ kafka_version }}"
-    dest: "/opt"
-    creates: "/opt/kafka"
-    copy: "no"
-  register: extract_binary
-  until: extract_binary | success
+  shell: >
+    gzip -d /tmp/{{ monasca_kafka_version }}.tgz
+    tar -xfv /tmp/{{ monasca_kafka_version }}.tar --strip-components 1
+  args:
+    chdir: "{{ monasca_kafka_system_user_home }}"
+  register: extract_binary_monasca_kafka
+  until: extract_binary_monasca_kafka | success
   retries: 5
   delay: 3
+  tags:
+    - skip_ansible_lint
