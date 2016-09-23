@@ -1,0 +1,73 @@
+[DEFAULT]
+log_file = monasca-events-api.log
+log_dir = {{ monasca_log_directory }}
+debug={{ debug }}
+region = {{ keystone_service_region }}
+
+[security]
+
+default_authorized_roles = user, domainuser, domainadmin, {{ monasca_regular_user_name }}
+agent_authorized_roles = {{ monasca_agent_user_name }}
+delegate_authorized_roles = admin
+
+[messaging]
+driver = monasca_events_api.common.messaging.kafka_publisher:KafkaPublisher
+
+[repositories]
+
+streams = monasca_events_api.common.repositories.mysql.streams_repository:StreamsRepository
+events = monasca_events_api.common.repositories.mysql.events_repository:EventsRepository
+transforms = monasca_events_api.common.repositories.mysql.transforms_repository:TransformsRepository
+
+[dispatcher]
+driver = v2_reference
+
+[kafka]
+uri = {{ kafka_hosts }}:{{ kafka_port }}
+events_topic = transformed-events
+group = api
+max_retry = 1
+wait_time = 1
+async = False
+compact = False
+partitions = 0
+
+{% if monasca_backend_database is 'influxdb' %}
+[influxdb]
+ip_address = {{ influxdb_host }}
+port = {{ influxdb_port }}
+user = {{ influxdb_admin }}
+password = {{ influxdb_admin_password }}
+database_name = {{ influxdb_dbname }}
+{% elif monasca_backend_database is 'cassandra' %}
+[cassandra]
+cluster_ip_addresses: 127.0.0.1
+keyspace: monasca
+{% else %}
+[mysql]
+database_name = {{ monasca_galera_database }}
+hostname = {{ monasca_galera_address }}
+username = {{ monasca_galera_user }}
+password = {{ monasca_galera_password }}
+{% endif %}
+
+[database]
+url = "mysql+pymysql://{{ monasca_galera_user }}:{{ monasca_galera_password }}@{{ monasca_galera_address }}/{{ monasca_galera_database }}"
+
+[keystone_authtoken]
+insecure = {{ keystone_service_internaluri_insecure | bool }}
+auth_plugin = {{ monasca_keystone_auth_plugin }}
+auth_url = {{ keystone_service_adminuri }}
+auth_uri = {{ keystone_service_internaluri }}
+project_domain_id = {{ monasca_service_project_domain_id }}
+user_domain_id = {{ monasca_service_user_domain_id }}
+project_name = {{ monasca_service_project_name }}
+username = {{ monasca_service_user_name }}
+password = {{ monasca_service_password }}
+region_name = {{ keystone_service_region }}
+
+[dispatcher]
+versions = monasca_events_api.v2.versions:Versions
+stream_definitions = monasca_events_api.v2.stream_definitions:StreamDefinitions
+events = monasca_events_api.v2.events:Events
+transforms  = monasca_events_api.v2.transforms:Transforms

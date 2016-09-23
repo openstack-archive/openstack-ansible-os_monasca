@@ -15,36 +15,3 @@
 #
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
-#
-allow_duplicates: yes
-
-galaxy_info:
-  author: "Donovan Francesco, Paul Stevens"
-  description: "Openstack Monasca"
-  company: "Internet Solutions"
-  license: "license (Apache)"
-  min_ansible_install: 1.9
-  platforms:
-    - name: Ubuntu
-      versions:
-        - trusty
-        - xenial
-  categories:
-    - cloud
-    - python
-    - development
-    - openstack
-
-dependencies:
-  - pip_install
-  - galera_client
-  - openstack_openrc
-  - role: apt_package_pinning
-    when:
-      - ansible_pkg_mgr == 'apt'
-  - ansible-zookeeper
-  - ansible-kafka
-  - ansible-storm
-  - ansible-influxdb
-  - ansible-grafana
-  - ansible-monasca-schema

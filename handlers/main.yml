@@ -15,36 +15,24 @@
 #
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
-#
-allow_duplicates: yes
 
-galaxy_info:
-  author: "Donovan Francesco, Paul Stevens"
-  description: "Openstack Monasca"
-  company: "Internet Solutions"
-  license: "license (Apache)"
-  min_ansible_install: 1.9
-  platforms:
-    - name: Ubuntu
-      versions:
-        - trusty
-        - xenial
-  categories:
-    - cloud
-    - python
-    - development
-    - openstack
+- name: Reload systemd daemon
+  command: "systemctl daemon-reload"
+  notify:
+    - Restart monasca services
 
-dependencies:
-  - pip_install
-  - galera_client
-  - openstack_openrc
-  - role: apt_package_pinning
-    when:
-      - ansible_pkg_mgr == 'apt'
-  - ansible-zookeeper
-  - ansible-kafka
-  - ansible-storm
-  - ansible-influxdb
-  - ansible-grafana
-  - ansible-monasca-schema
+- name: Reload upstart init scripts
+  shell: |
+    initctl reload-configuration
+  notify:
+    - Restart monasca services
+
+- name: Restart monasca services
+  service:
+    name: "{{ item.value.service_name }}"
+    state: "restarted"
+    pattern: "{{ item.value.service_name }}"
+  with_dict: "{{ monasca_services }}"
+  when:
+    - inventory_hostname in groups[item.value.group]
+    - "{{ item.value.condition | default(True) }}"
