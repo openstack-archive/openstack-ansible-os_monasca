@@ -15,27 +15,78 @@
 #
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
-#
-#
-# Originally obtained from https://github.com/elastic/ansible-elasticsearch
-#
-kafka_directory: "/opt/kafka"
+monasca_package_state: "latest"
 
-## Monasca
-monasca_common_git_repo: "https://git.openstack.org/openstack/monasca-common.git"
-monasca_api_git_repo: "https://git.openstack.org/openstack/monasca-api.git"
-monasca_persister_git_repo: "https://git.openstack.org/openstack/monasca-persister.git"
-monasca_notification_git_repo: "https://git.openstack.org/openstack/monasca-notification.git"
-monasca_thresh_git_repo: "https://git.openstack.org/openstack/monasca-thresh.git"
-monasca_ui_git_repo: "https://git.openstack.org/openstack/monasca-ui.git"
-monasca_client_git_repo: "https://git.openstack.org/openstack/python-monascaclient.git"
-monasca_git_branch: "master"
+debug: false
 
-## Grafana
-grafana_plugins_git_repo: "https://github.com/twc-openstack/grafana-plugins.git"
-grafana_plugins_git_branch: "v2.6.0"
-grafana_git_repo: "https://github.com/twc-openstack/grafana.git"
-grafana_git_branch: "v2.6.0-keystone"
+monasca_api_git_repo: "https://git.openstack.org/openstack/monasca-api"
+monasca_api_git_install_branch: master
+monasca_api_requirements_git_repo: https://git.openstack.org/openstack/requirements
+monasca_api_requirements_git_install_branch: master
+monasca_api_developer_mode: false
+monasca_api_developer_constraints:
+  - "git+{{ monasca_api_git_repo }}@{{ monasca_api_git_install_branch }}#egg=monsca-api"
+
+monasca_ceilometer_git_repo: "https://git.openstack.org/openstack/monasca-ceilometer"
+monasca_ceilometer_git_install_branch: master
+monasca_ceilometer_requirements_git_repo: https://git.openstack.org/openstack/requirements
+monasca_ceilometer_requirements_git_install_branch: master
+monasca_ceilometer_developer_mode: false
+monasca_ceilometer_developer_constraints:
+  - "git+{{ monasca_ceilometer_git_repo }}@{{ monasca_ceilometer_git_install_branch }}#egg=monsca-ceilometer"
+
+monasca_common_git_repo: "https://git.openstack.org/openstack/monasca-common"
+monasca_common_git_install_branch: master
+monasca_common_requirements_git_repo: https://git.openstack.org/openstack/requirements
+monasca_common_requirements_git_install_branch: master
+monasca_common_developer_mode: false
+monasca_common_developer_constraints:
+  - "git+{{ monasca_common_git_repo }}@{{ monasca_common_git_install_branch }}#egg=monsca-common"
+
+monasca_thresh_git_repo: "https://git.openstack.org/openstack/monasca-thresh"
+monasca_thresh_git_install_branch: master
+monasca_thresh_requirements_git_repo: https://git.openstack.org/openstack/requirements
+monasca_thresh_requirements_git_install_branch: master
+monasca_thresh_developer_mode: false
+monasca_thresh_developer_constraints:
+  - "git+{{ monasca_thresh_git_repo }}@{{ monasca_thresh_git_install_branch }}#egg=monsca-thresh"
+
+monasca_transform_git_repo: "https://git.openstack.org/openstack/monasca-transform"
+monasca_transform_git_install_branch: master
+monasca_transform_requirements_git_repo: https://git.openstack.org/openstack/requirements
+monasca_transform_requirements_git_install_branch: master
+monasca_transform_developer_mode: false
+monasca_transform_developer_constraints:
+  - "git+{{ monasca_transform_git_repo }}@{{ monasca_transform_git_install_branch }}#egg=monsca-transform"
+
+monasca_notification_git_repo: "https://git.openstack.org/openstack/monasca-notification"
+monasca_notification_git_install_branch: master
+monasca_notification_requirements_git_repo: https://git.openstack.org/openstack/requirements
+monasca_notification_requirements_git_install_branch: master
+monasca_notification_developer_mode: false
+monasca_notification_developer_constraints:
+  - "git+{{ monasca_notification_git_repo }}@{{ monasca_notification_git_install_branch }}#egg=monsca-notification"
+
+monasca_analytics_git_repo: "https://git.openstack.org/openstack/monasca-analytics"
+monasca_analytics_git_install_branch: master
+monasca_analytics_requirements_git_repo: https://git.openstack.org/openstack/requirements
+monasca_analytics_requirements_git_install_branch: master
+monasca_analytics_developer_mode: false
+monasca_analytics_developer_constraints:
+  - "git+{{ monasca_analytics_git_repo }}@{{ monasca_analytics_git_install_branch }}#egg=monsca-analytics"
+
+monasca_persister_git_repo: "https://git.openstack.org/openstack/monasca-persister"
+monasca_persister_git_install_branch: master
+monasca_persister_requirements_git_repo: https://git.openstack.org/openstack/requirements
+monasca_persister_requirements_git_install_branch: master
+monasca_persister_developer_mode: false
+monasca_persister_developer_constraints:
+  - "git+{{ monasca_persister_git_repo }}@{{ monasca_persister_git_install_branch }}#egg=monsca-persister"
+
+# Name of the virtual env to deploy into
+monasca_venv_tag: untagged
+monasca_bin: "/openstack/venvs/monasca-{{ monasca_venv_tag }}/bin"
+monasca_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/monasca.tgz
 
 ## Keystone
 keystone_ip_address: "127.0.0.1"
@@ -56,16 +107,52 @@ os_mon_agent_password: "password"
 ## Database
 mysql_root_pass: "secretdatabase"
 
-## InfluxDB
-influxdb_version: "0.9.5"
+## Zookeeper
+enable_zookeeper: false
+zookeeper_source_mirror: "http://www-us.apache.org/dist/zookeeper/stable"
+zookeeper_base_version: "3.4.9"
+zookeeper_version: "zookeeper-{{ zookeeper_base_version }}"
+zookeeper_system_user_name: "zookeeper"
+zookeeper_system_group_name: "zookeeper"
+zookeeper_system_user_shell: "/bin/bash"
+zookeeper_system_user_home: "/opt/zookeeper"
 
 ## Kafka
-base_kafka_version: "0.10.0.0"
-kafka_version: "kafka_2.11-{{ base_kafka_version }}"
+enable_kafka: false
+kafka_source_mirror: "http://www-us.apache.org/dist/kafka"
+kafka_base_version: "0.10.0.1"
+kafka_version: "kafka_2.11-{{ kafka_base_version }}"
+kafka_system_user_name: "kafka"
+kafka_system_group_name: "kafka"
+kafka_system_user_shell: "/bin/bash"
+kafka_system_user_home: "/opt/kafka"
 
 ## Storm
-storm_version: "1.0.1"
+enable_storm: false
+storm_source_mirror: "http://www-us.apache.org/dist/storm"
+storm_base_version: "1.0.1"
+storm_version: "apache-storm-{{ storm_base_version }}"
+storm_system_user_name: "storm"
+storm_system_group_name: "storm"
+storm_system_user_shell: "/bin/bash"
+storm_system_user_home: "/opt/storm"
 storm_logback_dir: "log4j2"
+
+## InfluxDB
+enable_influxdb: false
+influxdb_source_mirror: "https://dl.influxdata.com/influxdb/releases"
+influxdb_base_version: "1.0.0"
+influxdb_version: "influxdb-{{ influxdb_base_version }}_linux_amd64"
+influxdb_system_user_name: "influxdb_"
+influxdb_system_group_name: "influxdb"
+influxdb_system_user_shell: "/bin/bash"
+influxdb_system_user_home: "/opt/influxdb"
+
+## Grafana
+grafana_plugins_git_repo: "https://github.com/twc-openstack/grafana-plugins.git"
+grafana_plugins_git_branch: "v2.6.0"
+grafana_git_repo: "https://github.com/twc-openstack/grafana.git"
+grafana_git_branch: "v2.6.0-keystone"
 
 ## NTP
 ntp_servers:
@@ -90,3 +177,10 @@ monasca_pip_packages:
   - python-keystoneclient
   - keystoneauth1
   - simport
+  - monasca-common
+  - monasca-api
+  - monasca-thresh
+  - monasca-persister
+  - monasca-analytics
+  - monasca-transform
+  - monasca-notification
