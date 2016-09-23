@@ -12,22 +12,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
-# (c) 2016 Paul Stevens <paul.stevens@is.co.za>
-#
-# Originally obtained from https://github.com/elastic/ansible-elasticsearch
-#
-monasca_distro_packages:
-  - build-essential
-  - chrony
-  - git
-  - mailutils
-  - mariadb-client
-  - maven
-  - nodejs
-  - openjdk-7-jdk
-  - python-software-properties
-  - python-dev
-  - python-mysqldb
-  - python-pip
+
+- name: Place the init script
+  template:
+    src: "monasca-upstart-init.j2"
+    dest: "/etc/init/{{ item.value.service_name }}.conf"
+    mode: "0644"
+    owner: "root"
+    group: "root"
+  with_dict: "{{ monasca_services }}"
+  when: inventory_hostname in groups[item.value.group]
+  notify:
+    - Reload upstart init scripts
