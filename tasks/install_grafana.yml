@@ -1,0 +1,69 @@
+---
+# Copyright 2016 Internet Solutions (Pty) Ltd
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
+# (c) 2016 Paul Stevens <paul.stevens@is.co.za>
+#
+- name: Download Go
+  get_url:
+    url: "{{ monasca_go_source_mirror }}/{{ monasca_grafana_golang_version }}.tar.gz"
+    dest: "/tmp/{{ monasca_grafana_golang_version }}.tar.gz"
+    mode: 0440
+  register: download_monasca_go
+  until: download_monasca_go | success
+  retries: 5
+  delay: 3
+
+- name: Install Go
+  unarchive:
+    src: "/tmp/{{ monasca_grafana_golang_version }}.tar.gz"
+    dest: "/usr/local"
+    creates: "/usr/local/go"
+    copy: "no"
+  register: install_monasca_go
+  until: install_monasca_go | success
+  retries: 5
+  delay: 3
+
+- name: Add grafana repository key
+  apt_key:
+    url: "https://packagecloud.io/grafana/stable/gpgkey"
+    state: "present"
+  register: fetch_grafana_repo_key
+  until: fetch_grafana_repo_key | success
+  retries: 5
+  delay: 2
+  tags:
+    - grafana-apt-sources
+
+- name: Add grafana repository
+  apt_repository:
+    repo: "deb https://packagecloud.io/grafana/stable/debian/ jessie main"
+    state: "present"
+  register: add_grafana_repo
+  until: add_grafana_repo | success
+  retries: 5
+  delay: 2
+  tags:
+    - grafana-apt-sources
+
+- name: Install apt packages for grafana
+  apt:
+    pkg: "grafana"
+    state: "preset"
+  register: install_grafana_apt_packages
+  until: install_grafana_apt_packages |success
+  retries: 5
+  delay: 2
