@@ -15,78 +15,173 @@
 #
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
-#
-#
-# Originally obtained from https://github.com/elastic/ansible-elasticsearch
-#
-kafka_directory: "/opt/kafka"
+monasca_package_state: "latest"
 
-## Monasca
-monasca_common_git_repo: "https://git.openstack.org/openstack/monasca-common.git"
-monasca_api_git_repo: "https://git.openstack.org/openstack/monasca-api.git"
-monasca_persister_git_repo: "https://git.openstack.org/openstack/monasca-persister.git"
-monasca_notification_git_repo: "https://git.openstack.org/openstack/monasca-notification.git"
-monasca_thresh_git_repo: "https://git.openstack.org/openstack/monasca-thresh.git"
-monasca_ui_git_repo: "https://git.openstack.org/openstack/monasca-ui.git"
-monasca_client_git_repo: "https://git.openstack.org/openstack/python-monascaclient.git"
-monasca_git_branch: "master"
-
-## Grafana
-grafana_plugins_git_repo: "https://github.com/twc-openstack/grafana-plugins.git"
-grafana_plugins_git_branch: "v2.6.0"
-grafana_git_repo: "https://github.com/twc-openstack/grafana.git"
-grafana_git_branch: "v2.6.0-keystone"
-
-## Keystone
-keystone_ip_address: "127.0.0.1"
-# admin credentials
-os_username: "admin"
-os_password: "secretadmin"
-os_project_name: "admin"
-
-# monasca-user credentials
-os_mon_username: "mini-mon"
-os_mon_password: "password"
-os_mon_project_name: "mini-mon"
-
-# monasca-agent credentials
-os_mon_agent_username: "monasca-agent"
-os_mon_agent_password: "password"
-
-## Database
-mysql_root_pass: "secretdatabase"
-
-## InfluxDB
-influxdb_version: "0.9.5"
-
-## Kafka
-base_kafka_version: "0.10.0.0"
-kafka_version: "kafka_2.11-{{ base_kafka_version }}"
-
-## Storm
-storm_version: "1.0.1"
-storm_logback_dir: "log4j2"
-
-## NTP
-ntp_servers:
-  - ntp.is.co.za
+debug: false
 
 ## System info
+users_and_groups:
+  groups: "{{ monasca_system_group_name }}"
+  users: "{{ monasca_system_user_name }}"
+users_and_groups:
+  sudoers:
+    - name: monasca
+      user: "%monasca"
+      runas: "ALL=(ALL)"
+      commands: "NOPASSWD: ALL"
 monasca_system_user_name: monasca
 monasca_system_group_name: monasca
-monasca_system_shell: /bin/false
+monasca_system_user_shell: /bin/false
 monasca_system_comment: monasca system user
 monasca_system_user_home: "/var/lib/{{ monasca_system_user_name }}"
+monasca_bin: "/openstack/venvs/monasca-{{ monasca_venv_tag }}/bin"
+monasca_log_directory: "/var/log/monasca"
+monasca_conf_directory: "/etc/monasca"
+
+monasca_service_region: RegionOne
+monasca_service_host: "0.0.0.0"
+monasca_service_port: 8070
+monasca_service_publicuri_proto: http
+monasca_service_publicurl: "{{ monasca_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ monasca_service_port }}/v2.0"
+monasca_service_internaluri_proto: http
+monasca_service_internalurl: "{{ monasca_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ monasca_service_port }}/v2.0"
+monasca_service_adminuri_proto: http
+monasca_service_adminurl: "{{ monasca_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ monasca_service_port }}/v2.0"
+monasca_auth_url: "{{ keystone_service_internalurl }}"
+monasca_service_tenant_name: monasca
+monasca_service_project_name: monasca
+monasca_service_description: "Monasca Monitoring Service"
+monasca_service_name: monasca
+monasca_service_type: monitoring
+monasca_agent_user_name: monasca-agent
+monasca_regular_user_name: monasca-user
+monasca_service_admin_role_names: admin
+
+monasca_use_mod_wsgi: false
+
+monasca_api_service_port: 8070
+monasca_api_git_repo: "https://git.openstack.org/openstack/monasca-api"
+monasca_api_git_install_branch: master
+monasca_api_requirements_git_repo: https://git.openstack.org/openstack/requirements
+monasca_api_requirements_git_install_branch: master
+monasca_api_metrics_driver: "monasca_api.common.repositories.influxdb.metrics_repository:MetricsRepository"
+
+monasca_events_api_service_port: 8072
+monasca_events_api_git_repo: "https://git.openstack.org/openstack/monasca-events-api"
+monasca_events_api_git_install_branch: master
+monasca_events_api_requirements_git_repo: https://git.openstack.org/openstack/requirements
+monasca_events_api_requirements_git_install_branch: master
+
+monasca_log_api_service_port: 5607
+monasca_log_api_git_repo: "https://git.openstack.org/openstack/monasca-log-api"
+monasca_log_api_git_install_branch: master
+monasca_log_api_requirements_git_repo: https://git.openstack.org/openstack/requirements
+monasca_log_api_requirements_git_install_branch: master
+
+monasca_ceilometer_git_repo: "https://git.openstack.org/openstack/monasca-ceilometer"
+monasca_ceilometer_git_install_branch: master
+monasca_ceilometer_requirements_git_repo: https://git.openstack.org/openstack/requirements
+monasca_ceilometer_requirements_git_install_branch: master
+
+monasca_common_git_repo: "https://git.openstack.org/openstack/monasca-common"
+monasca_common_git_install_branch: master
+monasca_common_requirements_git_repo: https://git.openstack.org/openstack/requirements
+monasca_common_requirements_git_install_branch: master
+
+monasca_thresh_git_repo: "https://git.openstack.org/openstack/monasca-thresh"
+monasca_thresh_git_install_branch: master
+monasca_thresh_requirements_git_repo: https://git.openstack.org/openstack/requirements
+monasca_thresh_requirements_git_install_branch: master
+
+monasca_transform_git_repo: "https://git.openstack.org/openstack/monasca-transform"
+monasca_transform_git_install_branch: master
+monasca_transform_requirements_git_repo: https://git.openstack.org/openstack/requirements
+monasca_transform_requirements_git_install_branch: master
+
+monasca_notification_git_repo: "https://git.openstack.org/openstack/monasca-notification"
+monasca_notification_git_install_branch: master
+monasca_notification_requirements_git_repo: https://git.openstack.org/openstack/requirements
+monasca_notification_requirements_git_install_branch: master
+
+monasca_analytics_git_repo: "https://git.openstack.org/openstack/monasca-analytics"
+monasca_analytics_git_install_branch: master
+monasca_analytics_requirements_git_repo: https://git.openstack.org/openstack/requirements
+monasca_analytics_requirements_git_install_branch: master
+
+monasca_persister_git_repo: "https://git.openstack.org/openstack/monasca-persister"
+monasca_persister_git_install_branch: master
+monasca_persister_requirements_git_repo: https://git.openstack.org/openstack/requirements
+monasca_persister_requirements_git_install_branch: master
+
+monasca_python_client_git_repo: "https://git.openstack.org/openstack/python-monascaclient"
+monasca_python_client_git_install_branch: master
+monasca_python_client_requirements_git_repo: https://git.openstack.org/openstack/requirements
+monasca_python_client_requirements_git_install_branch: master
+
+monasca_developer_constraints:
+  - "git+{{ monasca_api_git_repo }}@{{ monasca_api_git_install_branch }}#egg=monasca-api"
+  - "git+{{ monasca_events_api_git_repo }}@{{ monasca_events_api_git_install_branch }}#egg=monasca-events-api"
+  - "git+{{ monasca_log_api_git_repo }}@{{ monasca_log_api_git_install_branch }}#egg=monasca-log-api"
+  - "git+{{ monasca_ceilometer_git_repo }}@{{ monasca_ceilometer_git_install_branch }}#egg=monasca-ceilometer"
+  - "git+{{ monasca_common_git_repo }}@{{ monasca_common_git_install_branch }}#egg=monasca-common"
+  - "git+{{ monasca_transform_git_repo }}@{{ monasca_transform_git_install_branch }}#egg=monasca-transform"
+  - "git+{{ monasca_notification_git_repo }}@{{ monasca_notification_git_install_branch }}#egg=monasca-notification"
+  - "git+{{ monasca_analytics_git_repo }}@{{ monasca_analytics_git_install_branch }}#egg=monasca-analytics"
+  - "git+{{ monasca_persister_git_repo }}@{{ monasca_persister_git_install_branch }}#egg=monasca-persister"
+  - "git+{{ monasca_python_client_git_repo }}@{{ monasca_python_client_git_install_branch }}#egg=python-monascaclient"
+
+# Name of the virtual env to deploy into
+monasca_venv_tag: untagged
+monasca_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/monasca.tgz
 
 pip_install_options: ""
 
-monasca_required_pip_packages:
+monasca_services:
+  monasca-api:
+    group: monasca_api
+    service_name: monasca-api
+    service_init_bin: "gunicorn"
+    service_init_options: "-k eventlet --worker-connections=2000 --backlog=1000 --paste /etc/monasca/api-config.ini -D"
+  monasca-events-api:
+    group: monasca_events_api
+    service_name: monasca-events-api
+    service_init_bin: "gunicorn"
+    service_init_options: "-k eventlet --worker-connections=2000 --backlog=1000 --paste /etc/monasca/events_api.ini -D"
+  monasca-log-api:
+    group: monasca_log_api
+    service_name: monasca-log-api
+    service_init_bin: "gunicorn"
+    service_init_options: "-k eventlet --worker-connections=2000 --backlog=1000 --paste /etc/monasca/log-api-config.ini -D"
+
+monasca_requires_pip_packages:
+  - httplib2
+  - python-glanceclient
+  - python-keystoneclient
+  - python-monascaclient
+  - python-memcached
   - virtualenv
   - virtualenv-tools
-  - httplib2
 
 # Common pip packages
 monasca_pip_packages:
-  - python-keystoneclient
   - keystoneauth1
   - simport
+  - monasca-common
+  - monasca-api
+  - monasca-events-api
+  - monasca-log-api
+  - monasca-persister
+  - monasca-analytics
+  - monasca-transform
+  - monasca-notification
+  - influxdb
+
+monasca_api_paste_ini_overrides: {}
+monasca_api_config_overrides: {}
+monasca_events_api_paste_ini_overrides: {}
+monasca_events_api_config_overrides: {}
+monasca_log_api_paste_ini_overrides: {}
+monasca_log_api_config_overrides: {}
+monasca_log_api_logging_overrides: {}
+monasca_notification_yml_overrides: {}
+monasca_persister_yml_overrides: {}
