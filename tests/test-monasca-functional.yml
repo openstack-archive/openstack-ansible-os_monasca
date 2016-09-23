@@ -15,36 +15,27 @@
 #
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
-#
-allow_duplicates: yes
+# Reference: https://github.com/openstack/monasca-api/blob/master/docs/monasca-api-spec.md
 
-galaxy_info:
-  author: "Donovan Francesco, Paul Stevens"
-  description: "Openstack Monasca"
-  company: "Internet Solutions"
-  license: "license (Apache)"
-  min_ansible_install: 1.9
-  platforms:
-    - name: Ubuntu
-      versions:
-        - trusty
-        - xenial
-  categories:
-    - cloud
-    - python
-    - development
-    - openstack
-
-dependencies:
-  - pip_install
-  - galera_client
-  - openstack_openrc
-  - role: apt_package_pinning
-    when:
-      - ansible_pkg_mgr == 'apt'
-  - ansible-zookeeper
-  - ansible-kafka
-  - ansible-storm
-  - ansible-influxdb
-  - ansible-grafana
-  - ansible-monasca-schema
+- name: Playbook for functional testing monasca
+  hosts: monasca_api
+  user: root
+  gather_facts: false
+  tasks:
+    - name: Install httplib2 so we can use the uri module
+      pip:
+        name: httplib2
+    - name: Check the monasca-api
+      uri:
+        url: "http://localhost:8070"
+        status_code: 401
+      register: result
+      until:
+        - result is defined
+        - result.status is defined
+        - result.status == 401
+      retries: 5
+      delay: 10
+  vars_files:
+   - common/test-vars.yml
+   - test-vars.yml
