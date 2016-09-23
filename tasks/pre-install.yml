@@ -15,7 +15,6 @@
 #
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
-#
 - name: Update Apt sources
   apt:
     update_cache: yes
@@ -34,26 +33,27 @@
   delay: 2
   with_items: "{{ monasca_distro_packages }}"
 
-- name: Add a kafka user with temp sudo permissions     # sudo removed in post-install.yml
-  user:
-    name: kafka
-    comment: "Apache Kafka Service"
-    groups: sudo
-    append: yes
-    generate_ssh_key: yes
-    ssh_key_bits: 2048
-    ssh_key_file: .ssh/id_rsa.pub
-  register: create_kafka_user
-  until: create_kafka_user | success
-  retries: 5
-  delay: 2
+- include: pre-zookeeper-install.yml
+  when:
+    - enable_zookeeper is defined
+    - inventory_hostname in groups['monasca_zookeeper']
 
-- name: Create Kafka directory
-  file:
-    path: /opt/kafka
-    state: directory
-    mode: 0755
-  register: create_install_dir
-  until: create_install_dir | success
-  retries: 5
-  delay: 2
+- include: pre-kafka-install.yml
+  when:
+    - enable_kafka is defined
+    - inventory_hostname in groups['monasca_kafka']
+
+- include: pre-storm-install.yml
+  when:
+    - enable_storm is defined
+    - inventory_hostname in groups['monasca_storm']
+
+- include: pre-influxdb-install.yml
+  when:
+    - enable_influxdb is defined
+    - inventory_hostname in groups['monasca_influxdb']
+
+- include: pre-grafana-install.yml
+  when:
+    - enable_grafana is defined
+    - inventory_hostname in groups['monasca_grafana']
