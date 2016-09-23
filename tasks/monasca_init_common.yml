@@ -15,24 +15,28 @@
 #
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
-#
-- name: Download Apache Kafka
-  get_url:
-    url: "{{ monasca_kafka_source_mirror }}/{{ monasca_kafka_base_version }}/{{ monasca_kafka_version }}.tgz"
-    dest: /tmp/{{ monasca_kafka_version }}
-    mode: 0600
-  register: download_monasca_kafka_binary
-  until: download_monasca_kafka_binary | success
-  retries: 5
-  delay: 5
 
-- name: Extract Apache Kafka archive
-  unarchive:
-    src: "/tmp/{{ monasca_kafka_version }}"
-    dest: "/opt"
-    creates: "/opt/kafka"
-    copy: "no"
-  register: extract_binary_monasca_kafka
-  until: extract_binary_monasca_kafka | success
-  retries: 5
-  delay: 3
+- include: monasca_init_upstart.yml
+  static: no
+  when: pid1_name == "init"
+
+- include: monasca_init_systemd.yml
+  static: no
+  when: pid1_name == "systemd"
+
+- name: Load service
+  service:
+   name: "{{ program_name }}"
+   enabled: "yes"
+  notify:
+    - Restart monasca api services
+    - Restart monasca events api services
+    - Restart monasca log api services
+    - Restart monasca ceilometer service
+    - Restart monasca common service
+    - Restart monasca thresh service
+    - Restart monasca transform service
+    - Restart monasca notification service
+    - Restart monasca analytics service
+    - Restart monasca persister service
+    - Restart Apache
