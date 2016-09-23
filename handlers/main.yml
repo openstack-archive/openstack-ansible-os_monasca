@@ -1,0 +1,133 @@
+---
+# Copyright 2016 Internet Solutions (Pty) Ltd
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
+# (c) 2016 Paul Stevens <paul.stevens@is.co.za>
+- name: Restart monasca api services
+  service:
+    name: "{{ monasca_api_program_name }}"
+    state: "restarted"
+    pattern: "{{ monasca_api_program_name }}"
+  failed_when: false
+  when: not monasca_use_mod_wsgi | bool
+
+- name: Restart monasca events api services
+  service:
+    name: "{{ monasca_events_api_service_name }}"
+    state: "restarted"
+    pattern: "{{ monasca_events_api_service_name }}"
+  failed_when: false
+
+- name: Restart monasca log api services
+  service:
+    name: "{{ monasca_log_api_service_name }}"
+    state: "restarted"
+    pattern: "{{ monasca_log_api_service_name }}"
+  failed_when: false
+
+- name: Restart monasca ceilometer services
+  service:
+    name: "{{ monasca_ceilometer_service_name }}"
+    state: "restarted"
+    pattern: "{{ monasca_ceilometer_service_name }}"
+  failed_when: false
+
+- name: Restart monasca common services
+  service:
+    name: "{{ monasca_common_service_name }}"
+    state: "restarted"
+    pattern: "{{ monasca_common_service_name }}"
+  failed_when: false
+
+- name: Restart monasca thresh services
+  service:
+    name: "{{ monasca_thresh_service_name }}"
+    state: "restarted"
+    pattern: "{{ monasca_thresh_service_name }}"
+  failed_when: false
+
+- name: Restart monasca transform services
+  service:
+    name: "{{ monasca_transform_service_name }}"
+    state: "restarted"
+    pattern: "{{ monasca_transform_service_name }}"
+  failed_when: false
+
+- name: Restart monasca notification services
+  service:
+    name: "{{ monasca_notification_service_name }}"
+    state: "restarted"
+    pattern: "{{ monasca_notification_service_name }}"
+  failed_when: false
+
+- name: Restart monasca analytics services
+  service:
+    name: "{{ monasca_analytics_service_name }}"
+    state: "restarted"
+    pattern: "{{ monasca_analytics_service_name }}"
+  failed_when: false
+
+- name: Restart monasca persister services
+  service:
+    name: "{{ monasca_persister_service_name }}"
+    state: "restarted"
+    pattern: "{{ monasca_persister_service_name }}"
+  failed_when: false
+
+- name: Restart monasca zookeeper services
+  service:
+    name: "{{ monasca_zookeeper_service_name }}"
+    state: "restarted"
+    pattern: "{{ monasca_zookeeper_service_name }}"
+  failed_when: false
+
+- name: Restart monasca kafka services
+  service:
+    name: "{{ monasca_kafka_service_name }}"
+    state: "restarted"
+    pattern: "{{ monasca_kafka_service_name }}"
+  failed_when: false
+
+- name: Restart monasca storm services
+  service:
+    name: "{{ monasca_storm_service_name }}"
+    state: "restarted"
+    pattern: "{{ monasca_storm_service_name }}"
+  failed_when: false
+
+- name: Restart monasca influxdb services
+  service:
+    name: "{{ monasca_influxdb_service_name }}"
+    state: "restarted"
+    pattern: "{{ monasca_influxdb_service_name }}"
+  failed_when: false
+
+- name: Restart monasca grafana services
+  service:
+    name: "{{ monasca_grafana_service_name }}"
+    state: "restarted"
+    pattern: "{{ monasca_grafana_service_name }}"
+  failed_when: false
+
+- name: Restart Apache
+  service:
+    name: "apache2"
+    state: "restarted"
+    pattern: "apache2"
+  when: monasca_use_mod_wsgi | bool
+  register: apache_restart
+  until: apache_restart|success
+  retries: 5
+  delay: 2
