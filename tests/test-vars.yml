@@ -1,0 +1,52 @@
+---
+# Copyright 2016 Internet Solutions (Pty) Ltd
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
+# (c) 2016 Paul Stevens <paul.stevens@is.co.za>
+
+monasca_developer_mode: True
+monasca_galera_address: "{{ hostvars[groups['galera_all'][0]]['ansible_host'] }}"
+monasca_galera_database: monasca
+monasca_galera_user: monasca
+monasca_galera_password: "secrete"
+monasca_rabbitmq_port: "{{ rabbitmq_port }}"
+monasca_rabbitmq_servers: "{{ rabbitmq_servers }}"
+monasca_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
+monasca_rabbitmq_password: "secrete"
+monasca_rabbitmq_userid: monasca
+monasca_rabbitmq_vhost: /monasca
+monasca_api_requirements_git_install_branch: master
+monasca_ceilometer_requirements_git_install_branch: master
+monasca_common_requirements_git_install_branch: master
+monasca_thresh_requirements_git_install_branch: master
+monasca_transform_requirements_git_install_branch: master
+monasca_notification_requirements_git_install_branch: master
+monasca_analytics_requirements_git_install_branch: master
+monasca_persister_requirements_git_install_branch: master
+monasca_service_password: "secrete"
+monasca_regular_user_password: "secrete"
+monasca_admin_user_password: "secrete"
+monasca_service_project_domain_id: default
+monasca_service_project_name: service
+monasca_service_region: RegionOne
+monasca_service_user_domain_id: default
+monasca_service_user_name: monasca
+monasca_api_service_port: 8779
+monasca_venv_tag: untagged
+monasca_bin: "/openstack/venvs/monasca-{{ monasca_venv_tag }}/bin"
+neutron_service_port: 9696
+swift_proxy_port: 8080
+cinder_service_port: 8776
+nova_service_port: 8774

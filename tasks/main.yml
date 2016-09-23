@@ -27,46 +27,33 @@
   tags:
     - always
 
+- name: Check init system
+  command: cat /proc/1/comm
+  register: _pid1_name
+  tags:
+    - always
+
+- name: Set the name of pid1
+  set_fact:
+    pid1_name: "{{ _pid1_name.stdout }}"
+  tags:
+    - always
+
 - include: pre-install.yml
   tags:
     - os_monasca
 
-- include: configure_zookeeper.yml
+- include: install.yml
   tags:
     - os_monasca
 
-- include: install_kafka.yml
-  tags:
-    - os_monasca
-
-- include: configure_kafka.yml
-  tags:
-    - os_monasca
-
-- include: install_influxdb.yml
-  tags:
-    - os_monasca
-
-- include: configure_influxdb.yml
-  tags:
-    - os_monasca
-
-- include: install_graphana.yml
-  tags:
-    - os_monasca
-
-- include: configure_graphana.yml
-  tags:
-    - os_monasca
-
-- include: install_storm.yml
-  tags:
-    - os_monasca
-
-- include: configure_storm.yml
+- include: configure.yml
   tags:
     - os_monasca
 
 - include: post-install.yml
   tags:
     - os_monasca
+
+- name: Flush handlers
+  meta: flush_handlers
