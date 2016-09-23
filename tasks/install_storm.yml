@@ -18,21 +18,29 @@
 #
 - name: Download Apache Storm
   get_url:
-    url: "https://github.com/apache/storm/archive/{{ storm_version }}.tar.gz"
-    dest: "/root/apache-storm-{{ storm_version }}.tar.gz"
+    url: "{{ monasca_storm_source_mirror }}/{{ monasca_storm_version }}/{{ monasca_storm_version }}.tar.gz"
+    dest: "/tmp/{{ monasca_storm_version }}.tar.gz"
     mode: 0600
-  register: download_storm
-  until: download_storm | success
+  register: download_monasca_storm
+  until: download_monasca_storm | success
   retries: 5
   delay: 3
 
-- name: Extract Apache Storm
+- name: Extract Apache Storm archive
   unarchive:
-    src: "/root/apache-storm-{{ storm_version }}.tar.gz"
-    dest: "/opt"
-    creates: "/opt/apache-storm-{{ storm_version }}"
-    copy: "no"
-  register: extract_storm
-  until: extract_storm | success
+    copy: no
+    creates: "/opt/{{ monasca_storm_version }}"
+    dest: /opt
+    src: "/tmp/{{ monasca_storm_version }}.tar.gz"
+    owner: "{{ monasca_storm_system_user_name }}"
+    group: "{{ monasca_storm_system_group_name }}"
+  register: extract_binary_monasca_storm
+  until: extract_binary_monasca_storm | success
   retries: 5
   delay: 3
+
+- name: Link /opt/storm to the right version
+  file:
+    path: /opt/storm
+    state: link
+    src: "/opt/{{ monasca_storm_version }}"
