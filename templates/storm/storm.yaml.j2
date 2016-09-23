@@ -15,9 +15,10 @@
 #
 ### base
 java.library.path: "/usr/local/lib:/opt/local/lib:/usr/lib"
-storm.local.dir: "/var/storm"
+storm.local.dir: "{{ monasca_storm_data_directory }}"
 
 ### zookeeper.*
+storm.logdir: {{ monasca_storm_log_directory }}
 storm.zookeeper.servers:
     - "{{ ansible_default_ipv4.address }}"
 storm.zookeeper.port: 2181
