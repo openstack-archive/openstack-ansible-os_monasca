@@ -1,0 +1,63 @@
+[DEFAULT]
+# logging, make sure that the user under whom the server runs has permission
+# to write to the directory.
+log_config_append=/etc/monasca/log-api-logging.conf
+
+# Dispatchers to be loaded to serve restful APIs
+[dispatcher]
+logs = monasca_log_api.reference.v2.logs:Logs
+logs_v3 = monasca_log_api.reference.v3.logs:Logs
+versions = monasca_log_api.reference.versions:Versions
+healthchecks = monasca_log_api.reference.healthchecks:HealthChecks
+
+[monitoring]
+statsd_host = 127.0.0.1
+statsd_port = 8125
+statsd_buffer = 50
+
+[service]
+max_log_size = 1048576
+region = 'region-one'
+
+[log_publisher]
+topics = 'logs'
+
+# Uncomment for DevStack environment
+kafka_url = '192.168.10.6:9092'
+
+# Uncomment for monasca-vagrant environment
+#kafka_url = '192.168.10.4:9092'
+
+#Message max size that can be sent to Kafka
+max_message_size = 1048576
+
+[keystone_authtoken]
+
+# Uncomment for DevStack environment
+identity_uri = http://192.168.10.6:35357
+auth_uri = http://192.168.10.6:5000
+admin_password = secretadmin
+
+# Uncomment for monaasca-vagrant environment
+# identity_uri = http://192.168.10.5:35357
+# auth_uri = http://192.168.10.5:5000
+# admin_password = admin
+
+admin_user = admin
+admin_tenant_name = admin
+cafile =
+certfile =
+keyfile =
+insecure = false
+# memcached_servers = 127.0.0.1:11211
+# token_cache_time=300
+
+[kafka_healthcheck]
+kafka_url = localhost:8900
+kafka_topics = log
+
+[roles_middleware]
+path = /v2.0/log
+path = /v3.0/logs
+default_roles = user, domainuser, domainadmin, monasca-user
+agent_roles = monasca-agent, admin
