@@ -15,26 +15,3 @@
 #
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
-- name: Update Apt sources
-  apt:
-    update_cache: yes
-  register: apt_update
-  until: apt_update | success
-  retries: 5
-  delay: 2
-
-- name: Install Apt dependencies
-  apt:
-    pkg: "{{ item }}"
-    state: "latest"
-  register: install_deps
-  until: install_deps | success
-  retries: 5
-  delay: 2
-  with_items: "{{ monasca_distro_packages }}"
-
-- include: pre-monasca-install.yml
-  when:
-    - inventory_hostname in groups['monasca_api']
-    - inventory_hostname in groups['monasca_events_api']
-    - inventory_hostname in groups['monasca_log_api']
