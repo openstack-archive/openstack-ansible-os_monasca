@@ -12,21 +12,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
-# (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 
-# Setup the host
-- include: common/test-setup-host.yml
+- include: monasca_init_upstart.yml
+  when: pid1_name == "init"
 
-# Install RabbitMQ/MariaDB
-- include: common/test-install-infra.yml
+- include: monasca_init_systemd.yml
+  when: pid1_name == "systemd"
 
-# Install keystone
-- include: common/test-install-keystone.yml
-
-# Install monasca
-- include: test-install-monasca.yml
-
-# Test monasca
-- include: test-monasca-functional.yml
+- name: Load service
+  service:
+   name: "{{ item.value.service_name }}"
+   enabled: "yes"
+  with_dict: "{{ monasca_services }}"
+  when: inventory_hostname in groups[item.value.group]
+  notify:
+    - Restart monasca services
