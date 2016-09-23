@@ -16,24 +16,23 @@
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 #
-
-- name: Download InfluxDB
+- name: Download Apache Zookeeper
   get_url:
-    url: https://dl.influxdata.com/influxdb/releases/{{ influxdb_version }}.tar.gz
-    dest: /tmp/{{ influxdb_version }}.tar.gz
+    url: "http://www-us.apache.org/dist/zookeeper/stable/{{ zookeeper_version }}.tar.gz"
+    dest: "/tmp/{{ zookeeper_version }}.tar.gz"
     mode: 0600
-  register: download_influxdb
-  until: download_influxdb | success
+  register: download_zookeeper
+  until: download_zookeeper | success
   retries: 5
-  delay: 5
+  delay: 3
 
-- name: Extract Influxdb archive
+- name: Extract Apache Zookeeper
   unarchive:
-    src: "/tmp/{{ influxdb_version }}"
+    src: "/tmp/{{ zookeeper_version }}.tar.gz"
     dest: "/opt"
-    creates: "/opt/influxdb"
+    creates: "/opt/{{ zookeeper_version }}"
     copy: "no"
-  register: extract_binary_influxdb
-  until: extract_binary_influxdb | success
+  register: extract_zookeeper
+  until: extract_zookeeper | success
   retries: 5
   delay: 3

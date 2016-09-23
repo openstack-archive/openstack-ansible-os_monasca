@@ -15,25 +15,23 @@
 #
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
-#
-
-- name: Download InfluxDB
-  get_url:
-    url: https://dl.influxdata.com/influxdb/releases/{{ influxdb_version }}.tar.gz
-    dest: /tmp/{{ influxdb_version }}.tar.gz
-    mode: 0600
-  register: download_influxdb
-  until: download_influxdb | success
-  retries: 5
-  delay: 5
-
-- name: Extract Influxdb archive
-  unarchive:
-    src: "/tmp/{{ influxdb_version }}"
-    dest: "/opt"
-    creates: "/opt/influxdb"
-    copy: "no"
-  register: extract_binary_influxdb
-  until: extract_binary_influxdb | success
-  retries: 5
-  delay: 3
+- include: configure_zookeeper.yml
+  when:
+    - enable_zookeeper is True
+    - inventory_hostname in groups['monasca_zookeeper']
+- include: configure_kafka.yml
+  when:
+    - enable_kafka is True
+    - inventory_hostname in groups['monasca_kafka']
+- include: configure_storm.yml
+  when:
+    - enable_storm is True
+    - inventory_hostname in groups['monasca_storm']
+- include: configure_inxludb.yml
+  when:
+    - enable_influxdb is True
+    - inventory_hostname in groups['monasca_influxdb']
+- include: configure_grafana.yml
+  when:
+    - enable_grafana is True
+    - inventory_hostname in groups['monasca_grafana']

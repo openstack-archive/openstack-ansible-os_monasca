@@ -1,0 +1,8 @@
+ - service:
+      haproxy_service_name: monasca
+      haproxy_backend_nodes: "{{ groups['monasca_api'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_port: 9543
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - "httpchk HEAD /"

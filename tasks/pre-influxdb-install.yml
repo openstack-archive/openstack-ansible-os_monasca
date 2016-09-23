@@ -15,25 +15,23 @@
 #
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
-#
 
-- name: Download InfluxDB
-  get_url:
-    url: https://dl.influxdata.com/influxdb/releases/{{ influxdb_version }}.tar.gz
-    dest: /tmp/{{ influxdb_version }}.tar.gz
-    mode: 0600
-  register: download_influxdb
-  until: download_influxdb | success
-  retries: 5
-  delay: 5
+- name: Create the influxdb system group
+  group:
+    name: "{{ influxdb_system_group_name }}"
+    state: "present"
+    system: "yes"
 
-- name: Extract Influxdb archive
-  unarchive:
-    src: "/tmp/{{ influxdb_version }}"
-    dest: "/opt"
-    creates: "/opt/influxdb"
-    copy: "no"
-  register: extract_binary_influxdb
-  until: extract_binary_influxdb | success
+- name: Create the influxdb system user
+  user:
+    name: "{{ influxdb_system_user_name }}"
+    group: "{{ influxdb_system_group_name }}"
+    groups: sudo
+    shell: "{{ influxdb_system_user_shell }}"
+    system: "yes"
+    createhome: "yes"
+    home: "{{ influxdb_system_user_home }}"
+  register: create_influxdb_user
+  until: create_influxdb_user | success
   retries: 5
-  delay: 3
+  delay: 2
