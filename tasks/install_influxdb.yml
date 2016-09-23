@@ -19,18 +19,21 @@
 
 - name: Download InfluxDB
   get_url:
-    url: https://dl.influxdata.com/influxdb/releases/{{ influxdb_version }}.deb
-    dest: /root/{{ influxdb_version }}.deb
+    url: "{{ monasca_influxdb_source_mirror }}/{{ monasca_influxdb_version }}.tar.gz"
+    dest: "/tmp/{{ monasca_influxdb_version }}.tar.gz"
     mode: 0600
-  register: download_influxdb_deb
-  until: download_influxdb_deb | success
+  register: download_monasca_influxdb
+  until: download_monasca_influxdb | success
   retries: 5
   delay: 5
 
-- name: Install InfluxDB
-  apt:
-    deb: /root/{{ influxdb_version }}.deb
-  register: install_influxdb
-  until: install_influxdb | success
-  retries: 3
-  delay: 2
+- name: Extract Influxdb archive
+  unarchive:
+    src: "/tmp/{{ monasca_influxdb_version }}.tar.gz"
+    dest: "/opt"
+    creates: "{{ monasca_influxdb_system_user_home }}"
+    copy: "no"
+  register: extract_binary_monasca_influxdb
+  until: extract_binary_monasca_influxdb | success
+  retries: 5
+  delay: 3

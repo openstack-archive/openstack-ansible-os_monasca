@@ -15,4 +15,122 @@
 #
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
-#
+- name: Drop monasca api Config(s)
+  config_template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ monasca_system_user_name }}"
+    group: "{{ monasca_system_group_name }}"
+    mode: "0644"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
+  with_items:
+    - src: "monasca-api-paste.ini.j2"
+      dest: "/etc/monasca/api-config.ini"
+      config_overrides: "{{ monasca_api_paste_ini_overrides }}"
+      config_type: "ini"
+    - src: "monasca-api.conf.j2"
+      dest: "/etc/monasca/api-config.conf"
+      config_overrides: "{{ monasca_api_config_overrides }}"
+      config_type: "ini"
+  notify:
+    - Restart Apache
+    - Restart monasca api services
+  when: inventory_hostname in groups['monasca_api']
+
+- name: Drop monasca-events-api Config(s)
+  config_template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ monasca_system_user_name }}"
+    group: "{{ monasca_system_group_name }}"
+    mode: "0644"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
+  with_items:
+    - src: "monasca-events-api-paste.ini.j2"
+      dest: "/etc/monasca/events_api.ini"
+      config_overrides: "{{ monasca_events_api_paste_ini_overrides }}"
+      config_type: "ini"
+    - src: "monasca-events-api.conf.j2"
+      dest: "/etc/monasca/events_api.conf"
+      config_overrides: "{{ monasca_events_api_config_overrides }}"
+      config_type: "ini"
+  notify:
+    - Restart monasca events api services
+  when: inventory_hostname in groups['monasca_events_api']
+
+- name: Drop monasca-log-api Config(s)
+  config_template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ monasca_system_user_name }}"
+    group: "{{ monasca_system_group_name }}"
+    mode: "0644"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
+  with_items:
+    - src: "monasca-log-api-paste.ini.j2"
+      dest: "/etc/monasca/log-api-config.ini"
+      config_overrides: "{{ monasca_log_api_paste_ini_overrides }}"
+      config_type: "ini"
+    - src: "monasca-log-api.conf.j2"
+      dest: "/etc/monasca/log-api-config.conf"
+      config_overrides: "{{ monasca_log_api_config_overrides }}"
+      config_type: "ini"
+    - src: "monasca-log-api-logging.conf.j2"
+      dest: "/etc/monasca/log-api-logging.conf"
+      config_overrides: "{{ monasca_log_api_logging_overrides }}"
+      config_type: "ini"
+  notify:
+    - Restart monasca log api services
+  when: inventory_hostname in groups['monasca_log_api']
+
+- name: Drop monasca-notification Config(s)
+  config_template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ monasca_system_user_name }}"
+    group: "{{ monasca_system_group_name }}"
+    mode: "0644"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
+  with_items:
+    - src: "monasca-notification-config.yml.j2"
+      dest: "/etc/monasca/notification.yaml"
+      config_overrides: "{{ monasca_notification_yml_overrides }}"
+      config_type: "ini"
+  notify:
+    - Restart monasca notification services
+  when: inventory_hostname in groups['monasca_notification']
+
+- name: Drop monasca-persister Config(s)
+  config_template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ monasca_system_user_name }}"
+    group: "{{ monasca_system_group_name }}"
+    mode: "0644"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
+  with_items:
+    - src: "monasca-persister-config.yml.j2"
+      dest: "/etc/monasca/persister-config.yaml"
+      config_overrides: "{{ monasca_persister_yml_overrides }}"
+      config_type: "ini"
+  notify:
+    - Restart monasca persister services
+  when: inventory_hostname in groups['monasca_persister']
+
+- name: Drop monasca WSGI Configs
+  template:
+    src: monasca-wsgi.py.j2
+    dest: /var/www/cgi-bin/monasca/monasca-api
+    owner: "{{ monasca_system_user_name }}"
+    group: "{{ monasca_system_group_name }}"
+    mode: "0755"
+  when:
+    - monasca_use_mod_wsgi | bool
+    - inventory_hostname in groups['monasca_api']
+  notify:
+    - Restart Apache
