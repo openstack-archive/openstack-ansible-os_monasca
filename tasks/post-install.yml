@@ -15,4 +15,54 @@
 #
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
-#
+- name: Drop monasca api Config(s)
+  config_template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ monasca_system_user_name }}"
+    group: "{{ monasca_system_group_name }}"
+    mode: "0644"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
+  with_items:
+    - src: "monasca-api-paste.ini.j2"
+      dest: "/etc/monasca/api-config.ini"
+      config_overrides: "{{ monasca_api_paste_ini_overrides }}"
+      config_type: "ini"
+    - src: "monasca-api.conf.j2"
+      dest: "/etc/monasca/api-config.conf"
+      config_overrides: "{{ monasca_api_config_overrides }}"
+      config_type: "ini"
+    - src: "monasca-api-logging.conf.j2"
+      dest: "/etc/monasca/api-logging.conf"
+      config_overrides: "{{ monasca_api_config_overrides }}"
+      config_type: "ini"
+  notify:
+    - Restart monasca services
+  when: inventory_hostname in groups['monasca_api']
+
+- name: Drop monasca-log-api Config(s)
+  config_template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ monasca_system_user_name }}"
+    group: "{{ monasca_system_group_name }}"
+    mode: "0644"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
+  with_items:
+    - src: "monasca-log-api-paste.ini.j2"
+      dest: "/etc/monasca/log-api-config.ini"
+      config_overrides: "{{ monasca_log_api_paste_ini_overrides }}"
+      config_type: "ini"
+    - src: "monasca-log-api.conf.j2"
+      dest: "/etc/monasca/log-api-config.conf"
+      config_overrides: "{{ monasca_log_api_config_overrides }}"
+      config_type: "ini"
+    - src: "monasca-log-api-logging.conf.j2"
+      dest: "/etc/monasca/log-api-logging.conf"
+      config_overrides: "{{ monasca_log_api_logging_overrides }}"
+      config_type: "ini"
+  notify:
+    - Restart monasca services
+  when: inventory_hostname in groups['monasca_log_api']
