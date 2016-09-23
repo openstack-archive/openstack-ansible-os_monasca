@@ -30,13 +30,13 @@
   with_items:
     - src: "grafana/grafana-server.j2"
       dest: "/etc/init.d/grafana-server"
-      owner: "root"
-      group: "root"
+      owner: "{{ monasca_grafana_system_user_name }}"
+      group: "{{ monasca_grafana_system_group_name }}"
       mode: "0775"
     - src: "grafana/grafana.ini.j2"
       dest: "/etc/grafana/grafana.ini"
-      owner: "root"
-      group: "root"
+      owner: "{{ monasca_grafana_system_user_name }}"
+      group: "{{ monasca_grafana_system_group_name }}"
 
 - name: Setup Graphana to run at boot
   command: update-rc.d graphana-server defaults 95 10
