@@ -16,20 +16,10 @@
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 #
-# Originally obtained from https://github.com/elastic/ansible-elasticsearch
-#
 monasca_distro_packages:
   - build-essential
-  - chrony
-  - git
-  - libmysqlclient-dev
-  - mailutils
-  - mariadb-client
-  - maven
-  - nodejs
   - openjdk-7-jdk
   - python-software-properties
   - python-dev
   - python-mysqldb
   - python-pip
-  - zookeeperd
