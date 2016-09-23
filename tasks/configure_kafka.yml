@@ -18,40 +18,30 @@
 #
 - name: Copy Kafka templates
   template:
-    src: "{{ item.name }}"
+    src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
     mode: "{{ item.mode | default('0644') }}"
   with_items:
     - src: "kafka/kafka-server-start.sh.j2"
-      dest: "/opt/kafka/bin/kafka-server-start.sh"
-      owner: "root"
-      group: "root"
+      dest: "{{ monasca_kafka_conf_directory }}/kafka-server-start.sh"
+      owner: "{{ monasca_kafka_system_user_name }}"
+      group: "{{ monasca_kafka_system_group_name }}"
       mode: "0755"
     - src: "kafka/kafka.j2"
       dest: "/etc/init/kafka"
-      owner: "root"
-      group: "root"
+      owner: "{{ monasca_kafka_system_user_name }}"
+      group: "{{ monasca_kafka_system_group_name }}"
     - src: "kafka/log4j.properties.j2"
-      dest: "/opt/kafka/config/log4j.properties"
-      owner: "kafka"
-      group: "kafka"
+      dest: "{{ monasca_kafka_conf_directory }}/log4j.properties"
+      owner: "{{ monasca_kafka_system_user_name }}"
+      group: "{{ monasca_kafka_system_group_name }}"
     - src: "kafka/server.properties.j2"
-      dest: "/opt/kafka/config/server.properties"
-      owner: "kafka"
-      group: "kafka"
+      dest: "{{ monasca_kafka_conf_directory }}/server.properties"
+      owner: "{{ monasca_kafka_system_user_name }}"
+      group: "{{ monasca_kafka_system_group_name }}"
   register: copy_templates
   until: copy_templates | success
-  retries: 5
-  delay: 3
-
-- name: Start Kafka
-  service:
-    name: "kafka"
-    state: "restarted"
-  when: kafka.config.changed
-  register: restart_kafka
-  until: restart_kafka | success
   retries: 5
   delay: 3
