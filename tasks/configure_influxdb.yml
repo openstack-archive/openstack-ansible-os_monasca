@@ -26,24 +26,13 @@
   with_items:
     - src: "influxdb/influxdb.conf.j2"
       dest: "/etc/influxdb/influxdb.conf"
-      owner: "root"
-      group: "root"
+      owner: "{{ monasca_influxdb_system_user_name }}"
+      group: "{{ monasca_influxdb_system_group_name }}"
     - src: "influxdb/influxdb.j2"
       dest: "/etc/default/influxdb"
-      owner: "root"
-      group: "root"
+      owner: "{{ monasca_influxdb_system_user_name }}"
+      group: "{{ monasca_influxdb_system_group_name }}"
   register: configure_influxdb
   until: configure_influxdb | success
   retries: 5
   delay: 3
-
-- name: Restart influxdb
-  service:
-    name: "influxdb"
-    state: "restarted"
-  when: influxdb_config.changed
-
-- name: Sleep for 60 seconds to let Influxdb elect a leader
-  pause:
-    minutes: 1
-  when: influxdb_config.changed
