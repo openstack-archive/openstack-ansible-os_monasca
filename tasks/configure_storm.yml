@@ -18,29 +18,21 @@
 #
 - name: Copy Apache Storm Templates
   template:
-    src: "{{ item.name }}"
+    src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
     mode: "{{ item.mode | default('0644') }}"
   with_items:
     - src: "storm/cluster.xml.j2"
-      dest: "/opt/storm/{{ storm_logback_dir }}/cluster.xml"
-      owner: "storm"
-      group: "storm"
+      dest: "{{ monasca_storm_conf_directory }}/cluster.xml"
+      owner: "{{ monasca_storm_system_user_name }}"
+      group: "{{ monasca_storm_system_group_name }}"
       mode: "0644"
     - src: "storm/storm.yaml.j2"
-      dest: "/opt/apache-storm-{{ storm_version }}/conf/storm.yaml"
-      owner: "storm"
-      group: "storm"
-    - src: "storm/storm-nimbus.conf.j2"
-      dest: "/etc/init/storm-nimbus.conf"
-      owner: "root"
-      group: "root"
-    - src: "storm/storm-supervisor.conf.j2"
-      dest: "/etc/init/storm-supervisor.conf"
-      owner: "root"
-      group: "root"
+      dest: "{{ monasca_storm_conf_directory }}/storm.yaml"
+      owner: "{{ monasca_storm_system_user_name }}"
+      group: "{{ monasca_storm_system_group_name }}"
   register: storm_config_templates
   until: storm_config_templates | success
   retries: 5
