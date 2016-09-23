@@ -4,10 +4,10 @@ auth_url = http://{{ internal_lb_vip_address }}:5000
 [database]
 type = mysql
 host = {{ internal_lb_vip_address }}:3306
-name = graphana
-user = graphana
-password = {{ graphana_mysql_password }}
+name = grafana
+user = grafana
+password = {{ monasca_grafana_mysql_password }}
 ssl_mode = skip-verify
 [security]
 admin_user = admin
-admin_password = {{ graphana_admin_password }}
+admin_password = {{ monasca_grafana_admin_password }}
