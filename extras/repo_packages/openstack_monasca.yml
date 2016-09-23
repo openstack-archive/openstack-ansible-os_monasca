@@ -1,0 +1,56 @@
+---
+# Copyright 2016 Internet Solutions (Pty) Ltd
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
+# (c) 2016 Paul Stevens <paul.stevens@is.co.za>
+monasca_api_git_repo: "https://git.openstack.org/openstack/monasca-api"
+monasca_api_git_install_branch: 1e56736bba2e0e70f35e3ac69967872276e6ebcc # master as of 23/09/2016
+monasca_api_git_dest: "/opt/monasca_{{ monasca_api_git_install_branch | replace('/', '_') }}"
+
+monasca_events_api_git_repo: "https://git.openstack.org/openstack/monasca-events-api"
+monasca_events_api_git_install_branch: dba30614943d6a003620336540a2774e238a567b # master as of 25/09/2016
+monasca_events_api_git_dest: "/opt/monasca_{{ monasca_events_api_git_install_branch | replace('/', '_') }}"
+
+monasca_log_api_git_repo: "https://git.openstack.org/openstack/monasca-log-api"
+monasca_log_api_git_install_branch: 7175ff0c5595b2f119eb4b7cac1cf204dec175f4 # master as of 25/09/2016
+monasca_log_api_git_dest: "/opt/monasca_{{ monasca_log_api_git_install_branch | replace('/', '_') }}"
+
+monasca_ceilometer_git_repo: "https://git.openstack.org/openstack/monasca-ceilometer"
+monasca_ceilometer_git_install_branch: c0f807294919cf6add64ec1f99f1b82e5a6330c3 # master as of 23/09/2016
+monasca_ceilometer_git_dest: "/opt/monasca_{{ monasca_ceilometer_git_install_branch | replace('/', '_') }}"
+
+monasca_common_git_repo: "https://git.openstack.org/openstack/monasca-common"
+monasca_common_git_install_branch: da9fa8ca015efbac2248f017704c33cf83f6be5d # master as of 23/09/2016
+monasca_common_git_dest: "/opt/monasca_{{ monasca_api_git_install_branch | replace('/', '_') }}"
+
+monasca_thresh_git_repo: "https://git.openstack.org/openstack/monasca-thresh"
+monasca_thresh_git_install_branch: a62c27a165e61d350fc96432878bec81c09a1587 # master as of 23/09/2016
+monasca_thresh_git_dest: "/opt/monasca_{{ monasca_thresh_git_install_branch | replace('/', '_') }}"
+
+monasca_transform_git_repo: "https://git.openstack.org/openstack/monasca-transform"
+monasca_transform_git_install_branch: 87a89604675f93028b9c4e985aba9f6a9a1e53a6 # master as of 23/09/2016
+monasca_transform_git_dest: "/opt/monasca_{{ monasca_transform_git_install_branch | replace('/', '_') }}"
+
+monasca_notification_git_repo: "https://git.openstack.org/openstack/monasca-notification"
+monasca_notification_git_install_branch: 4c39e3ad678cf117252f304fc8507020a7e98c2a # master as of 23/09/2016
+monasca_notification_git_dest: "/opt/monasca_{{ monasca_notification_git_install_branch | replace('/', '_') }}"
+
+monasca_analytics_git_repo: "https://git.openstack.org/openstack/monasca-analytics"
+monasca_analytics_git_install_branch: ecfc9d6b955032d46eef02bcb1326869b820b626 # master as of 23/09/2016
+monasca_analytics_git_dest: "/opt/monasca_{{ monasca_analytics_git_install_branch | replace('/', '_') }}"
+
+monasca_persister_git_repo: "https://git.openstack.org/openstack/monasca-persister"
+monasca_persister_git_install_branch: 96fbd64a146f89b60317418d0aedb9bfafc14f0e # master as of 23/09/2016
+monasca_persister_git_dest: "/opt/monasca_{{ monasca_persister_git_install_branch | replace('/', '_') }}"
