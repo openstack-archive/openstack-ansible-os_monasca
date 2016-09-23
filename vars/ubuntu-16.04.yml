@@ -16,23 +16,19 @@
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 #
-- name: Download Apache Kafka
-  get_url:
-    url: "{{ kafka_source_mirror }}/{{ kafka_base_version }}/{{ kafka_version }}.tgz"
-    dest: /tmp/{{ apache_kafka_version }}
-    mode: 0600
-  register: download_kafka_binary
-  until: download_kafka_binary | success
-  retries: 5
-  delay: 5
-
-- name: Extract Apache Kafka archive
-  unarchive:
-    src: "/tmp/{{ kafka_version }}"
-    dest: "/opt"
-    creates: "/opt/kafka"
-    copy: "no"
-  register: extract_binary_kafka
-  until: extract_binary_kafka | success
-  retries: 5
-  delay: 3
+# Originally obtained from https://github.com/elastic/ansible-elasticsearch
+#
+monasca_distro_packages:
+  - build-essential
+  - chrony
+  - git
+  - libmysqlclient-dev
+  - mailutils
+  - mariadb-client
+  - maven
+  - nodejs
+  - openjdk-8-jdk
+  - python-software-properties
+  - python-dev
+  - python-mysqldb
+  - python-pip
