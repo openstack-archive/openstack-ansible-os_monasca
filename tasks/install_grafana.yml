@@ -18,22 +18,22 @@
 #
 - name: Download Go
   get_url:
-    url: "https://storage.googleapis.com/golang/{{ graphana_golang_version }}.tar.gz"
-    dest: "/root/{{ graphana_golang_version }}.tar.gz"
+    url: "{{ monasca_go_source_mirror }}/{{ monasca_graphana_golang_version }}.tar.gz"
+    dest: "/tmp/{{ monasca_graphana_golang_version }}.tar.gz"
     mode: 0440
-  register: download_go
-  until: download_go | success
+  register: download_monasca_go
+  until: download_monasca_go | success
   retries: 5
   delay: 3
 
 - name: Install Go
   unarchive:
-    src: "/root/{{ graphana_golang_version }}.tar.gz"
+    src: "/tmp/{{ monasca_graphana_golang_version }}.tar.gz"
     dest: "/usr/local"
     creates: "/usr/local/go"
     copy: "no"
-  register: install_go
-  until: install_go | success
+  register: install_monasca_go
+  until: install_monasca_go | success
   retries: 5
   delay: 3
 
