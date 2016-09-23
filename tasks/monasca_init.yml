@@ -1,0 +1,115 @@
+---
+# Copyright 2016 Internet Solutions (Pty) Ltd
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
+# (c) 2016 Paul Stevens <paul.stevens@is.co.za>
+- include: monasca_init_common.yml
+  vars:
+    program_bin: "{{ monasca_bin }}"
+    program_name: "{{ monasca_api_program_name }}"
+    program_init_name: "{{ monasca_api_program_init_name }}"
+    program_config_options: "{{ monasca_api_program_config_options }}"
+    program_log_directory: "{{ monasca_log_directory }}"
+    service_name: "{{ monasca_api_service_name }}"
+    system_user: "{{ monasca_system_user_name }}"
+    system_group: "{{ monasca_system_group_name }}"
+    service_home: "{{ monasca_system_user_home }}"
+  when: inventory_hostname in groups['monasca_api']
+
+- include: monasca_init_common.yml
+  vars:
+    program_bin: "{{ monasca_bin }}"
+    program_name: "{{ monasca_events_api_program_name }}"
+    program_init_name: "{{ monasca_events_api_program_init_name }}"
+    program_config_options: "{{ monasca_events_api_program_config_options }}"
+    program_log_directory: "{{ monasca_log_directory }}"
+    service_name: "{{ monasca_events_api_service_name }}"
+    system_user: "{{ monasca_system_user_name }}"
+    system_group: "{{ monasca_system_group_name }}"
+    service_home: "{{ monasca_system_user_home }}"
+  when: inventory_hostname in groups['monasca_events_api']
+
+- include: monasca_init_common.yml
+  vars:
+    program_bin: "{{ monasca_bin }}"
+    program_name: "{{ monasca_log_api_program_name }}"
+    program_init_name: "{{ monasca_log_api_program_init_name }}"
+    program_config_options: "{{ monasca_log_api_program_config_options }}"
+    program_log_directory: "{{ monasca_log_directory }}"
+    service_name: "{{ monasca_log_api_service_name }}"
+    system_user: "{{ monasca_system_user_name }}"
+    system_group: "{{ monasca_system_group_name }}"
+    service_home: "{{ monasca_system_user_home }}"
+  when: inventory_hostname in groups['monasca_log_api']
+
+- include: monasca_init_common.yml
+  vars:
+    program_bin: "{{ monasca_zookeeper_bin }}"
+    program_name: "{{ monasca_zookeeper_program_name }}"
+    program_init_name: "{{ monasca_zookeeper_program_init_name }}"
+    program_log_directory: "{{ monasca_zookeeper_log_directory }}"
+    service_name: "{{ monasca_zookeeper_service_name }}"
+    system_user: "{{ monasca_zookeeper_system_user_name }}"
+    system_group: "{{ monasca_zookeeper_system_group_name }}"
+    service_home: "{{ monasca_zookeeper_system_user_home }}"
+  when: inventory_hostname in groups['monasca_zookeeper']
+
+- include: monasca_init_common.yml
+  vars:
+    program_bin: "{{ monasca_kafka_bin }}"
+    program_name: "{{ monasca_kafka_program_name }}"
+    program_init_name: "{{ monasca_kafka_program_init_name }}"
+    program_log_directory: "{{ monasca_kafka_log_directory }}"
+    service_name: "{{ monasca_kafka_service_name }}"
+    system_user: "{{ monasca_kafka_system_user_name }}"
+    system_group: "{{ monasca_kafka_system_group_name }}"
+    service_home: "{{ monasca_kafka_system_user_home }}"
+  when: inventory_hostname in groups['monasca_kafka']
+
+- include: monasca_init_common.yml
+  vars:
+    program_bin: "{{ monasca_storm_bin }}"
+    program_name: "{{ monasca_storm_program_name }}"
+    program_init_name: "{{ monasca_storm_program_init_name }}"
+    program_log_directory: "{{ monasca_storm_log_directory }}"
+    service_name: "{{ monasca_storm_service_name }}"
+    system_user: "{{ monasca_storm_system_user_name }}"
+    system_group: "{{ monasca_storm_system_group_name }}"
+    service_home: "{{ monasca_storm_system_user_home }}"
+  when: inventory_hostname in groups['monasca_storm']
+
+- include: monasca_init_common.yml
+  vars:
+    program_bin: "{{ monasca_influxdb_bin }}"
+    program_name: "{{ monasca_influxdb_program_name }}"
+    program_init_name: "{{ monasca_influxdb_program_init_name }}"
+    program_log_directory: "{{ monasca_influxdb_log_directory }}"
+    service_name: "{{ monasca_influxdb_service_name }}"
+    system_user: "{{ monasca_influxdb_system_user_name }}"
+    system_group: "{{ monasca_influxdb_system_group_name }}"
+    service_home: "{{ monasca_influxdb_system_user_home }}"
+  when: inventory_hostname in groups['monasca_influxdb']
+
+- include: monasca_init_common.yml
+  vars:
+    program_bin: "{{ monasca_grafana_bin }}"
+    program_name: "{{ monasca_grafana_program_name }}"
+    program_init_name: "{{ monasca_grafana_program_init_name }}"
+    program_log_directory: "{{ monasca_grafana_log_directory }}"
+    service_name: "{{ monasca_grafana_service_name }}"
+    system_user: "{{ monasca_grafana_system_user_name }}"
+    system_group: "{{ monasca_grafana_system_group_name }}"
+    service_home: "{{ monasca_grafana_system_user_home }}"
+  when: inventory_hostname in groups['monasca_grafana']
