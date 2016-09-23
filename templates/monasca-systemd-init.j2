@@ -1,0 +1,25 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=monasca openstack service
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User={{ monasca_system_user_name }}
+Group={{ monasca_system_group_name }}
+
+{% if item.value.service_init_bin is defined %}
+ExecStart={{ item.value.service_init_bin }} {{ item.value.service_init_options |default('') }} --log-file=/var/log/monasca/{{ item.value.service_name }}.log
+{% else %}
+ExecStart={{ monasca_bin }}/{{ item.value.service_name }} {{ program_config_options|default('') }} --log-file=/var/log/monasca/{{ item.value.service_name }}.log
+{% endif %}
+
+# Give a reasonable amount of time for the server to start up/shut down
+TimeoutSec=300
+Restart=on-failure
+RestartSec=150
+
+[Install]
+WantedBy=multi-user.target

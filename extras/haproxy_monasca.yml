@@ -1,0 +1,16 @@
+ - service:
+      haproxy_service_name: monasca-api
+      haproxy_backend_nodes: "{{ groups['monasca_api'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_port: "{{ monasca_api_service_port }}"
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - "httpchk HEAD /"
+ - service:
+      haproxy_service_name: monasca-log-api
+      haproxy_backend_nodes: "{{ groups['monasca_log_api'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_port: "{{ monasca_log_api_service_port }}"
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - "httpchk HEAD /"
