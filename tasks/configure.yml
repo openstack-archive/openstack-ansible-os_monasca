@@ -15,18 +15,23 @@
 #
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
-
-# Setup the host
-- include: common/test-setup-host.yml
-
-# Install RabbitMQ/MariaDB
-- include: common/test-install-infra.yml
-
-# Install keystone
-- include: common/test-install-keystone.yml
-
-# Install monasca
-- include: test-install-monasca.yml
-
-# Test monasca
-- include: test-monasca-functional.yml
+- include: configure_zookeeper.yml
+  when:
+    - monasca_enable_zookeeper | bool
+    - inventory_hostname in groups['monasca_zookeeper']
+- include: configure_kafka.yml
+  when:
+    - monasca_enable_kafka | bool
+    - inventory_hostname in groups['monasca_kafka']
+- include: configure_storm.yml
+  when:
+    - monasca_enable_storm | bool
+    - inventory_hostname in groups['monasca_storm']
+- include: configure_influxdb.yml
+  when:
+    - monasca_enable_influxdb | bool
+    - inventory_hostname in groups['monasca_influxdb']
+- include: configure_grafana.yml
+  when:
+    - monasca_enable_grafana | bool
+    - inventory_hostname in groups['monasca_grafana']
