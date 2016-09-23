@@ -20,15 +20,29 @@ allow_duplicates: yes
 
 galaxy_info:
   author: "Donovan Francesco, Paul Stevens"
-  description: "Apache Kafka for ECS"
+  description: "Openstack Monasca"
   company: "Internet Solutions"
   license: "license (Apache)"
   min_ansible_install: 1.9
   platforms:
     - name: Ubuntu
       versions:
-        - all
+        - trusty
+        - xenial
   categories:
-    - system
+    - cloud
+    - python
+    - development
+    - openstack
 
-  dependencies: []
+dependencies:
+  - ansible-zookeeper
+  - ansible-kafka
+  - ansible-storm
+  - ansible-influxdb
+  - ansible-grafana
+  - ansible-monasca-schema
+    monasca_mysql_host: "{{ monasca_galera_address }}"
+    monasca_mysql_admin: "{{ monasca_galera_user }}"
+    monasca_mysql_admin_password: "{{ monasca_galera_password }}"
+    monasca_mysql_db: "{{ monasca_galera_database }}"
