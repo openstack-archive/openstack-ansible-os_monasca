@@ -1,0 +1,9 @@
+Code-Review+2: Donovan Francesco <donovan.francesco@gmail.com>
+Code-Review+2: Travis Truman (automagically) <travis_truman@cable.comcast.com>
+Workflow+1: Travis Truman (automagically) <travis_truman@cable.comcast.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Wed, 28 Sep 2016 14:29:52 +0000
+Reviewed-on: https://review.openstack.org/378360
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
