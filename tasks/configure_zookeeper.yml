@@ -26,23 +26,23 @@
     mode: 0644
   with_items:
     - src: zookeeper/zoo.cfg.j2
-      dest: /etc/zookeeper/conf/zoo.cfg
+      dest: "{{ zookeeper_directory }}/conf/zoo.cfg"
       owner: root
       group: root
     - src: zookeeper/myid.j2
-      dest: /etc/zookeeper/conf/myid
+      dest: "{{ zookeeper_directory }}/conf/myid"
       owner: root
       group: root
     - src: zookeeper/environment.j2
-      dest: /etc/zookeeper/conf/environment
+      dest: "{{ zookeeper_directory }}/conf/environment"
       owner: root
       group: root
     - src: zookeeper/log4j.properties.j2
-      dest: /etc/zookeeper/conf/log4j.properties
+      dest: "{{ zookeeper_directory }}/conf/log4j.properties"
       owner: root
       group: root
-  register: configure_zookeeper
-  until: configure_zookeeper | success
+  register: zookeeper_config
+  until: zookeeper_config | success
   retries: 5
   delay: 3
 
@@ -51,7 +51,7 @@
     name: zookeeper
     state: restarted
     enabled: yes
-  when: zookeeper_config.changed
+  when: zookeeper_config | changed
   register: restart_zookeeper
   until: restart_zookeeper | success
   retries: 5

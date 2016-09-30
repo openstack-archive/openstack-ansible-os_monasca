@@ -1,8 +1,15 @@
 CHANGES
 =======
 
+* Rename graphana to upstream correct grafana and make sure we can deploy it
+* Huge role refactoring, add ability to install zookeeper, remove unused variables, add missing ones, fix missing users etc
+* Updated from global requirements
+* Use centralised test scripts
+* Updated from global requirements
+* Ansible 2.1.1 role testing
+* Compress test execution logs
+* Rename package lists (and related vars) appropriately
+* Enable log collection after functional testing
 * Role skeleton for os_monasca
 * Initial Commit
 * Initial commit
-
-* Update role to deploy zookeeper it self as one packaged with ubuntu 14.04 is 2 years old, remove unused variables from defaults and add sued variables.

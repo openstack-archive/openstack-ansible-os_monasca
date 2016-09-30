@@ -19,7 +19,7 @@
 #
 - name: Copy Apache Storm Templates
   template:
-    src: "{{ item.name }}"
+    src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
@@ -30,7 +30,7 @@
       owner: storm
       group: storm
     - src: storm/storm.yaml.j2
-      dest: "/opt/apache-storm-{{ storm_version }}/conf/storm.yaml"
+      dest: "/opt/storm/conf/storm.yaml"
       owner: storm
       group: storm
     - src: storm/storm-nimbus.conf.j2

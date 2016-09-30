@@ -22,7 +22,7 @@
 dist_dir: /opt/dist
 
 ## Keystone URL
-keystone_url: http://{{ internal_lb_vip_address }}:5000
+keystone_url: http://127.0.0.1:5000
 
 ## Grafana
 graphana_golang_version: go1.7.linux-amd64
@@ -30,12 +30,12 @@ graphana_admin_password: GrafanaPass
 graphana_mysql_password: secrete
 
 ## Database
-mysql_url: {{ internal_lb_vip_address }}:3306
+mysql_url: 127.0.0.1:3306
 mysql_root_pass: "secretdatabase"
 
 ## InfluxDB
 influxdb_version: "0.12.2-1"
-influxdb_listen_address: {{ ansible_default_ipv4.address }}
+influxdb_listen_address: "{{ ansible_default_ipv4.address }}"
 
 ## Kafka
 base_kafka_version: "0.10.0.1"
@@ -44,7 +44,7 @@ kafka_heap_opts: "-Xmx1G -Xms1G"
 kafka_directory: "/opt/kafka"
 
 ## Storm
-storm_version: "1.0.1"
+storm_version: "1.0.2"
 storm_logback_dir: "log4j2"
 storm_directory: "/opt/storm"
 

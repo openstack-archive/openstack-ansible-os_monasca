@@ -33,7 +33,7 @@
 
 - name: Copy Kafka templates
   template:
-    src: "{{ item.name }}"
+    src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
@@ -43,8 +43,8 @@
       dest: /opt/kafka/bin/kafka-server-start.sh
       owner: root
       group: root
-      mode: 0755
-    - src: kafka/kafka.j2
+      mode: '0755'
+    - src: kafka/kafka.upstart.conf.j2
       dest: /etc/init/kafka.conf
       owner: root
       group: root
