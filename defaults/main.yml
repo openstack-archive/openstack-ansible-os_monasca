@@ -19,64 +19,38 @@
 #
 # Originally obtained from https://github.com/elastic/ansible-elasticsearch
 #
-kafka_directory: "/opt/kafka"
+dist_dir: /opt/dist
 
-## Monasca
-monasca_common_git_repo: "https://git.openstack.org/openstack/monasca-common.git"
-monasca_api_git_repo: "https://git.openstack.org/openstack/monasca-api.git"
-monasca_persister_git_repo: "https://git.openstack.org/openstack/monasca-persister.git"
-monasca_notification_git_repo: "https://git.openstack.org/openstack/monasca-notification.git"
-monasca_thresh_git_repo: "https://git.openstack.org/openstack/monasca-thresh.git"
-monasca_ui_git_repo: "https://git.openstack.org/openstack/monasca-ui.git"
-monasca_client_git_repo: "https://git.openstack.org/openstack/python-monascaclient.git"
-monasca_git_branch: "master"
+## Keystone URL
+keystone_url: http://{{ internal_lb_vip_address }}:5000
 
 ## Grafana
-grafana_plugins_git_repo: "https://github.com/twc-openstack/grafana-plugins.git"
-grafana_plugins_git_branch: "v2.6.0"
-grafana_git_repo: "https://github.com/twc-openstack/grafana.git"
-grafana_git_branch: "v2.6.0-keystone"
-
-## Keystone
-keystone_ip_address: "127.0.0.1"
-# admin credentials
-os_username: "admin"
-os_password: "secretadmin"
-os_project_name: "admin"
-
-# monasca-user credentials
-os_mon_username: "mini-mon"
-os_mon_password: "password"
-os_mon_project_name: "mini-mon"
-
-# monasca-agent credentials
-os_mon_agent_username: "monasca-agent"
-os_mon_agent_password: "password"
+graphana_golang_version: go1.7.linux-amd64
+graphana_admin_password: GrafanaPass
+graphana_mysql_password: secrete
 
 ## Database
+mysql_url: {{ internal_lb_vip_address }}:3306
 mysql_root_pass: "secretdatabase"
 
 ## InfluxDB
-influxdb_version: "0.9.5"
+influxdb_version: "0.12.2-1"
+influxdb_listen_address: {{ ansible_default_ipv4.address }}
 
 ## Kafka
-base_kafka_version: "0.10.0.0"
+base_kafka_version: "0.10.0.1"
 kafka_version: "kafka_2.11-{{ base_kafka_version }}"
+kafka_heap_opts: "-Xmx1G -Xms1G"
+kafka_directory: "/opt/kafka"
 
 ## Storm
 storm_version: "1.0.1"
 storm_logback_dir: "log4j2"
+storm_directory: "/opt/storm"
 
-## NTP
-ntp_servers:
-  - ntp.is.co.za
-
-## System info
-monasca_system_user_name: monasca
-monasca_system_group_name: monasca
-monasca_system_shell: /bin/false
-monasca_system_comment: monasca system user
-monasca_system_user_home: "/var/lib/{{ monasca_system_user_name }}"
+## Zookeeper
+zookeeper_version: "3.4.9"
+zookeeper_directory: "/opt/zookeeper"
 
 pip_install_options: ""
 

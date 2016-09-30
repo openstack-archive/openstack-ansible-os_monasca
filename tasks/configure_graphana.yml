@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# (c) 2016 Adam Hamsik <adam.hamsik@chillisys.com>
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 #
@@ -28,23 +29,21 @@
   retries: 5
   delay: 3
   with_items:
-    - src: "grafana/grafana-server.j2"
-      dest: "/etc/init.d/grafana-server"
-      owner: "root"
-      group: "root"
-      mode: "0775"
-    - src: "grafana/grafana.ini.j2"
-      dest: "/etc/grafana/grafana.ini"
-      owner: "root"
-      group: "root"
-
-- name: Setup Graphana to run at boot
-  command: update-rc.d graphana-server defaults 95 10
+    - src: grafana/grafana-server.upstart.conf.j2
+      dest: /etc/init/grafana-server.conf
+      owner: root
+      group: root
+      mode: 0775
+    - src: grafana/grafana.ini.j2
+      dest: /etc/grafana/grafana.ini
+      owner: root
+      group: root
 
 - name: Start the Graphana Service
   service:
     name: graphana-server
     state: restarted
+    enabled: yes
   register: start_graphana
   until: start_graphana | success
   retries: 5

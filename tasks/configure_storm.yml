@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# (c) 2016 Adam Hamsik <adam.hamsik@chillisys.com>
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 #
@@ -24,24 +25,34 @@
     group: "{{ item.group }}"
     mode: "{{ item.mode | default('0644') }}"
   with_items:
-    - src: "storm/cluster.xml.j2"
+    - src: storm/cluster.xml.j2
       dest: "/opt/storm/{{ storm_logback_dir }}/cluster.xml"
-      owner: "storm"
-      group: "storm"
-      mode: "0644"
-    - src: "storm/storm.yaml.j2"
+      owner: storm
+      group: storm
+    - src: storm/storm.yaml.j2
       dest: "/opt/apache-storm-{{ storm_version }}/conf/storm.yaml"
-      owner: "storm"
-      group: "storm"
-    - src: "storm/storm-nimbus.conf.j2"
-      dest: "/etc/init/storm-nimbus.conf"
-      owner: "root"
-      group: "root"
-    - src: "storm/storm-supervisor.conf.j2"
-      dest: "/etc/init/storm-supervisor.conf"
-      owner: "root"
-      group: "root"
-  register: storm_config_templates
-  until: storm_config_templates | success
+      owner: storm
+      group: storm
+    - src: storm/storm-nimbus.conf.j2
+      dest: /etc/init/storm-nimbus.conf
+      owner: root
+      group: root
+    - src: storm/storm-supervisor.conf.j2
+      dest: /etc/init/storm-supervisor.conf
+      owner: root
+      group: root
+  register: storm_config
+  until: storm_config | success
+  retries: 5
+  delay: 3
+
+- name: Restart storm
+  service:
+    name: storm-supervisor
+    state: restarted
+    enabled: yes
+  when: storm_config.changed
+  register: restart_storm
+  until: restart_storm | success
   retries: 5
   delay: 3
