@@ -2,18 +2,21 @@ description "Grafana"
 start on (filesystem and net-device-up)
 stop on runlevel [06]
 
+console log
+
+
 respawn
 
-env http_proxy=proxy-url
-env https_proxy=proxy-url
+#env http_proxy=proxy-url
+#env https_proxy=proxy-url
 
 env DAEMON_USER="grafana"
-env DAEMON_PATH="/opt/grafana/current/grafana"
+env DAEMON_PATH="/usr/sbin/grafana-server"
 env DAEMON_OPTS="--config=/etc/grafana/grafana.ini web"
 env DAEMON_LOG="/var/log/grafana/grafana.log"
 
 setuid grafana
-chdir /opt/grafana/current
+chdir /usr/share/grafana
 nice 0
 
 script

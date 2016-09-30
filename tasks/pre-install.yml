@@ -46,7 +46,7 @@
 
 - name: Create Distribution directory
   file:
-    path:
+    path: "{{ dist_dir }}"
     state: directory
     mode: 0755
   register: create_dist_dir

@@ -61,11 +61,11 @@
   tags:
     - os_monasca
 
-- include: install_graphana.yml
+- include: install_grafana.yml
   tags:
     - os_monasca
 
-- include: configure_graphana.yml
+- include: configure_grafana.yml
   tags:
     - os_monasca
 

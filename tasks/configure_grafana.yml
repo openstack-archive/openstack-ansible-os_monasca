@@ -17,15 +17,15 @@
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 #
-- name: Copy Graphana Templates
+- name: Copy Grafana Templates
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
     mode: "0644"
-  register: configure_graphana
-  until: configure_graphana | success
+  register: configure_grafana
+  until: configure_grafana | success
   retries: 5
   delay: 3
   with_items:
@@ -33,18 +33,18 @@
       dest: /etc/init/grafana-server.conf
       owner: root
       group: root
-      mode: 0775
+      mode: '0775'
     - src: grafana/grafana.ini.j2
       dest: /etc/grafana/grafana.ini
       owner: root
       group: root
 
-- name: Start the Graphana Service
+- name: Start the Grafana Service
   service:
-    name: graphana-server
+    name: grafana-server
     state: restarted
     enabled: yes
-  register: start_graphana
-  until: start_graphana | success
+  register: start_grafana
+  until: start_grafana | success
   retries: 5
   delay: 3

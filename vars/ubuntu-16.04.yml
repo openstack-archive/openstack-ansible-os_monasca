@@ -19,7 +19,7 @@
 # Originally obtained from https://github.com/elastic/ansible-elasticsearch
 #
 
-init_service: upstart
+init_service: systemd
 
 monasca_distro_packages:
   - build-essential

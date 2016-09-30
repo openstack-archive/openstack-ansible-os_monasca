@@ -17,21 +17,21 @@
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 #
-- name: Setup Graphana Wheezy Repository
+- name: Setup Grafana Wheezy Repository
   apt_repository:
     repo: "deb https://packagecloud.io/grafana/stable/debian/ wheezy main"
     state: present
-  register: add_graphana_apt
-  until: add_graphana_apt | success
+  register: add_grafana_apt
+  until: add_grafana_apt | success
   retries: 5
   delay: 3
 
-- name: Install Graphana Apt Key
+- name: Install Grafana Apt Key
   apt_key:
-    url: "deb https://packagecloud.io/grafana/stable/debian/ wheezy main"
+    url: "https://packagecloud.io/gpg.key"
     state: present
-  register: add_graphana_apt_key
-  until: add_graphana_apt_key | success
+  register: add_grafana_apt_key
+  until: add_grafana_apt_key | success
   retries: 5
   delay: 3
 
@@ -43,11 +43,11 @@
   retries: 5
   delay: 3
 
-- name: Install Graphana
+- name: Install Grafana
   apt:
-    pkg: graphana
+    pkg: grafana
     state: latest
-  register: install_graphana
-  until: install_graphana | success
+  register: install_grafana
+  until: install_grafana | success
   retries: 5
   delay: 3
