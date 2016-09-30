@@ -1,9 +1,9 @@
 [auth.keystone]
 enabled = true
-auth_url = http://{{ internal_lb_vip_address }}:5000
+auth_url = {{ keystone_url }}
 [database]
 type = mysql
-host = {{ internal_lb_vip_address }}:3306
+host = {{ mysql_url }}
 name = graphana
 user = graphana
 password = {{ graphana_mysql_password }}

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# (c) 2016 Adam Hamsik <adam.hamsik@chillisys.com>
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 #
@@ -22,24 +23,24 @@
     dest: "{{ item.dest }}"
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
-    mode: "0644"
+    mode: 0644
   with_items:
-    - src: "zookeeper/zoo.cfg.j2"
-      dest: "/etc/zookeeper/conf/zoo.cfg"
-      owner: "root"
-      group: "root"
-    - src: "zookeeper/myid.j2"
-      dest: "/etc/zookeeper/conf/myid"
-      owner: "root"
-      group: "root"
-    - src: "zookeeper/environment.j2"
-      dest: "/etc/zookeeper/conf/environment"
-      owner: "root"
-      group: "root"
-    - src: "zookeeper/log4j.properties.j2"
-      dest: "/etc/zookeeper/conf/log4j.properties"
-      owner: "root"
-      group: "root"
+    - src: zookeeper/zoo.cfg.j2
+      dest: /etc/zookeeper/conf/zoo.cfg
+      owner: root
+      group: root
+    - src: zookeeper/myid.j2
+      dest: /etc/zookeeper/conf/myid
+      owner: root
+      group: root
+    - src: zookeeper/environment.j2
+      dest: /etc/zookeeper/conf/environment
+      owner: root
+      group: root
+    - src: zookeeper/log4j.properties.j2
+      dest: /etc/zookeeper/conf/log4j.properties
+      owner: root
+      group: root
   register: configure_zookeeper
   until: configure_zookeeper | success
   retries: 5
@@ -47,8 +48,9 @@
 
 - name: Restart zookeeper
   service:
-    name: "zookeeper"
-    state: "restarted"
+    name: zookeeper
+    state: restarted
+    enabled: yes
   when: zookeeper_config.changed
   register: restart_zookeeper
   until: restart_zookeeper | success

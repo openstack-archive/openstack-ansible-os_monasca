@@ -4,3 +4,5 @@ CHANGES
 * Role skeleton for os_monasca
 * Initial Commit
 * Initial commit
+
+* Update role to deploy zookeeper it self as one packaged with ubuntu 14.04 is 2 years old, remove unused variables from defaults and add sued variables.

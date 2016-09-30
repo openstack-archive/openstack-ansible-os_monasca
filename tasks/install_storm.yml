@@ -13,9 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# (c) 2016 Adam Hamsik <adam.hamsik@chillisys.com>
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 #
+- name: Add a Apache Storm user
+  user:
+    name: storm
+    comment: "Apache Storm Service"
+    append: yes
+  register: create_storm_user
+  until: create_storm_user | success
+  retries: 5
+  delay: 2
+
 - name: Download Apache Storm
   get_url:
     url: "https://github.com/apache/storm/archive/{{ storm_version }}.tar.gz"
@@ -29,10 +40,17 @@
 - name: Extract Apache Storm
   unarchive:
     src: "/root/apache-storm-{{ storm_version }}.tar.gz"
-    dest: "/opt"
-    creates: "/opt/apache-storm-{{ storm_version }}"
-    copy: "no"
+    dest: "{{ dist_dir }}"
+    creates: "/opt/{{ dist_dir }}/apache-storm-{{ storm_version }}"
+    copy: no
   register: extract_storm
   until: extract_storm | success
   retries: 5
   delay: 3
+
+- name: Link installed Apache Storm to /opt/storm
+  file:
+    src: "{{ dist_dir }}/apache-storm-{{ storm_version }}"
+    path: "{{ storm_directory }}"
+    state: link
+

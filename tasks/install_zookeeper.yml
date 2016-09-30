@@ -17,29 +17,35 @@
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 #
-- name: Download Apache Kafka
-  get_url:
-    url: "http://apache.is.co.za/kafka/{{ base_kafka_version }}/{{ kafka_version }}.tgz"
-    dest: "/root/{{ kafka_version }}.tgz"
-    mode: 0600
-  register: download_kafka_binary
-  until: download_kafka_binary | success
-  retries: 5
-  delay: 5
 
-- name: Extract Apache Kafka archive
-  unarchive:
-    src: "/root/{{ kafka_version }}.tgz"
-    dest: "{{ dist_dir }}"
-    creates: "{{ dist_dir }}/{{ kafka_version }}"
-    copy: no
-  register: extract_binary
-  until: extract_binary | success
+- name: Download Zookeeper package
+  get_url:
+    url: "https://archive.apache.org/dist/zookeeper/zookeeper-{{ zookeeper_version }}/zookeeper-{{ zookeeper_version }}.tar.gz"
+    dest: "/root/apache-zookeeper-{{ zookeeper_version }}.tar.gz"
+    mode: 0600
+  register: download_zookeeper
+  until: download_zookeeper | success
   retries: 5
   delay: 3
 
-- name: Link installed kafka to /opt/kafka
+- name: Extract Apache zookeeper
+  unarchive:
+    src: "/root/apache-zookeeper-{{ zookeeper_version }}.tar.gz"
+    dest: "{{ dist_dir }}"
+    creates: "{{ dist_dir }}/apache-zookeeper-{{ zookeeper_version }}"
+    copy: no
+  register: extract_zookeeper
+  until: extract_zookeeper | success
+  retries: 5
+  delay: 3
+
+- name: Link installed Apache zookeeper to /opt/zookeeper
   file:
-    src: "{{ dist_dir }}/{{ kafka_version }}"
-    path: "{{ kafka_directory }}"
+    src: "{{ dist_dir }}/apache-zookeeper-{{ zookeeper_version }}"
+    path: "{{ zookeeper_directory }}"
     state: link
+
+- name: Setup Apache ZooKeeper service
+  template:
+    dest: /etc/init/zookeeper.conf
+    src: zookeeper.upstart.conf.j2
