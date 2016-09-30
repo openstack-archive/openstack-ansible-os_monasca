@@ -64,6 +64,7 @@ releasenotes/build
 tests/plugins
 tests/playbooks
 tests/test.retry
+tests/common
 
 # Vagrant artifacts
 .vagrant

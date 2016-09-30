@@ -13,28 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# (c) 2016 Adam Hamsik <adam.hamsik@chillisys.com>
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 #
-# Originally obtained from https://github.com/elastic/ansible-elasticsearch
-#
+- name: Download Go
+  get_url:
+    url: "https://storage.googleapis.com/golang/{{ graphana_golang_version }}.tar.gz"
+    dest: "/root/{{ graphana_golang_version }}.tar.gz"
+    mode: 0440
+  register: download_go
+  until: download_go | success
+  retries: 5
+  delay: 3
 
-init_base_path: /etc/init
-init_service: upstart
-init_conf_suffix: conf
-
-monasca_distro_packages:
-  - build-essential
-  - chrony
-  - git
-  - libmysqlclient-dev
-  - mailutils
-  - mariadb-client
-  - maven
-  - nodejs
-  - openjdk-7-jdk
-  - python-software-properties
-  - python-dev
-  - python-mysqldb
-  - python-pip
-  - apt-transport-https
+- name: Install Go
+  unarchive:
+    src: "/root/{{ graphana_golang_version }}.tar.gz"
+    dest: /usr/local
+    creates: /usr/local/go
+    copy: no
+  register: install_go
+  until: install_go | success
+  retries: 5
+  delay: 3

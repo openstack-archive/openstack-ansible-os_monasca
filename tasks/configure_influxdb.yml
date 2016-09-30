@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# (c) 2016 Adam Hamsik <adam.hamsik@chillisys.com>
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 #
@@ -22,28 +23,29 @@
     dest: "{{ item.dest }}"
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
-    mode: "0644"
-  with_items:
-    - src: "influxdb/influxdb.conf.j2"
-      dest: "/etc/influxdb/influxdb.conf"
-      owner: "root"
-      group: "root"
-    - src: "influxdb/influxdb.j2"
-      dest: "/etc/default/influxdb"
-      owner: "root"
-      group: "root"
-  register: configure_influxdb
-  until: configure_influxdb | success
+    mode: 0644
+  register: influxdb_config
+  until: influxdb_config | success
   retries: 5
   delay: 3
+  with_items:
+    - src: influxdb/influxdb.conf.j2
+      dest: /etc/influxdb/influxdb.conf
+      owner: root
+      group: root
+    - src: influxdb/influxdb.j2
+      dest: /etc/default/influxdb
+      owner: root
+      group: root
 
 - name: Restart influxdb
   service:
-    name: "influxdb"
-    state: "restarted"
-  when: influxdb_config.changed
+    name: influxdb
+    state: restarted
+    enabled: yes
+  when: influxdb_config | changed
 
 - name: Sleep for 60 seconds to let Influxdb elect a leader
   pause:
     minutes: 1
-  when: influxdb_config.changed
+  when: influxdb_config | changed

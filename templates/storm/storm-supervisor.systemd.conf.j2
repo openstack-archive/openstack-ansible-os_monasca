@@ -26,5 +26,5 @@ respawn limit 25 5
 
 setgid storm
 setuid storm
-chdir /opt/storm
-exec /opt/storm/bin/storm supervisor
+chdir {{ storm_directory }}
+exec {{ storm_directory }}/bin/storm supervisor

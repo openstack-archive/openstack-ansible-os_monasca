@@ -1,0 +1,15 @@
+[Unit]
+Description=Zookeeper
+Before=
+After=network.target
+
+[Service]
+Type=forking
+User=zookeeper
+Environment= JAVA_HOME=/usr/local/java8
+CHDIR= {{ zookeeper_directory }}
+ExecStart={{ zookeeper_directory }}/bin/zkServer.sh start
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

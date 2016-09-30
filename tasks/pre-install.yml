@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# (c) 2016 Adam Hamsik <adam.hamsik@chillisys.com>
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 #
@@ -27,33 +28,29 @@
 - name: Install Apt dependencies
   apt:
     pkg: "{{ item }}"
-    state: "latest"
+    state: latest
   register: install_deps
   until: install_deps | success
   retries: 5
   delay: 2
   with_items: "{{ monasca_distro_packages }}"
 
-- name: Add a kafka user with temp sudo permissions     # sudo removed in post-install.yml
-  user:
-    name: kafka
-    comment: "Apache Kafka Service"
-    groups: sudo
-    append: yes
-    generate_ssh_key: yes
-    ssh_key_bits: 2048
-    ssh_key_file: .ssh/id_rsa.pub
-  register: create_kafka_user
-  until: create_kafka_user | success
+- name: Install Required pip packages for monasca
+  pip:
+    name: "{{ item }}"
+    extra_args: "{{ pip_install_options }}"
+    state: present
+  with_items:
+    - "{{ monasca_pip_packages }}"
+    - "{{ monasca_required_pip_packages }}"
+
+- name: Create Distribution directory
+  file:
+    path: "{{ dist_dir }}"
+    state: directory
+    mode: 0755
+  register: create_dist_dir
+  until: create_dist_dir | success
   retries: 5
   delay: 2
 
-- name: Create Kafka directory
-  file:
-    path: /opt/kafka
-    state: directory
-    mode: 0755
-  register: create_install_dir
-  until: create_install_dir | success
-  retries: 5
-  delay: 2

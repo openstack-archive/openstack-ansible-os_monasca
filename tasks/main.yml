@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# (c) 2016 Adam Hamsik <adam.hamsik@chillisys.com>
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 #
@@ -30,6 +31,11 @@
 - include: pre-install.yml
   tags:
     - os_monasca
+
+- include: install_zookeeper.yml
+  tags:
+    - os_monasca
+
 
 - include: configure_zookeeper.yml
   tags:
@@ -51,11 +57,15 @@
   tags:
     - os_monasca
 
-- include: install_graphana.yml
+- include: install_go.yml
   tags:
     - os_monasca
 
-- include: configure_graphana.yml
+- include: install_grafana.yml
+  tags:
+    - os_monasca
+
+- include: configure_grafana.yml
   tags:
     - os_monasca
 

@@ -26,7 +26,7 @@ reporting-disabled = false
 
 [meta]
   dir = "/var/lib/influxdb/meta"
-  hostname = "{{ ansible_default_ipv4.address }}"
+  hostname = "{{ influxdb_listen_address }}"
   bind-address = ":8089"
   retention-autocreate = true
   election-timeout = "1s"

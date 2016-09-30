@@ -1,0 +1,15 @@
+[Unit]
+Description=Kafka
+Before=
+Requires=Zookeeper
+After=network.target
+
+[Service]
+User=kafka
+Environment=KAFKA_HEAP_OPTS="{{ kafka_heap_opts }}"
+CHDIR= {{ kafka_directory }}
+ExecStart={{ kafka_directory }}/bin/kafka-server-start.sh {{ kafka_directory }}/config/real-server.properties
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

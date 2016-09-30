@@ -16,41 +16,73 @@
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 #
+
+- name: Add a kafka user with temp sudo permissions     # sudo removed in post-install.yml
+  user:
+    name: kafka
+    comment: "Apache Kafka Service"
+    groups: sudo
+    append: yes
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa.pub
+  register: create_kafka_user
+  until: create_kafka_user | success
+  retries: 5
+  delay: 2
+
 - name: Copy Kafka templates
   template:
-    src: "{{ item.name }}"
+    src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
     mode: "{{ item.mode | default('0644') }}"
-  with_items:
-    - src: "kafka/kafka-server-start.sh.j2"
-      dest: "/opt/kafka/bin/kafka-server-start.sh"
-      owner: "root"
-      group: "root"
-      mode: "0755"
-    - src: "kafka/kafka.j2"
-      dest: "/etc/init/kafka"
-      owner: "root"
-      group: "root"
-    - src: "kafka/log4j.properties.j2"
-      dest: "/opt/kafka/config/log4j.properties"
-      owner: "kafka"
-      group: "kafka"
-    - src: "kafka/server.properties.j2"
-      dest: "/opt/kafka/config/server.properties"
-      owner: "kafka"
-      group: "kafka"
-  register: copy_templates
-  until: copy_templates | success
+  register: kafka_config
+  until: kafka_config | success
   retries: 5
   delay: 3
+  with_items:
+    - src: kafka/kafka-server-start.sh.j2
+      dest: /opt/kafka/bin/kafka-server-start.sh
+      owner: root
+      group: root
+      mode: '0755'
+    - src: "kafka/kafka.{{ init_service }}.conf.j2"
+      dest: "{{ init_base_path }}/kafka.{{ init_conf_suffix }}"
+      owner: root
+      group: root
+    - src: kafka/log4j.properties.j2
+      dest: /opt/kafka/config/log4j.properties
+      owner: kafka
+      group: kafka
+    - src: kafka/server.properties.j2
+      dest: /opt/kafka/config/server.properties
+      owner: kafka
+      group: kafka
+
+- name: Create kafka log directory
+  file:
+    path: "/var/log/kafka"
+    owner: kafka
+    group: kafka
+    state: directory
+
+#- name: Reload systemd
+#  systemd:
+#    daemon_reload: yes
+#  when: init_service == 'systemd'
+
+- name: Reload systemd
+  command: systemctl daemon-reload
+  when: init_service == 'systemd'
 
 - name: Start Kafka
   service:
-    name: "kafka"
-    state: "restarted"
-  when: kafka.config.changed
+    name: kafka
+    state: restarted
+    enabled: yes
+  when: kafka_config | changed
   register: restart_kafka
   until: restart_kafka | success
   retries: 5

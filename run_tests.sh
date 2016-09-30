@@ -19,8 +19,10 @@ FUNCTIONAL_TEST=${FUNCTIONAL_TEST:-true}
 
 # Install pip
 if [ ! "$(which pip)" ]; then
-  curl --silent --show-error --retry 5 \
-    https://bootstrap.pypa.io/get-pip.py | sudo python2.7
+  sudo apt-get -q --option "Dpkg::Options::=--force-confold" \
+      --assume-yes install python-pip python-minimal
+
+  sudo pip install --upgrade pip
 fi
 
 # Install bindep and tox
