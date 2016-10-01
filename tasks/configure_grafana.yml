@@ -29,8 +29,8 @@
   retries: 5
   delay: 3
   with_items:
-    - src: grafana/grafana-server.upstart.conf.j2
-      dest: /etc/init/grafana-server.conf
+    - src: "grafana/grafana-server.{{ init_service }}.conf.j2"
+      dest: "{{ init_base_path }}/grafana-server.{{ init_conf_suffix }}"
       owner: root
       group: root
       mode: '0775'
@@ -38,6 +38,11 @@
       dest: /etc/grafana/grafana.ini
       owner: root
       group: root
+
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
+  when: init_service == 'systemd'
 
 - name: Start the Grafana Service
   service:

@@ -19,6 +19,7 @@
 # Originally obtained from https://github.com/elastic/ansible-elasticsearch
 #
 
+init_base_path: /etc/init
 init_service: upstart
 
 monasca_distro_packages:

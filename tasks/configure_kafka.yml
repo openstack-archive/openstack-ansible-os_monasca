@@ -38,14 +38,18 @@
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
     mode: "{{ item.mode | default('0644') }}"
+  register: kafka_config
+  until: kafka_config | success
+  retries: 5
+  delay: 3
   with_items:
     - src: kafka/kafka-server-start.sh.j2
       dest: /opt/kafka/bin/kafka-server-start.sh
       owner: root
       group: root
       mode: '0755'
-    - src: kafka/kafka.upstart.conf.j2
-      dest: /etc/init/kafka.conf
+    - src: "kafka/kafka.{{ init_service }}.conf.j2"
+      dest: "{{ init_base_path }}/kafka.{{ init_conf_suffix }}"
       owner: root
       group: root
     - src: kafka/log4j.properties.j2
@@ -56,10 +60,11 @@
       dest: /opt/kafka/config/server.properties
       owner: kafka
       group: kafka
-  register: kafka_config
-  until: kafka_config | success
-  retries: 5
-  delay: 3
+
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
+  when: init_service == 'systemd'
 
 - name: Start Kafka
   service:
