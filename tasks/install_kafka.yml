@@ -43,3 +43,10 @@
     src: "{{ dist_dir }}/{{ kafka_version }}"
     path: "{{ kafka_directory }}"
     state: link
+
+- name: Create kafka log directory
+  file:
+    path: "/var/log/kafka"
+    owner: kafka
+    group: kafka
+    state: directory

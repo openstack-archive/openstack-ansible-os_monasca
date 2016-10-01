@@ -1,6 +1,7 @@
 CHANGES
 =======
 
+* Add xenial support
 * Rename graphana to upstream correct grafana and make sure we can deploy it
 * Huge role refactoring, add ability to install zookeeper, remove unused variables, add missing ones, fix missing users etc
 * Updated from global requirements
