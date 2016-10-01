@@ -24,6 +24,10 @@
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
     mode: 0644
+  register: zookeeper_config
+  until: zookeeper_config | success
+  retries: 5
+  delay: 3
   with_items:
     - src: zookeeper/zoo.cfg.j2
       dest: "{{ zookeeper_directory }}/conf/zoo.cfg"
@@ -41,10 +45,15 @@
       dest: "{{ zookeeper_directory }}/conf/log4j.properties"
       owner: root
       group: root
-  register: zookeeper_config
-  until: zookeeper_config | success
-  retries: 5
-  delay: 3
+    - src: zookeeper/zookeeper.{{ init_service }}.conf.j2
+      dest: "{{ init_base_path }}/zookeeper.{{ init_conf_suffix }}"
+      owner: root
+      group: root
+
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
+  when: init_service == 'systemd'
 
 - name: Restart zookeeper
   service:

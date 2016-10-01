@@ -44,8 +44,3 @@
     src: "{{ dist_dir }}/zookeeper-{{ zookeeper_version }}"
     path: "{{ zookeeper_directory }}"
     state: link
-
-- name: Setup Apache ZooKeeper service
-  template:
-    dest: /etc/init/zookeeper.conf
-    src: zookeeper/zookeeper.upstart.conf.j2

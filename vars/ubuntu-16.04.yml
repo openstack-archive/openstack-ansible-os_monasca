@@ -19,7 +19,9 @@
 # Originally obtained from https://github.com/elastic/ansible-elasticsearch
 #
 
+init_base_path: /etc/systemd/system
 init_service: systemd
+init_conf_suffix: service
 
 monasca_distro_packages:
   - build-essential

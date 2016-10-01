@@ -23,7 +23,11 @@
     dest: "{{ item.dest }}"
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
-    mode: "0644"
+    mode: 0644
+  register: influxdb_config
+  until: influxdb_config | success
+  retries: 5
+  delay: 3
   with_items:
     - src: influxdb/influxdb.conf.j2
       dest: /etc/influxdb/influxdb.conf
@@ -33,10 +37,6 @@
       dest: /etc/default/influxdb
       owner: root
       group: root
-  register: influxdb_config
-  until: influxdb_config | success
-  retries: 5
-  delay: 3
 
 - name: Restart influxdb
   service:
