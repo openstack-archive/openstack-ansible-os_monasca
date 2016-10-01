@@ -13,39 +13,43 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# (c) 2016 Adam Hamsik <adam.hamsik@chillisys.com>
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 #
-- name: Copy Graphana Templates
+- name: Copy Grafana Templates
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
     mode: "0644"
-  register: configure_graphana
-  until: configure_graphana | success
+  register: configure_grafana
+  until: configure_grafana | success
   retries: 5
   delay: 3
   with_items:
-    - src: "grafana/grafana-server.j2"
-      dest: "/etc/init.d/grafana-server"
-      owner: "root"
-      group: "root"
-      mode: "0775"
-    - src: "grafana/grafana.ini.j2"
-      dest: "/etc/grafana/grafana.ini"
-      owner: "root"
-      group: "root"
+    - src: "grafana/grafana-server.{{ init_service }}.conf.j2"
+      dest: "{{ init_base_path }}/grafana-server.{{ init_conf_suffix }}"
+      owner: root
+      group: root
+      mode: '0775'
+    - src: grafana/grafana.ini.j2
+      dest: /etc/grafana/grafana.ini
+      owner: root
+      group: root
 
-- name: Setup Graphana to run at boot
-  command: update-rc.d graphana-server defaults 95 10
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
+  when: init_service == 'systemd'
 
-- name: Start the Graphana Service
+- name: Start the Grafana Service
   service:
-    name: graphana-server
+    name: grafana-server
     state: restarted
-  register: start_graphana
-  until: start_graphana | success
+    enabled: yes
+  register: start_grafana
+  until: start_grafana | success
   retries: 5
   delay: 3

@@ -13,13 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# (c) 2016 Adam Hamsik <adam.hamsik@chillisys.com>
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 #
 - name: Download Apache Kafka
   get_url:
-    url: http://apache.is.co.za/kafka/0.10.0.0/kafka_2.11-0.10.0.0.tgz
-    dest: /root/{{ kafka_version }}
+    url: "http://apache.is.co.za/kafka/{{ base_kafka_version }}/{{ kafka_version }}.tgz"
+    dest: "/root/{{ kafka_version }}.tgz"
     mode: 0600
   register: download_kafka_binary
   until: download_kafka_binary | success
@@ -28,11 +29,24 @@
 
 - name: Extract Apache Kafka archive
   unarchive:
-    src: "/root/{{ kafka_version }}"
-    dest: "/opt"
-    creates: "/opt/kafka"
-    copy: "no"
+    src: "/root/{{ kafka_version }}.tgz"
+    dest: "{{ dist_dir }}"
+    creates: "{{ dist_dir }}/{{ kafka_version }}"
+    copy: no
   register: extract_binary
   until: extract_binary | success
   retries: 5
   delay: 3
+
+- name: Link installed kafka to /opt/kafka
+  file:
+    src: "{{ dist_dir }}/{{ kafka_version }}"
+    path: "{{ kafka_directory }}"
+    state: link
+
+- name: Create kafka log directory
+  file:
+    path: "/var/log/kafka"
+    owner: kafka
+    group: kafka
+    state: directory
