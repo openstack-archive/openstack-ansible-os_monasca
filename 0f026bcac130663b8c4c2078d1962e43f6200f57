@@ -1,0 +1,8 @@
+Code-Review+2: Travis Truman (automagically) <travis_truman@cable.comcast.com>
+Workflow+1: Kevin Carter (cloudnull) <kevin@cloudnull.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 04 Oct 2016 15:26:42 +0000
+Reviewed-on: https://review.openstack.org/381631
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
