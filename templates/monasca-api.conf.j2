@@ -72,12 +72,8 @@ url = "mysql+pymysql://{{ monasca_galera_user }}:{{ monasca_galera_password }}@{
 
 [keystone_authtoken]
 insecure = {{ keystone_service_internaluri_insecure | bool }}
-auth_plugin = {{ monasca_keystone_auth_plugin }}
-auth_url = {{ keystone_service_adminuri }}
+identity_uri = {{ keystone_service_adminuri }}
 auth_uri = {{ keystone_service_internaluri }}
-project_domain_id = {{ monasca_service_project_domain_id }}
-user_domain_id = {{ monasca_service_user_domain_id }}
-project_name = {{ monasca_service_project_name }}
-username = {{ monasca_service_user_name }}
-password = {{ monasca_service_password }}
-region_name = {{ keystone_service_region }}
+admin_user = {{ keystone_admin_user_name }}
+admin_password = {{ keystone_auth_admin_password }}
+admin_tenant_name = {{ keystone_admin_tenant_name }}
