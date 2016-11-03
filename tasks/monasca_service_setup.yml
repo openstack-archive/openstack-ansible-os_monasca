@@ -55,7 +55,7 @@
     - monasca-service-add
     - monasca-setup
 
-- name: Ensure the monasca-agent user exists
+- name: Ensure the monasca admin user exists
   keystone:
     command: "ensure_user"
     endpoint: "{{ keystone_service_adminurl }}"
@@ -63,12 +63,12 @@
     login_password: "{{ keystone_auth_admin_password }}"
     login_project_name: "{{ keystone_admin_tenant_name }}"
     insecure: "{{ keystone_service_adminuri_insecure }}"
-    user_name: "{{ monasca_agent_user_name }}"
+    user_name: "{{ monasca_admin_username }}"
     tenant_name: "{{ monasca_service_tenant_name }}"
-    password: "{{ monasca_agent_user_password }}"
+    password: "{{ monasca_admin_password }}"
     project_name: "{{ monasca_service_project_name }}"
-  register: add_monasca_agent_user
-  until: add_monasca_agent_user |success
+  register: add_monasca_admin_user
+  until: add_monasca_admin_user |success
   retries: 5
   delay: 2
   tags:
@@ -77,7 +77,7 @@
     - monasca-user-add
     - monasca-setup
 
-- name: Ensure the monasca regular user exists
+- name: Ensure the monasca read only user exists
   keystone:
     command: "ensure_user"
     endpoint: "{{ keystone_service_adminurl }}"
@@ -85,7 +85,7 @@
     login_password: "{{ keystone_auth_admin_password }}"
     login_project_name: "{{ keystone_admin_tenant_name }}"
     insecure: "{{ keystone_service_adminuri_insecure }}"
-    user_name: "{{ monasca_regular_user_name }}"
+    user_name: "{{ monasca_regular_username }}"
     tenant_name: "{{ monasca_service_tenant_name }}"
     password: "{{ monasca_regular_user_password }}"
     project_name: "{{ monasca_service_project_name }}"
@@ -99,20 +99,20 @@
     - monasca-user-add
     - monasca-setup
 
-- name: Ensure the monasca-agent user has the admin role
+- name: Ensure the monasca admin user has the admin role
   keystone:
     command: "ensure_user_role"
     endpoint: "{{ keystone_service_adminurl }}"
     login_user: "{{ keystone_admin_user_name }}"
     login_password: "{{ keystone_auth_admin_password }}"
     login_project_name: "{{ keystone_admin_tenant_name }}"
-    user_name: "{{ monasca_agent_user_name }}"
+    user_name: "{{ monasca_admin_username }}"
     tenant_name: "{{ monasca_service_tenant_name }}"
     role_name: "{{ item }}"
     insecure: "{{ keystone_service_adminuri_insecure }}"
     project_name: "{{ monasca_service_project_name }}"
-  register: ensure_monasca_agent_roles
-  until: ensure_monasca_agent_roles |success
+  register: ensure_monasca_admin_roles
+  until: ensure_monasca_admin_roles |success
   retries: 5
   delay: 2
   with_items: "{{ monasca_service_admin_role_names }}"

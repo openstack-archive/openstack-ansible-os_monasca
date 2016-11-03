@@ -17,6 +17,8 @@
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 monasca_developer_mode: True
 monasca_galera_address: "{{ hostvars[groups['galera_all'][0]]['ansible_host'] }}"
+external_lb_vip_address: "{{ hostvars[groups['keystone_all'][0]]['ansible_host'] }}"
+internal_lb_vip_address: "{{ hostvars[groups['keystone_all'][0]]['ansible_host'] }}"
 monasca_galera_database: monasca
 monasca_galera_user: monasca
 monasca_galera_password: "secrete"
@@ -28,24 +30,23 @@ monasca_rabbitmq_password: "secrete"
 monasca_rabbitmq_userid: monasca
 monasca_rabbitmq_vhost: /monasca
 monasca_api_requirements_git_install_branch: master
-monasca_events_api_requirements_git_install_branch: master
 monasca_log_api_requirements_git_install_branch: master
 monasca_ceilometer_requirements_git_install_branch: master
 monasca_common_requirements_git_install_branch: master
 monasca_transform_requirements_git_install_branch: master
 monasca_notification_requirements_git_install_branch: master
-monasca_analytics_requirements_git_install_branch: master
 monasca_persister_requirements_git_install_branch: master
 monasca_python_client_requirements_git_install_branch: master
 monasca_service_password: "secrete"
 monasca_regular_user_password: "secrete"
-monasca_agent_user_password: "secrete"
-monasca_service_project_domain_id: default
+monasca_admin_password: "secrete"
+monasca_project_domain_name: default
+monasca_user_domain_name: default
 monasca_service_project_name: service
 monasca_service_region: RegionOne
-monasca_service_user_domain_id: default
 monasca_service_user_name: monasca
-monasca_service_port: 8070
+monasca_api_service_port: 8070
+monasca_log_api_service_port: 5607
 monasca_venv_tag: untagged
 monasca_bin: "/openstack/venvs/monasca-{{ monasca_venv_tag }}/bin"
 storm_nimbus_enabled: true
@@ -61,3 +62,9 @@ monasca_grafana_admin_password: "secrete"
 monasca_grafana_galera_password: "secrete"
 monasca_grafana_galera_database: grafana
 monasca_grafana_galera_username: grafana
+grafana_mysql_host: "{{ monasca_galera_address }}"
+grafana_admin_password: "{{ monasca_grafana_admin_password }}"
+grafana_mysql_db: "{{ monasca_grafana_galera_database }}"
+grafana_mysql_user: "{{ monasca_grafana_galera_username }}"
+grafana_mysql_password: "{{ monasca_grafana_galera_password }}"
+grafana_keystone_url: "{{ keystone_service_internaluri }}"
