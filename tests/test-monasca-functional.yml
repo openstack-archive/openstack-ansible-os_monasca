@@ -18,24 +18,36 @@
 # Reference: https://github.com/openstack/monasca-api/blob/master/docs/monasca-api-spec.md
 
 - name: Playbook for functional testing monasca
-  hosts: monasca_api
+  hosts: monasca_all
   user: root
   gather_facts: false
+  vars:
+      monasca_api: "http://localhost:{{ monasca_api_service_port }}"
   tasks:
-    - name: Install httplib2 so we can use the uri module
+    - name: Install openstackclient
       pip:
-        name: httplib2
+        name: "python-openstackclient"
+
+    - name: Validate that auth is required
+      uri:
+        url: "{{ monasca_api }}"
+        status_code: 401
+
+    - name: Get auth token
+      shell: >
+        . /root/openrc && openstack token issue --format yaml | awk '/^id\:/ {print $2}'
+      register: get_keystone_token
+
+    - name: set token
+      set_fact:
+        keystone_token: "{{ get_keystone_token.stdout }}"
+
     - name: Check the monasca-api
       uri:
-        url: "http://localhost:8070"
-        status_code: 401
-      register: result
-      until:
-        - result is defined
-        - result.status is defined
-        - result.status == 401
-      retries: 5
-      delay: 10
+        url: "{{ monasca_api }}"
+        HEADER_X-Auth-Token: "{{ keystone_token }}"
+        status_code: 200,300
+
   vars_files:
-   - common/test-vars.yml
-   - test-vars.yml
+    - common/test-vars.yml
+    - test-vars.yml

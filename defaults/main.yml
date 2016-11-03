@@ -42,11 +42,14 @@ monasca_auth_url: "{{ keystone_service_internalurl }}"
 monasca_keystone_auth_plugin: password
 monasca_service_tenant_name: monasca
 monasca_service_project_name: monasca
+monasca_project_domain_name: default
+monasca_user_domain_name: default
+
 monasca_service_description: "Monasca Monitoring Service"
 monasca_service_name: monasca
 monasca_service_type: monitoring
-monasca_agent_user_name: monasca-agent
-monasca_regular_user_name: monasca-user
+monasca_admin_username: monasca-admin
+monasca_regular_username: monasca-user
 monasca_service_admin_role_names: admin
 monasca_backend_database: "influxdb"
 
@@ -58,12 +61,6 @@ monasca_api_git_install_branch: master
 monasca_api_requirements_git_repo: https://git.openstack.org/openstack/requirements
 monasca_api_requirements_git_install_branch: master
 monasca_api_metrics_driver: "monasca_api.common.repositories.influxdb.metrics_repository:MetricsRepository"
-
-monasca_events_api_service_port: 8072
-monasca_events_api_git_repo: "https://git.openstack.org/openstack/monasca-events-api"
-monasca_events_api_git_install_branch: master
-monasca_events_api_requirements_git_repo: https://git.openstack.org/openstack/requirements
-monasca_events_api_requirements_git_install_branch: master
 
 monasca_log_api_service_port: 5607
 monasca_log_api_git_repo: "https://git.openstack.org/openstack/monasca-log-api"
@@ -108,7 +105,6 @@ monasca_python_client_requirements_git_install_branch: master
 
 monasca_developer_constraints:
   - "git+{{ monasca_api_git_repo }}@{{ monasca_api_git_install_branch }}#egg=monasca-api"
-  - "git+{{ monasca_events_api_git_repo }}@{{ monasca_events_api_git_install_branch }}#egg=monasca-events-api"
   - "git+{{ monasca_log_api_git_repo }}@{{ monasca_log_api_git_install_branch }}#egg=monasca-log-api"
   - "git+{{ monasca_ceilometer_git_repo }}@{{ monasca_ceilometer_git_install_branch }}#egg=monasca-ceilometer"
   - "git+{{ monasca_common_git_repo }}@{{ monasca_common_git_install_branch }}#egg=monasca-common"

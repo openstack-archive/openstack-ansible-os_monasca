@@ -20,9 +20,9 @@ dimension_names = monasca_api.v2.reference.metrics:DimensionNames
 notification_method_types = monasca_api.v2.reference.notificationstype:NotificationsType
 
 [security]
-default_authorized_roles = user, domainuser, domainadmin, {{ monasca_regular_user_name }}
-agent_authorized_roles = {{ monasca_agent_user_name }}
-read_only_authorized_roles = monasca-read-only-user
+default_authorized_roles = user, domainuser, domainadmin, {{ monasca_regular_username }}
+agent_authorized_roles = {{ monasca_admin_username }}
+read_only_authorized_roles = {{ monasca_regular_username }}
 delegate_authorized_roles = admin
 
 [messaging]
@@ -72,12 +72,11 @@ url = "mysql+pymysql://{{ monasca_galera_user }}:{{ monasca_galera_password }}@{
 
 [keystone_authtoken]
 insecure = {{ keystone_service_internaluri_insecure | bool }}
-auth_plugin = {{ monasca_keystone_auth_plugin }}
-auth_url = {{ keystone_service_adminuri }}
+identity_uri = {{ keystone_service_adminuri }}
+auth_url = {{ keystone_service_internaluri }}
 auth_uri = {{ keystone_service_internaluri }}
-project_domain_id = {{ monasca_service_project_domain_id }}
-user_domain_id = {{ monasca_service_user_domain_id }}
-project_name = {{ monasca_service_project_name }}
-username = {{ monasca_service_user_name }}
-password = {{ monasca_service_password }}
-region_name = {{ keystone_service_region }}
+auth_type = {{ monasca_keystone_auth_plugin }}
+project_domain_name = {{ monasca_project_domain_name }}
+user_domain_name = {{ monasca_user_domain_name }}
+username = {{ monasca_admin_username }}
+password = {{ monasca_admin_password }}

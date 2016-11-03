@@ -9,18 +9,6 @@ region = {{ keystone_service_region }}
 topics = logs
 kafka_url = {{ kafka_hosts }}
 
-[keystone_authtoken]
-insecure = {{ keystone_service_internaluri_insecure | bool }}
-auth_plugin = {{ monasca_keystone_auth_plugin }}
-auth_url = {{ keystone_service_adminuri }}
-auth_uri = {{ keystone_service_internaluri }}
-project_domain_id = {{ monasca_service_project_domain_id }}
-user_domain_id = {{ monasca_service_user_domain_id }}
-project_name = {{ monasca_service_project_name }}
-username = {{ monasca_service_user_name }}
-password = {{ monasca_service_password }}
-region_name = {{ keystone_service_region }}
-
 [kafka_healthcheck]
 kafka_url = {{ kafka_hosts }}
 kafka_topics = log
@@ -28,11 +16,22 @@ kafka_topics = log
 [roles_middleware]
 path = /v2.0/log
 path = /v3.0/logs
-default_roles = user, domainuser, domainadmin, {{ monasca_regular_user_name }}
-agent_roles = {{ monasca_agent_user_name }}, admin
+default_roles = user, domainuser, domainadmin, {{ monasca_regular_username }}
+agent_roles = {{ monasca_admin_username }}, admin
 
 [dispatcher]
 logs = monasca_log_api.reference.v2.logs:Logs
 logs_v3 = monasca_log_api.reference.v3.logs:Logs
 versions = monasca_log_api.reference.versions:Versions
 healthchecks = monasca_log_api.reference.healthchecks:HealthChecks
+
+[keystone_authtoken]
+insecure = {{ keystone_service_internaluri_insecure | bool }}
+identity_uri = {{ keystone_service_adminuri }}
+auth_url = {{ keystone_service_internaluri }}
+auth_uri = {{ keystone_service_internaluri }}
+auth_type = {{ monasca_keystone_auth_plugin }}
+pproject_domain_name = {{ monasca_project_domain_name }}
+user_domain_name = {{ monasca_user_domain_name }}
+username = {{ monasca_admin_username }}
+password = {{ monasca_admin_password }}
