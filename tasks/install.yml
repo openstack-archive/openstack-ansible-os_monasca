@@ -16,6 +16,10 @@
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 
+- include: monasca_install_apt.yml
+  static: no
+  when: ansible_pkg_mgr == 'apt'
+
 - name: Create developer mode constraint file
   copy:
     dest: "/opt/developer-pip-constraints.txt"
@@ -26,32 +30,17 @@
   when:
     - monasca_developer_mode | bool
 
-- name: Clone requirements git repository
-  git:
-    repo: "{{ item.repo }}"
-    dest: "/opt/requirements"
-    clone: yes
-    update: yes
-    version: "{{ item.version }}"
-  when:
-    - monasca_developer_mode | bool
-  with_items:
-    - repo: "{{ monasca_api_requirements_git_repo }}"
-      version: "{{ monasca_api_requirements_git_install_branch }}"
-    - repo: "{{ monasca_log_api_requirements_git_repo }}"
-      version: "{{ monasca_log_api_requirements_git_install_branch }}"
-    - repo: "{{ monasca_ceilometer_requirements_git_repo }}"
-      version: "{{ monasca_ceilometer_requirements_git_install_branch }}"
-    - repo: "{{ monasca_common_requirements_git_repo }}"
-      version: "{{ monasca_common_requirements_git_install_branch }}"
-    - repo: "{{ monasca_transform_requirements_git_repo }}"
-      version: "{{ monasca_transform_requirements_git_install_branch }}"
-    - repo: "{{ monasca_notification_requirements_git_repo }}"
-      version: "{{ monasca_notification_requirements_git_install_branch }}"
-    - repo: "{{ monasca_persister_requirements_git_repo }}"
-      version: "{{ monasca_persister_requirements_git_install_branch }}"
-    - repo: "{{ monasca_python_client_requirements_git_repo }}"
-      version: "{{ monasca_python_client_requirements_git_install_branch }}"
+- name: Install requires pip packages
+  pip:
+    name: "{{ monasca_requires_pip_packages | join(' ') }}"
+    state: "{{ monasca_pip_package_state }}"
+    extra_args: >-
+      {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
+      {{ pip_install_options | default('') }}
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
 
 - name: Add constraints to pip_install_options fact for developer mode
   set_fact:
@@ -64,16 +53,6 @@
     pip_install_options_fact: "{{ pip_install_options|default('') }}"
   when:
     - not monasca_developer_mode | bool
-
-- name: Install requires pip packages
-  pip:
-    name: "{{ monasca_requires_pip_packages | join(' ') }}"
-    state: latest
-    extra_args: "{{ pip_install_options_fact }}"
-  register: install_packages
-  until: install_packages|success
-  retries: 5
-  delay: 2
 
 - name: Get local venv checksum
   stat:
@@ -139,18 +118,20 @@
 - name: Install pip packages
   pip:
     name: "{{ monasca_pip_packages | join(' ') }}"
-    state: latest
+    state: "{{ monasca_pip_package_state }}"
     virtualenv: "{{ monasca_bin | dirname }}"
     virtualenv_site_packages: "no"
-    extra_args: "{{ pip_install_options_fact }}"
+    extra_args: >-
+      {{ monasca_developer_mode | ternary('--constraint /opt/developer-pip-constraints.txt', '') }}
+      {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
+      {{ pip_install_options | default('') }}
   register: install_packages
   until: install_packages|success
   retries: 5
   delay: 2
   when:
     - monasca_get_venv | failed or monasca_developer_mode | bool
-  notify:
-    - Restart monasca services
+  notify: Restart monasca services
 
 - name: Update virtualenv path
   command: >
