@@ -15,25 +15,55 @@
 #
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
-- name: Update Apt sources
-  apt:
-    update_cache: yes
-  register: apt_update
-  until: apt_update | success
+
+- name: Create the monasca system group
+  group:
+    name: "{{ monasca_system_group_name }}"
+    state: "present"
+    system: "yes"
+
+- name: Create the monasca system user
+  user:
+    name: "{{ monasca_system_user_name }}"
+    group: "{{ monasca_system_group_name }}"
+    groups: sudo
+    shell: "{{ monasca_system_user_shell }}"
+    system: "yes"
+    createhome: "yes"
+    home: "{{ monasca_system_user_home }}"
+  register: create_monasca_user
+  until: create_monasca_user | success
   retries: 5
   delay: 2
 
-- name: Install Apt dependencies
-  apt:
-    pkg: "{{ item }}"
-    state: "latest"
-  register: install_deps
-  until: install_deps | success
-  retries: 5
-  delay: 2
-  with_items: "{{ monasca_distro_packages }}"
+- name: Create monasca's directories
+  file:
+    path: "{{ item.path }}"
+    state: "directory"
+    owner: "{{ item.owner |default(monasca_system_user_name) }}"
+    group: "{{ item.group |default(monasca_system_group_name) }}"
+    mode: "{{ item.mode |default('0750') }}"
+  with_items:
+    - path: "{{ monasca_conf_directory }}"
+    - path: "{{ monasca_system_user_home }}"
 
-- include: pre-monasca-install.yml
-  when:
-    - inventory_hostname in groups['monasca_api']
-    - inventory_hostname in groups['monasca_log_api']
+- name: Test for monasca log directory or link
+  shell: |
+    if [ -h "{{ monasca_log_directory }}" ]; then
+      chown -h {{ monasca_system_user_name }}:{{ monasca_system_group_name }} {{ monasca_log_directory }}
+      chown -R {{ monasca_system_user_name }}:{{ monasca_system_group_name }} "$(readlink {{ monasca_log_directory }})"
+    else
+      exit 1
+    fi
+  register: log_dir
+  failed_when: false
+  changed_when: log_dir.rc != 0
+
+- name: Create monasca log directory
+  file:
+    path: "{{ monasca_log_directory }}"
+    state: "directory"
+    owner: "{{ monasca_system_user_name }}"
+    group: "{{ monasca_system_group_name }}"
+    mode: "0750"
+  when: log_dir.rc != 0

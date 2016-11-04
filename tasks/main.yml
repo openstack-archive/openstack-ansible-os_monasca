@@ -41,29 +41,25 @@
 
 - include: pre-install.yml
   tags:
-    - os_monasca
+    - monasca-install
 
 - include: install.yml
   tags:
-    - os_monasca
-
-- include: configure.yml
-  tags:
-    - os_monasca
+    - monasca-install
 
 - include: post-install.yml
   tags:
-    - os_monasca
+    - monasca-config
+
+- include: monasca_init_common.yml
+  tags:
+    - monasca-install
 
 - include: monasca_service_setup.yml
   static: no
   when: inventory_hostname == groups['monasca_api'][0]
   tags:
     - monasca-install
-
-- include: monasca_init_common.yml
-  tags:
-    - os_monasca
 
 - name: Flush handlers
   meta: flush_handlers
