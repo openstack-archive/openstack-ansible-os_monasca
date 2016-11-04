@@ -16,6 +16,10 @@
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 
+- include: monasca_install_apt.yml
+  static: no
+  when: ansible_pkg_mgr == 'apt'
+
 - name: Create developer mode constraint file
   copy:
     dest: "/opt/developer-pip-constraints.txt"
@@ -117,9 +121,9 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  when: monasca_developer_mode | bool
-  notify:
-    - Restart monasca services
+  when:
+    - monasca_get_venv | failed or monasca_developer_mode | bool
+  notify: Restart monasca services
 
 - name: Update virtualenv path
   command: >

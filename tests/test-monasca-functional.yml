@@ -22,7 +22,7 @@
   user: root
   gather_facts: false
   vars:
-      monasca_api: "http://localhost:{{ monasca_api_service_port }}"
+      monasca_api: "http://localhost:{{ monasca_bind_port }}"
   tasks:
     - name: Install openstackclient
       pip:
