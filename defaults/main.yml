@@ -17,52 +17,51 @@
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 monasca_package_state: "latest"
 monasca_pip_package_state: "latest"
-debug: false
 
-## System info
+debug: False
+
 monasca_system_user_name: monasca
 monasca_system_group_name: monasca
+monasca_system_comment: Monasca system user
 monasca_system_user_shell: /bin/false
-monasca_system_comment: monasca system user
 monasca_system_user_home: "/var/lib/{{ monasca_system_user_name }}"
 monasca_bin: "/openstack/venvs/monasca-{{ monasca_venv_tag }}/bin"
 monasca_log_directory: "/var/log/monasca"
 monasca_conf_directory: "/etc/monasca"
 
+monasca_service_name: monasca
+monasca_service_user_name: monasca
+monasca_readonly_user_name: monasca-read-only
+monasca_service_type: monitoring
+monasca_service_description: "OpenStack Monitoring Service (Monasca)"
+monasca_service_project_name: service
+monasca_service_role_names:
+  - admin
 monasca_service_region: RegionOne
 monasca_service_host: "0.0.0.0"
-monasca_service_port: 8070
+monasca_bind_port: 8070
 monasca_service_publicuri_proto: http
-monasca_service_publicurl: "{{ monasca_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ monasca_service_port }}/v2.0"
+monasca_service_publicurl: "{{ monasca_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ monasca_bind_port }}/v2.0"
 monasca_service_internaluri_proto: http
-monasca_service_internalurl: "{{ monasca_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ monasca_service_port }}/v2.0"
+monasca_service_internalurl: "{{ monasca_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ monasca_bind_port }}/v2.0"
 monasca_service_adminuri_proto: http
-monasca_service_adminurl: "{{ monasca_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ monasca_service_port }}/v2.0"
-monasca_auth_url: "{{ keystone_service_internalurl }}"
-monasca_keystone_auth_plugin: password
-monasca_service_tenant_name: monasca
-monasca_service_project_name: monasca
-monasca_project_domain_name: default
-monasca_user_domain_name: default
+monasca_service_adminurl: "{{ monasca_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ monasca_bind_port }}/v2.0"
 
-monasca_service_description: "Monasca Monitoring Service"
-monasca_service_name: monasca
-monasca_service_type: monitoring
-monasca_admin_username: monasca-admin
-monasca_regular_username: monasca-user
-monasca_service_admin_role_names: admin
-monasca_backend_database: "influxdb"
+# Name of the virtual env to deploy into
+monasca_venv_tag: untagged
+monasca_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/monasca.tgz
 
-monasca_use_mod_wsgi: false
+monasca_bin: "/openstack/venvs/monasca-{{ monasca_venv_tag }}/bin"
 
-monasca_api_service_port: 8070
+# Toggle developer mode
+monasca_developer_mode: false
+
 monasca_api_git_repo: "https://git.openstack.org/openstack/monasca-api"
 monasca_api_git_install_branch: master
 monasca_api_requirements_git_repo: https://git.openstack.org/openstack/requirements
 monasca_api_requirements_git_install_branch: master
-monasca_api_metrics_driver: "monasca_api.common.repositories.influxdb.metrics_repository:MetricsRepository"
 
-monasca_log_api_service_port: 5607
+monasca_log_api_bind_port: 5607
 monasca_log_api_git_repo: "https://git.openstack.org/openstack/monasca-log-api"
 monasca_log_api_git_install_branch: master
 monasca_log_api_requirements_git_repo: https://git.openstack.org/openstack/requirements
@@ -108,19 +107,25 @@ monasca_developer_constraints:
   - "git+{{ monasca_log_api_git_repo }}@{{ monasca_log_api_git_install_branch }}#egg=monasca-log-api"
   - "git+{{ monasca_ceilometer_git_repo }}@{{ monasca_ceilometer_git_install_branch }}#egg=monasca-ceilometer"
   - "git+{{ monasca_common_git_repo }}@{{ monasca_common_git_install_branch }}#egg=monasca-common"
+  - "git+{{ monasca_thresh_git_repo }}@{{ monasca_thresh_git_install_branch }}#egg=monasca-thresh"
   - "git+{{ monasca_transform_git_repo }}@{{ monasca_transform_git_install_branch }}#egg=monasca-transform"
   - "git+{{ monasca_notification_git_repo }}@{{ monasca_notification_git_install_branch }}#egg=monasca-notification"
   - "git+{{ monasca_persister_git_repo }}@{{ monasca_persister_git_install_branch }}#egg=monasca-persister"
   - "git+{{ monasca_python_client_git_repo }}@{{ monasca_python_client_git_install_branch }}#egg=python-monascaclient"
 
-# Name of the virtual env to deploy into
-monasca_venv_tag: untagged
-monasca_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/monasca.tgz
+# Keystone AuthToken/Middleware
+monasca_keystone_auth_plugin: password
+monasca_service_project_domain_name: Default
+monasca_service_user_domain_name: default
 
+# Grafana Galera
 monasca_grafana_galera_database: grafana
 monasca_grafana_galera_username: grafana
 
-pip_install_options: ""
+monasca_backend_database: "influxdb"
+monasca_use_mod_wsgi: false
+
+monasca_api_metrics_driver: "monasca_api.common.repositories.influxdb.metrics_repository:MetricsRepository"
 
 monasca_services:
   monasca-api:
@@ -139,15 +144,15 @@ monasca_requires_pip_packages:
   - python-glanceclient
   - python-keystoneclient
   - python-monascaclient
-  - python-memcached
+  - pyyaml
   - virtualenv
   - virtualenv-tools
 
-# Common pip packages
 monasca_pip_packages:
   - keystoneauth1
   - simport
   - gunicorn
+  - python-memcached
   - monasca-common
   - monasca-api
   - monasca-log-api
@@ -163,3 +168,9 @@ monasca_log_api_config_overrides: {}
 monasca_log_api_logging_overrides: {}
 monasca_notification_yml_overrides: {}
 monasca_persister_yml_overrides: {}
+
+# This variable is used by the repo_build process to determine
+# which host group to check for members of before building the
+# pip packages required by this role. The value is picked up
+# by the py_pkgs lookup.
+monasca_role_project_group: monasca_all
