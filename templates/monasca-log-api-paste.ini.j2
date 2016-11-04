@@ -16,6 +16,6 @@ paste.filter_factory = monasca_log_api.middleware.role_middleware:RoleMiddleware
 [server:main]
 use = egg:gunicorn#main
 host = 0.0.0.0
-port = {{ monasca_log_api_service_port }}
+port = {{ monasca_log_api_bind_port }}
 workers = 1
 proc_name = monasca_log_api
