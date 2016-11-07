@@ -30,6 +30,7 @@
 - name: Check init system
   command: cat /proc/1/comm
   register: _pid1_name
+  changed_when: false
   tags:
     - always
 
