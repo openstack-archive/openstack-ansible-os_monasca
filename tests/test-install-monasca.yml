@@ -82,24 +82,6 @@
       delegate_to: "{{ hostvars[groups['galera_all'][0]]['ansible_host'] }}"
       when: inventory_hostname == groups['monasca_all'][0]
   roles:
-    - role: ansible-zookeeper
-      tags: zookeeper
-    - role: ansible-kafka
-      tags: kafka
-    - role: ansible-storm
-      tags: storm
-    - role: ansible-influxdb
-      tags: influxdb
-    - role: ansible-grafana
-      grafana_mysql_host: "{{ monasca_galera_address }}"
-      grafana_admin_password: "{{ monasca_grafana_admin_password }}"
-      grafana_mysql_db: "{{ monasca_grafana_galera_database }}"
-      grafana_mysql_user: "{{ monasca_grafana_galera_username }}"
-      grafana_mysql_password: "{{ monasca_grafana_galera_password }}"
-      grafana_keystone_url: "{{ keystone_service_internaluri }}"
-      tags: grafana-server
-    - role: ansible-monasca-schema
-      tags: monasca-schema
     - role: "os_monasca"
   vars_files:
     - common/test-vars.yml
