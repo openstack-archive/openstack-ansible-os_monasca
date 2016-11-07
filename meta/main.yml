@@ -43,8 +43,12 @@ dependencies:
     when:
       - ansible_pkg_mgr == 'apt'
   - ansible-zookeeper
+    tags: skip_ansible_lint
   - ansible-kafka
   - ansible-storm
+    tags: skip_ansible_lint
   - ansible-influxdb
   - ansible-grafana
+    tags: skip_ansible_lint
   - ansible-monasca-schema
+    tags: skip_ansible_lint
