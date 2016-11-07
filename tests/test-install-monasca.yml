@@ -83,11 +83,15 @@
       when: inventory_hostname == groups['monasca_all'][0]
   roles:
     - role: ansible-zookeeper
-      tags: zookeeper
+      tags:
+        - skip_ansible_lint
+        - zookeeper
     - role: ansible-kafka
       tags: kafka
     - role: ansible-storm
-      tags: storm
+      tags:
+        - skip_ansible_lint
+        - storm
     - role: ansible-influxdb
       tags: influxdb
     - role: ansible-grafana
@@ -97,9 +101,13 @@
       grafana_mysql_user: "{{ monasca_grafana_galera_username }}"
       grafana_mysql_password: "{{ monasca_grafana_galera_password }}"
       grafana_keystone_url: "{{ keystone_service_internaluri }}"
-      tags: grafana-server
+      tags:
+        - skip_ansible_lint 
+        - grafana-server
     - role: ansible-monasca-schema
-      tags: monasca-schema
+      tags:
+        - skip_ansible_lint
+        - monasca-schema
     - role: "os_monasca"
   vars_files:
     - common/test-vars.yml
