@@ -26,7 +26,7 @@
 - name: Install Apt dependencies
   apt:
     pkg: "{{ item }}"
-    state: "latest"
+    state: "{{ monasca_package_state }}"
   register: install_deps
   until: install_deps | success
   retries: 5

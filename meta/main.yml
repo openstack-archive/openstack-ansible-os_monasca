@@ -42,9 +42,15 @@ dependencies:
   - role: apt_package_pinning
     when:
       - ansible_pkg_mgr == 'apt'
-  - ansible-zookeeper
-  - ansible-kafka
-  - ansible-storm
-  - ansible-influxdb
-  - ansible-grafana
-  - ansible-monasca-schema
+  - role: ansible-zookeeper
+    tags: skip_ansible_lint
+  - role: ansible-kafka
+    tags: skip_ansible_lint
+  - role: ansible-storm
+    tags: skip_ansible_lint
+  - role: ansible-influxdb
+    tags: skip_ansible_lint
+  - role: ansible-grafana
+    tags: skip_ansible_lint
+  - role: ansible-monasca-schema
+    tags: skip_ansible_lint
