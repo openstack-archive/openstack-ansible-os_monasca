@@ -1,0 +1,8 @@
+Code-Review+2: Jean-Philippe Evrard <jean-philippe.evrard@rackspace.co.uk>
+Workflow+1: Donovan Francesco (drifterza) <donovan.francesco@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 08 Nov 2016 14:07:21 +0000
+Reviewed-on: https://review.openstack.org/394370
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
