@@ -118,6 +118,9 @@ monasca_keystone_auth_plugin: password
 monasca_service_project_domain_name: Default
 monasca_service_user_domain_name: default
 
+# Galera defaults
+monasca_galera_address: 127.0.0.1
+
 # Grafana Galera
 monasca_grafana_galera_database: grafana
 monasca_grafana_galera_username: grafana
