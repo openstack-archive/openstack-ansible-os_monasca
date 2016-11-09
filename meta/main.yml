@@ -51,6 +51,12 @@ dependencies:
   - role: ansible-influxdb
     tags: skip_ansible_lint
   - role: ansible-grafana
+    grafana_mysql_host: "{{ monasca_galera_address }}"
+    grafana_admin_password: "{{ monasca_grafana_admin_password }}"
+    grafana_mysql_db: "{{ monasca_grafana_galera_database }}"
+    grafana_mysql_user: "{{ monasca_grafana_galera_username }}"
+    grafana_mysql_password: "{{ monasca_grafana_galera_password }}"
+    grafana_keystone_url: "{{ keystone_service_internalurl }}"
     tags: skip_ansible_lint
   - role: ansible-monasca-schema
     tags: skip_ansible_lint
