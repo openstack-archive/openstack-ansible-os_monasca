@@ -27,53 +27,15 @@
       {% for item in monasca_developer_constraints %}
       {{ item }}
       {% endfor %}
-  when:
-    - monasca_developer_mode | bool
-
-- name: Clone requirements git repository
-  git:
-    repo: "{{ item.repo }}"
-    dest: "/opt/requirements"
-    clone: yes
-    update: yes
-    version: "{{ item.version }}"
-  when:
-    - monasca_developer_mode | bool
-  with_items:
-    - repo: "{{ monasca_api_requirements_git_repo }}"
-      version: "{{ monasca_api_requirements_git_install_branch }}"
-    - repo: "{{ monasca_log_api_requirements_git_repo }}"
-      version: "{{ monasca_log_api_requirements_git_install_branch }}"
-    - repo: "{{ monasca_ceilometer_requirements_git_repo }}"
-      version: "{{ monasca_ceilometer_requirements_git_install_branch }}"
-    - repo: "{{ monasca_common_requirements_git_repo }}"
-      version: "{{ monasca_common_requirements_git_install_branch }}"
-    - repo: "{{ monasca_transform_requirements_git_repo }}"
-      version: "{{ monasca_transform_requirements_git_install_branch }}"
-    - repo: "{{ monasca_notification_requirements_git_repo }}"
-      version: "{{ monasca_notification_requirements_git_install_branch }}"
-    - repo: "{{ monasca_persister_requirements_git_repo }}"
-      version: "{{ monasca_persister_requirements_git_install_branch }}"
-    - repo: "{{ monasca_python_client_requirements_git_repo }}"
-      version: "{{ monasca_python_client_requirements_git_install_branch }}"
-
-- name: Add constraints to pip_install_options fact for developer mode
-  set_fact:
-    pip_install_options_fact: "{{ pip_install_options|default('') }} --constraint /opt/developer-pip-constraints.txt --constraint /opt/requirements/upper-constraints.txt"
-  when:
-    - monasca_developer_mode | bool
-
-- name: Set pip_install_options_fact when not in developer mode
-  set_fact:
-    pip_install_options_fact: "{{ pip_install_options|default('') }}"
-  when:
-    - not monasca_developer_mode | bool
+  when: monasca_developer_mode | bool
 
 - name: Install requires pip packages
   pip:
     name: "{{ monasca_requires_pip_packages | join(' ') }}"
     state: "{{ monasca_pip_package_state }}"
-    extra_args: "{{ pip_install_options_fact }}"
+    extra_args: >-
+      {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
+      {{ pip_install_options | default('') }}
   register: install_packages
   until: install_packages|success
   retries: 5
@@ -84,20 +46,31 @@
     url: "{{ monasca_venv_download_url }}"
     dest: "/var/cache/{{ monasca_venv_download_url | basename }}"
     checksum: "sha1:{{ lookup('url', monasca_venv_download_url | replace('tgz', 'checksum')) }}"
-  register: monasca_get_venv
-  when: not monasca_developer_mode | bool
+  register: get_venv
+  when:
+    - not monasca_developer_mode | bool
+    - (local_venv_stat.stat.exists == False or
+        {{ local_venv_stat.stat.checksum is defined and local_venv_stat.stat.checksum != remote_venv_checksum.content | trim }})
+
+- name: Set monasca get_venv fact
+  set_fact:
+    monasca_get_venv: "{{ get_venv }}"
 
 - name: Remove existing venv
   file:
     path: "{{ monasca_bin | dirname }}"
     state: absent
-  when: monasca_get_venv | changed
+  when:
+    - monasca_get_venv | changed
 
 - name: Create monasca venv dir
   file:
     path: "{{ monasca_bin | dirname }}"
     state: directory
   register: monasca_venv_dir
+  when:
+    - not monasca_developer_mode | bool
+    - monasca_get_venv | changed
 
 - name: Unarchive pre-built venv
   unarchive:
@@ -116,17 +89,22 @@
     state: "{{ monasca_pip_package_state }}"
     virtualenv: "{{ monasca_bin | dirname }}"
     virtualenv_site_packages: "no"
-    extra_args: "{{ pip_install_options_fact }}"
+    extra_args: >-
+      {{ keystone_developer_mode | ternary('--constraint /opt/developer-pip-constraints.txt', '') }}
+      {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
+      {{ pip_install_options | default('') }}
   register: install_packages
   until: install_packages|success
   retries: 5
   delay: 2
-  when: monasca_developer_mode | bool
-  notify: Restart monasca services
+  when:
+    - monasca_get_venv | failed or monasca_developer_mode | bool
+  notify:
+    - Restart monasca services
 
 - name: Update virtualenv path
   command: >
     virtualenv-tools --update-path=auto {{ monasca_bin | dirname }}
   when:
     - not monasca_developer_mode | bool
-    - monasca_get_venv | changed or monasca_venv_dir | changed
+    - monasca_get_venv | success
