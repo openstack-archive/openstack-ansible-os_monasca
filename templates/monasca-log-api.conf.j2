@@ -16,7 +16,7 @@ kafka_topics = log
 [roles_middleware]
 path = /v2.0/log
 path = /v3.0/logs
-default_roles = user, domainuser, domainadmin, {{ monasca_service_user_name }}
+default_roles = user, domainuser, domainadmin, {{ monasca_service_role_names }}, {{ monasca_role_names }}
 agent_roles = {{ monasca_service_user_name }}, admin
 
 [dispatcher]

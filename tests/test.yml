@@ -25,6 +25,9 @@
 # Install keystone
 - include: common/test-install-keystone.yml
 
+# Install tempest
+- include: common/test-install-tempest.yml
+
 # Install monasca
 - include: test-install-monasca.yml
 
