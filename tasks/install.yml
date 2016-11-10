@@ -31,7 +31,7 @@
 
 - name: Install requires pip packages
   pip:
-    name: "{{ monasca_requires_pip_packages | join(' ') }}"
+    name: "{{ monasca_requires_pip_packages }}"
     state: "{{ monasca_pip_package_state }}"
     extra_args: >-
       {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
@@ -74,7 +74,7 @@
 
 - name: Install pip packages
   pip:
-    name: "{{ monasca_pip_packages | join(' ') }}"
+    name: "{{ monasca_pip_packages }}"
     state: "{{ monasca_pip_package_state }}"
     virtualenv: "{{ monasca_bin | dirname }}"
     virtualenv_site_packages: "no"
