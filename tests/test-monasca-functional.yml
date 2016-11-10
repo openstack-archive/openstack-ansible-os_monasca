@@ -47,7 +47,13 @@
         url: "{{ monasca_api }}"
         HEADER_X-Auth-Token: "{{ keystone_token }}"
         status_code: 200,300
-
+    - name: Run tempest
+      shell: |
+        . {{ tempest_venv_bin }}/activate
+        {{ tempest_venv_bin | dirname }}/run_tempest.sh --no-virtual-env ${RUN_TEMPEST_OPTS} \
+        monasca_tempest_tests.tests.api.test_alarms*
+      environment:
+        RUN_TEMPEST_OPTS: "--serial"
   vars_files:
     - common/test-vars.yml
     - test-vars.yml
