@@ -27,19 +27,6 @@
   tags:
     - always
 
-- name: Check init system
-  command: cat /proc/1/comm
-  changed_when: false
-  register: _pid1_name
-  tags:
-    - always
-
-- name: Set the name of pid1
-  set_fact:
-    pid1_name: "{{ _pid1_name.stdout }}"
-  tags:
-    - always
-
 - include: pre-install.yml
   tags:
     - monasca-install
