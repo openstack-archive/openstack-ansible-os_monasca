@@ -39,6 +39,11 @@ monasca_persister_requirements_git_install_branch: master
 monasca_python_client_requirements_git_install_branch: master
 monasca_service_password: "secrete"
 monasca_readonly_password: "secrete"
+monasca_role_names:
+  - monasca-user
+  - anotherrole
+monasca_service_role_names:
+  - admin
 monasca_service_user_domain_name: default
 monasca_service_project_domain_name: Default
 monasca_service_project_name: service
