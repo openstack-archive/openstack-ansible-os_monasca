@@ -1,0 +1,33 @@
+---
+tempest_main_group: monasca_all
+
+tempest_plugins:
+  - name: monasca-api
+    repo: https://git.openstack.org/openstack/monasca-api
+    branch: master
+
+tempest_flavors:
+  - name: m1.monasca-api
+    id: 100
+    ram: 1024
+    disk: 10
+    vcpus: 1
+
+tempest_tempest_conf_overrides:
+  monasca-api:
+    flavor_id: m1.monasca-api
+    master_flavor_id: m1.monasca-api
+
+neutron_provider_networks:
+  network_types: "vxlan,flat"
+  network_mappings: "flat:eth12"
+  network_vxlan_ranges: "1:1000"
+
+external_lb_vip_address: "{{ hostvars[groups['keystone_all'][0]]['ansible_host'] }}"
+internal_lb_vip_address: "{{ hostvars[groups['keystone_all'][0]]['ansible_host'] }}"
+
+test_keystone_host: "{{ external_lb_vip_address }}"
+glance_service_publicuri: "http://{{ external_lb_vip_address }}:9292"
+test_cinder_api_host: "{{ external_lb_vip_address }}"
+nova_service_publicuri: "http://{{ external_lb_vip_address }}:8774"
+neutron_service_publicuri: "http://{{ external_lb_vip_address }}:9696"
