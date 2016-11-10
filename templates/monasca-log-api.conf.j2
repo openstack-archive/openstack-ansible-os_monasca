@@ -25,6 +25,10 @@ logs_v3 = monasca_log_api.reference.v3.logs:Logs
 versions = monasca_log_api.reference.versions:Versions
 healthchecks = monasca_log_api.reference.healthchecks:HealthChecks
 
+# Concurrency (locking mechanisms)
+[oslo_concurrency]
+lock_path = {{ monasca_lock_path }}
+
 [keystone_authtoken]
 auth_uri = {{ keystone_service_internalurl }}
 auth_version = v3

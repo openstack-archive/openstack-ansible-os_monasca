@@ -28,6 +28,10 @@ delegate_authorized_roles = admin
 [messaging]
 driver = monasca_api.common.messaging.kafka_publisher:KafkaPublisher
 
+# Concurrency (locking mechanisms)
+[oslo_concurrency]
+lock_path = {{ monasca_lock_path }}
+
 [repositories]
 metrics_driver = {{ monasca_api_metrics_driver }}
 alarm_definitions_driver = monasca_api.common.repositories.sqla.alarm_definitions_repository:AlarmDefinitionsRepository

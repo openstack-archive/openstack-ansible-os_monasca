@@ -46,6 +46,7 @@
   with_items:
     - path: "{{ monasca_conf_directory }}"
     - path: "{{ monasca_system_user_home }}"
+    - path: "{{ monasca_lock_path }}"
 
 - name: Test for monasca log directory or link
   shell: |
