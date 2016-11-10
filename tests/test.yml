@@ -19,6 +19,9 @@
 # Setup the host
 - include: common/test-setup-host.yml
 
+# Prepare the containers
+- include: common/test-prepare-containers.yml
+
 # Install RabbitMQ/MariaDB
 - include: common/test-install-infra.yml
 
@@ -27,6 +30,9 @@
 
 # Install monasca
 - include: test-install-monasca.yml
+
+# Install tempest
+- include: common/test-install-tempest.yml
 
 # Test monasca
 - include: test-monasca-functional.yml
