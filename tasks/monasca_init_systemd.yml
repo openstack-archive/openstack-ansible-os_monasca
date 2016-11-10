@@ -36,7 +36,7 @@
 - name: Create tempfile.d entry
   template:
     src: "monasca-systemd-tempfiles.j2"
-    dest: "/etc/tmpfiles.d/monasca.conf"
+    dest: "/etc/tmpfiles.d/{{ item.value.service_name }}.conf"
     mode: "0644"
     owner: "root"
     group: "root"
