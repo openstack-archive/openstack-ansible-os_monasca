@@ -15,6 +15,8 @@
 #
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
+
+monasca_venv_tag: "testing"
 monasca_developer_mode: True
 monasca_galera_address: "{{ hostvars[groups['galera_all'][0]]['ansible_host'] }}"
 external_lb_vip_address: "{{ hostvars[groups['keystone_all'][0]]['ansible_host'] }}"
@@ -39,6 +41,9 @@ monasca_persister_requirements_git_install_branch: master
 monasca_python_client_requirements_git_install_branch: master
 monasca_service_password: "secrete"
 monasca_readonly_password: "secrete"
+monasca_role_names:
+  - monasca-user
+  - anotherrole
 monasca_service_user_domain_name: default
 monasca_service_project_domain_name: Default
 monasca_service_project_name: service
@@ -47,7 +52,6 @@ monasca_service_user_name: monasca
 monasca_readonly_user_name: monasca-read-only
 monasca_bind_port: 8070
 monasca_log_api_bind_port: 5607
-monasca_venv_tag: untagged
 monasca_bin: "/openstack/venvs/monasca-{{ monasca_venv_tag }}/bin"
 storm_nimbus_enabled: true
 storm_supervisor_enabled: true
@@ -68,3 +72,15 @@ grafana_mysql_db: "{{ monasca_grafana_galera_database }}"
 grafana_mysql_user: "{{ monasca_grafana_galera_username }}"
 grafana_mysql_password: "{{ monasca_grafana_galera_password }}"
 grafana_keystone_url: "{{ keystone_service_internalurl }}"
+tempest_run: yes
+tempest_venv_tag: "{{ tempest_git_install_branch }}"
+tempest_venv_bin: "/opt/tempest_{{ tempest_venv_tag }}/bin"
+tempest_log_dir: "/var/log/"
+tempest_plugins:
+  - name: monasca-api
+    repo: https://git.openstack.org/openstack/monasca-api
+    branch: master
+neutron_provider_networks:
+  network_types: "vxlan,flat"
+  network_mappings: "flat:eth12"
+  network_vxlan_ranges: "1:1000"

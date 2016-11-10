@@ -39,7 +39,6 @@
       config_type: "ini"
   notify:
     - Restart monasca services
-  when: inventory_hostname in groups['monasca_api']
 
 - name: Drop monasca-log-api Config(s)
   config_template:
@@ -65,4 +64,3 @@
       config_type: "ini"
   notify:
     - Restart monasca services
-  when: inventory_hostname in groups['monasca_log_api']
