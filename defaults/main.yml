@@ -35,8 +35,11 @@ monasca_readonly_user_name: monasca-read-only
 monasca_service_type: monitoring
 monasca_service_description: "OpenStack Monitoring Service (Monasca)"
 monasca_service_project_name: service
+monasca_role_names:
+  - monasca-user
 monasca_service_role_names:
   - admin
+  - "{{ monasca_role_names }}"
 monasca_service_region: RegionOne
 monasca_service_host: "0.0.0.0"
 monasca_bind_port: 8070

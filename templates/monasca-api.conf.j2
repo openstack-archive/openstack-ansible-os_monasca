@@ -20,7 +20,7 @@ dimension_names = monasca_api.v2.reference.metrics:DimensionNames
 notification_method_types = monasca_api.v2.reference.notificationstype:NotificationsType
 
 [security]
-default_authorized_roles = user, domainuser, domainadmin, {{ monasca_service_user_name }}
+default_authorized_roles = user, domainuser, domainadmin, admin, {{ monasca_service_user_name }}
 agent_authorized_roles = {{ monasca_service_user_name }}
 read_only_authorized_roles = {{ monasca_readonly_user_name }}
 delegate_authorized_roles = admin
