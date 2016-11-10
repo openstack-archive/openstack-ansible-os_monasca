@@ -28,5 +28,5 @@
 # Install monasca
 - include: test-install-monasca.yml
 
-# Test monasca
-- include: test-monasca-functional.yml
+# Install tempest
+- include: common/test-install-tempest.yml

@@ -85,4 +85,3 @@
     - role: "os_monasca"
   vars_files:
     - common/test-vars.yml
-    - test-vars.yml
