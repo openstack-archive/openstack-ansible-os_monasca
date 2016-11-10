@@ -24,30 +24,16 @@
   vars:
       monasca_api: "http://localhost:{{ monasca_bind_port }}"
   tasks:
-    - name: Install openstackclient
-      pip:
-        name: "python-openstackclient"
-
-    - name: Validate that auth is required
-      uri:
-        url: "{{ monasca_api }}"
-        status_code: 401
-
-    - name: Get auth token
-      shell: >
-        . /root/openrc && openstack token issue --format yaml | awk '/^id\:/ {print $2}'
-      register: get_keystone_token
-
-    - name: set token
-      set_fact:
-        keystone_token: "{{ get_keystone_token.stdout }}"
-
-    - name: Check the monasca-api
-      uri:
-        url: "{{ monasca_api }}"
-        HEADER_X-Auth-Token: "{{ keystone_token }}"
-        status_code: 200,300
-
+    - name: Run tempest
+      shell: |
+        . {{ tempest_venv_bin }}/activate
+        {{ tempest_venv_bin | dirname }}/run_tempest.sh --no-virtual-env ${RUN_TEMPEST_OPTS} \
+        monasca_tempest_tests.tests.api.test_alarms.TestAlarms.* \
+        monasca_tempest_tests.tests.api.test_dimensions.TestDimensions.* \
+        monasca_tempest_tests.tests.api.test_metrics.TestMetrics.* \
+        monasca_tempest_tests.tests.api.test_versions.TestVersions.*
+      environment:
+        RUN_TEMPEST_OPTS: "--serial"
   vars_files:
     - common/test-vars.yml
     - test-vars.yml
