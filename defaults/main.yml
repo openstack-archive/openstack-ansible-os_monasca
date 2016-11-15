@@ -18,7 +18,7 @@
 monasca_package_state: "latest"
 monasca_pip_package_state: "latest"
 
-debug: False
+debug: True
 
 monasca_system_user_name: monasca
 monasca_system_group_name: monasca
