@@ -91,7 +91,7 @@
 
 - name: Update virtualenv path
   command: >
-    virtualenv-tools --update-path=auto {{ monasca_bin | dirname }}
+    virtualenv-tools --update-path=auto --reinitialize {{ monasca_bin | dirname }}
   when:
     - not monasca_developer_mode | bool
     - monasca_get_venv | changed or monasca_venv_dir | changed
