@@ -77,6 +77,23 @@
     - monasca-user-add
     - monasca-setup
 
+- name: Ensure the monasca role exists
+  keystone:
+    command: "ensure_role"
+    endpoint: "{{ keystone_service_adminurl }}"
+    login_user: "{{ keystone_admin_user_name }}"
+    login_password: "{{ keystone_auth_admin_password }}"
+    login_project_name: "{{ keystone_admin_tenant_name }}"
+    user_name: "{{ monasca_service_user_name }}"
+    tenant_name: "{{ monasca_service_project_name }}"
+    role_name: "{{ item }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
+  register: ensure_monasca_roles
+  until: ensure_monasca_roles |success
+  retries: 5
+  delay: 2
+  with_items: "{{ monasca_role_names }}"
+
 - name: Ensure the monasca user has the admin role
   keystone:
     command: "ensure_user_role"
@@ -88,8 +105,8 @@
     tenant_name: "{{ monasca_service_project_name }}"
     role_name: "{{ item }}"
     insecure: "{{ keystone_service_adminuri_insecure }}"
-  register: ensure_monasca_roles
-  until: ensure_monasca_roles |success
+  register: ensure_monasca_service_roles
+  until: ensure_monasca_service_roles |success
   retries: 5
   delay: 2
   with_items: "{{ monasca_service_role_names }}"
