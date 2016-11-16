@@ -49,6 +49,10 @@ monasca_bind_port: 8070
 monasca_log_api_bind_port: 5607
 monasca_venv_tag: untagged
 monasca_bin: "/openstack/venvs/monasca-{{ monasca_venv_tag }}/bin"
+monasca_role_names:
+  - monasca-user
+monasca_service_role_names:
+  - admin
 storm_nimbus_enabled: true
 storm_supervisor_enabled: true
 nimbus_host: "{{ zookeeper_hosts }}"
