@@ -1,0 +1,9 @@
+Code-Review+2: Jesse Pretorius (odyssey4me) <jesse.pretorius@rackspace.co.uk>
+Code-Review+2: Andy McCrae <andy.mccrae@googlemail.com>
+Workflow+1: Andy McCrae <andy.mccrae@googlemail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Wed, 16 Nov 2016 13:12:34 +0000
+Reviewed-on: https://review.openstack.org/398168
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
