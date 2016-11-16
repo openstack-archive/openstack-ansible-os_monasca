@@ -25,7 +25,6 @@ monasca_system_group_name: monasca
 monasca_system_comment: Monasca system user
 monasca_system_user_shell: /bin/false
 monasca_system_user_home: "/var/lib/{{ monasca_system_user_name }}"
-monasca_bin: "/openstack/venvs/monasca-{{ monasca_venv_tag }}/bin"
 monasca_log_directory: "/var/log/monasca"
 monasca_conf_directory: "/etc/monasca"
 monasca_lock_path: "/var/lock/monasca"
