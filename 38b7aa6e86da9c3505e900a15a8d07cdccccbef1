@@ -1,0 +1,10 @@
+Code-Review+2: Kevin Carter (cloudnull) <kevin@cloudnull.com>
+Code-Review+1: venkatamahesh <Venkata.Kotha@infinite.com>
+Code-Review+2: Andy McCrae <andy.mccrae@googlemail.com>
+Workflow+1: Andy McCrae <andy.mccrae@googlemail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Sun, 27 Nov 2016 21:31:37 +0000
+Reviewed-on: https://review.openstack.org/402723
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
