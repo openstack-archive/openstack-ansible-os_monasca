@@ -1,0 +1,8 @@
+Code-Review+2: Alexandra Settle <a.settle@outlook.com>
+Workflow+1: Alexandra Settle <a.settle@outlook.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Thu, 01 Dec 2016 14:55:46 +0000
+Reviewed-on: https://review.openstack.org/405321
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
