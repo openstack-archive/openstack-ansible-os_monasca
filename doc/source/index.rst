@@ -4,6 +4,9 @@ OpenStack-Ansible Monasca
 
 Ansible role for deploying Monasca Monitoring-as-a-Service.
 
+To clone or view the source code for this repository, visit the role repository
+for `os_monasca https://github.com/openstack/openstack-ansible-os_monasca`_.
+
 Default variables
 ~~~~~~~~~~~~~~~~~
 
