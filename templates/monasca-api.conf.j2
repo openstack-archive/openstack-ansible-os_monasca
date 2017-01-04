@@ -80,7 +80,6 @@ auth_version = v3
 insecure = {{ keystone_service_internaluri_insecure | bool }}
 memcached_servers = {{ memcached_servers }}
 token_cache_time = 300
-revocation_cache_time = 60
 identity_uri = {{ keystone_service_adminuri }}
 auth_type = {{ monasca_keystone_auth_plugin }}
 auth_url = {{ keystone_service_internaluri }}
