@@ -30,7 +30,7 @@ sudo pip install bindep tox
 #   redhat-lsb-core - for bindep profile support
 #   epel-release    - required to install python-ndg_httpsclient/python2-pyasn1
 if [ "$(which yum)" ]; then
-    sudo yum -y install redhat-lsb-core epel-release
+    sudo yum -y install redhat-lsb-core epel-release || true
 fi
 
 # Install OS packages using bindep
@@ -40,7 +40,7 @@ if apt-get -v >/dev/null 2>&1 ; then
       sudo apt-get -q --option "Dpkg::Options::=--force-confold" \
       --assume-yes install `bindep -b -f bindep.txt test`
 else
-    sudo yum install -y `bindep -b -f bindep.txt test`
+    sudo yum install -y `bindep -b -f bindep.txt test` || true
 fi
 
 # run through each tox env and execute the test
