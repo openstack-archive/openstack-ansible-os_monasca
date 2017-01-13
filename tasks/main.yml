@@ -41,13 +41,13 @@
 
 - include: monasca_init_common.yml
   tags:
-    - monasca-install
+    - monasca-config
 
 - include: monasca_service_setup.yml
   static: no
   when: inventory_hostname == groups['monasca_api'][0]
   tags:
-    - monasca-install
+    - monasca-config
 
 - name: Flush handlers
   meta: flush_handlers
