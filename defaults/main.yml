@@ -51,6 +51,9 @@ monasca_service_adminurl: "{{ monasca_service_adminuri_proto }}://{{ internal_lb
 
 # Name of the virtual env to deploy into
 monasca_venv_tag: untagged
+# venv_download, even when true, will use the fallback method of building the
+# venv from scratch if the venv download fails.
+monasca_venv_download: "{{ not monasca_developer_mode | bool }}"
 monasca_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/monasca.tgz
 
 monasca_bin: "/openstack/venvs/monasca-{{ monasca_venv_tag }}/bin"
