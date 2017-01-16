@@ -47,7 +47,7 @@
     dest: "/var/cache/{{ monasca_venv_download_url | basename }}"
     checksum: "sha1:{{ lookup('url', monasca_venv_download_url | replace('tgz', 'checksum')) }}"
   register: monasca_get_venv
-  when: not monasca_developer_mode | bool
+  when: monasca_venv_download | bool
 
 - name: Remove existing venv
   file:
@@ -60,15 +60,14 @@
     path: "{{ monasca_bin | dirname }}"
     state: directory
   register: monasca_venv_dir
+  when: monasca_get_venv | changed
 
 - name: Unarchive pre-built venv
   unarchive:
     src: "/var/cache/{{ monasca_venv_download_url | basename }}"
     dest: "{{ monasca_bin | dirname }}"
     copy: "no"
-  when:
-    - not monasca_developer_mode | bool
-    - monasca_get_venv | changed or monasca_venv_dir | changed
+  when: monasca_get_venv | changed
   notify:
     - Restart monasca services
 
@@ -86,12 +85,10 @@
   until: install_packages|success
   retries: 5
   delay: 2
-  when: monasca_developer_mode | bool
+  when: monasca_get_venv | failed or monasca_get_venv | skipped
   notify: Restart monasca services
 
 - name: Update virtualenv path
   command: >
     virtualenv-tools --update-path=auto --reinitialize {{ monasca_bin | dirname }}
-  when:
-    - not monasca_developer_mode | bool
-    - monasca_get_venv | changed or monasca_venv_dir | changed
+  when: monasca_get_venv | changed
