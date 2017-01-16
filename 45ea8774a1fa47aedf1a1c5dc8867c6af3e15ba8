@@ -1,0 +1,11 @@
+Code-Review+2: David Wilde <david.wilde@rackspace.com>
+Code-Review+1: Amy Marrich (spotz) <amy@demarco.com>
+Code-Review+2: Major Hayden <major@mhtx.net>
+Workflow+1: Major Hayden <major@mhtx.net>
+Code-Review+1: Vitaliy Nogin <vnogin@mirantis.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 16 Jan 2017 14:17:57 +0000
+Reviewed-on: https://review.openstack.org/417069
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
