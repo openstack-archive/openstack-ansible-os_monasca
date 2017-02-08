@@ -62,32 +62,32 @@ monasca_bin: "/openstack/venvs/monasca-{{ monasca_venv_tag }}/bin"
 monasca_developer_mode: false
 
 monasca_api_git_repo: "https://git.openstack.org/openstack/monasca-api"
-monasca_api_git_install_branch: master
+monasca_api_git_install_branch: stable/ocata
 
 monasca_log_api_bind_port: 5607
 monasca_log_api_git_repo: "https://git.openstack.org/openstack/monasca-log-api"
-monasca_log_api_git_install_branch: master
+monasca_log_api_git_install_branch: stable/ocata
 
 monasca_ceilometer_git_repo: "https://git.openstack.org/openstack/monasca-ceilometer"
-monasca_ceilometer_git_install_branch: master
+monasca_ceilometer_git_install_branch: stable/ocata
 
 monasca_common_git_repo: "https://git.openstack.org/openstack/monasca-common"
-monasca_common_git_install_branch: master
+monasca_common_git_install_branch: stable/ocata
 
 monasca_thresh_git_repo: "https://git.openstack.org/openstack/monasca-thresh"
-monasca_thresh_git_install_branch: master
+monasca_thresh_git_install_branch: stable/ocata
 
 monasca_transform_git_repo: "https://git.openstack.org/openstack/monasca-transform"
 monasca_transform_git_install_branch: master
 
 monasca_notification_git_repo: "https://git.openstack.org/openstack/monasca-notification"
-monasca_notification_git_install_branch: master
+monasca_notification_git_install_branch: stable/ocata
 
 monasca_persister_git_repo: "https://git.openstack.org/openstack/monasca-persister"
-monasca_persister_git_install_branch: master
+monasca_persister_git_install_branch: stable/ocata
 
 monasca_python_client_git_repo: "https://git.openstack.org/openstack/python-monascaclient"
-monasca_python_client_git_install_branch: master
+monasca_python_client_git_install_branch: stable/ocata
 
 monasca_developer_constraints:
   - "git+{{ monasca_api_git_repo }}@{{ monasca_api_git_install_branch }}#egg=monasca-api"
