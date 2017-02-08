@@ -45,6 +45,7 @@ dependencies:
   - role: ansible-zookeeper
     tags: skip_ansible_lint
   - role: ansible-kafka
+    apache_mirror: "{{ monasca_ansible_kafka_mirror }}"
     tags: skip_ansible_lint
   - role: ansible-storm
     tags: skip_ansible_lint
