@@ -117,17 +117,22 @@ monasca_use_mod_wsgi: false
 
 monasca_api_metrics_driver: "monasca_api.common.repositories.influxdb.metrics_repository:MetricsRepository"
 
+monasca_api_init_config_overrides: {}
+monasca_log_api_init_config_overrides: {}
+
 monasca_services:
   monasca-api:
     group: monasca_api
     service_name: monasca-api
     service_init_bin: "{{ monasca_bin }}/gunicorn"
     service_init_options: "-n monasca-api -k eventlet --worker-connections=2000 --backlog=1000 --paste /etc/monasca/api-config.ini"
+    init_config_overrides: "{{ monasca_api_init_config_overrides }}"
   monasca-log-api:
     group: monasca_log_api
     service_name: monasca-log-api
     service_init_bin: "{{ monasca_bin }}/gunicorn"
     service_init_options: "-n monasca-log-api -k eventlet --worker-connections=2000 --backlog=1000 --paste /etc/monasca/log-api-config.ini"
+    init_config_overrides: "{{ monasca_log_api_init_config_overrides }}"
 
 monasca_requires_pip_packages:
   - httplib2
