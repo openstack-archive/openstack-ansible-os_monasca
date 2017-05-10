@@ -41,11 +41,18 @@
   retries: 5
   delay: 2
 
+- name: Retrieve checksum for venv download
+  uri:
+    url: "{{ monasca_venv_download_url | replace('tgz', 'checksum') }}"
+    return_content: yes
+  register: monasca_venv_checksum
+  when: monasca_venv_download | bool
+
 - name: Attempt venv download
   get_url:
     url: "{{ monasca_venv_download_url }}"
     dest: "/var/cache/{{ monasca_venv_download_url | basename }}"
-    checksum: "sha1:{{ lookup('url', monasca_venv_download_url | replace('tgz', 'checksum')) }}"
+    checksum: "sha1:{{ monasca_venv_checksum.content | trim }}"
   register: monasca_get_venv
   when: monasca_venv_download | bool
 
