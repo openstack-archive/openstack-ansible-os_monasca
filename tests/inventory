@@ -1,5 +1,5 @@
 [all]
-localhost ansible_become=True
+localhost
 infra1 ansible_host=10.100.100.2 ansible_become=True ansible_user=root
 openstack1 ansible_host=10.100.100.3 ansible_become=True ansible_user=root
 
