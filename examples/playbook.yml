@@ -1,5 +1,30 @@
-- name: Install Monasca
-   hosts: all
-   user: root
-   roles:
-     - role: "openstack-ansible-os_monasca"
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Install monasca server
+  hosts: monasca_all
+  user: root
+  roles:
+    - { role: "os_monasca", tags: [ "os-monasca" ] }
+  vars:
+    external_lb_vip_address: 172.16.24.1
+    internal_lb_vip_address: 192.168.0.1
+    monasca_galera_address: "{{ internal_lb_vip_address }}"
+    monasca_container_mysql_password: "SuperSecretePassword1"
+    monasca_service_password: "SuperSecretePassword2"
+    monasca_influxdb_admin_password: "secrete"
+    monasca_api_influxdb_password: "secrete"
+    monasca_persister_influxdb_password: "secrete"
+    monasca_agent_password: "secrete"
+    grafana_mysql_host: "{{ monasca_galera_address }}"
+    grafana_admin_password: "secrete"
+    grafana_galera_password: "secrete"

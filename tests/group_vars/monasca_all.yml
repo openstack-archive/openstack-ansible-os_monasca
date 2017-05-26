@@ -1,6 +1,4 @@
 ---
-# Copyright 2016 Internet Solutions (Pty) Ltd
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,19 +11,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: monasca_init_upstart.yml
-  when:
-    - ansible_service_mgr == 'upstart'
+influxdb_host: "{{ internal_lb_vip_address }}"
+influxdb_port: 8086
 
-- include: monasca_init_systemd.yml
-  when:
-    - ansible_service_mgr == 'systemd'
+zookeeper_hosts: "{% for host in groups['monasca_zookeeper'] %}{{ hostvars[host]['ansible_host'] }}:{{ zookeeper_client_port }}{% if not loop.last %},{% endif %}{% endfor %}"
 
-- name: Load service
-  service:
-   name: "{{ item.value.service_name }}"
-   enabled: "yes"
-  with_dict: "{{ monasca_services }}"
-  when: inventory_hostname in groups[item.value.group]
-  notify:
-    - Restart monasca services
+kafka_hosts: "{% for host in groups['monasca_kafka'] %}{{ hostvars[host]['ansible_host'] }}:{{ kafka_port }}{% if not loop.last %},{% endif %}{% endfor %}"

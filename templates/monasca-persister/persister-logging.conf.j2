@@ -1,5 +1,7 @@
+# {{ ansible_managed }}
+
 [loggers]
-keys = root, sqlalchemy, kafka
+keys = root, kafka, influxdb
 
 [handlers]
 keys = console, file
@@ -8,23 +10,20 @@ keys = console, file
 keys = generic
 
 [logger_root]
-level = DEBUG
+level = {{ monasca_log_level }}
 formatter = default
 handlers = console, file
-
-[logger_sqlalchemy]
-qualname = sqlalchemy.engine
-# "level = INFO" logs SQL queries.
-# "level = DEBUG" logs SQL queries and results.
-# "level = WARN" logs neither.  (Recommended for production systems.)
-level = DEBUG
-formatter = default
-handlers = console, file
-propagate=0
 
 [logger_kafka]
 qualname = kafka
-level = DEBUG
+level = {{ monasca_log_level }}
+formatter = default
+handlers = console, file
+propagate = 0
+
+[logger_influxdb]
+qualname = influxdb
+level = {{ monasca_log_level }}
 formatter = default
 handlers = console, file
 propagate = 0
@@ -32,15 +31,15 @@ propagate = 0
 [handler_console]
 class = logging.StreamHandler
 args = (sys.stderr,)
-level = DEBUG
+level = {{ monasca_log_level }}
 formatter = generic
 
 [handler_file]
 class = logging.handlers.RotatingFileHandler
-level = DEBUG
+level = {{ monasca_log_level }}
 formatter = generic
 # store up to 5*100MB of logs
-args = ('/var/log/{{ monasca_service_name }}/monasca-api.log', 'a', 104857600, 5)
+args = ('/var/log/monasca/persister.log', 'a', 104857600, 5)
 
 [formatter_generic]
 format = %(asctime)s %(levelname)s [%(name)s][%(threadName)s] %(message)s

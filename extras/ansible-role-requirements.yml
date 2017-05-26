@@ -1,0 +1,15 @@
+- name: ansible-zookeeper
+  scm: git
+  src: https://github.com/Chillisystems/ansible-zookeeper
+- name: ansible-kafka
+  scm: git
+  src: https://github.com/flaviodsr/ansible-kafka
+- name: ansible-storm
+  scm: git
+  src: https://github.com/flaviodsr/ansible-storm
+- name: ansible-influxdb
+  scm: git
+  src: https://github.com/flaviodsr/ansible-influxdb
+- name: grafana-ansible
+  scm: git
+  src: https://github.com/flaviodsr/grafana-ansible

@@ -1,0 +1,120 @@
+# {{ ansible_managed }}
+
+#
+# (C) Copyright 2015,2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+# implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+kafka:
+    url: "{{ kafka_hosts }}"
+    group: "monasca-notification"
+    alarm_topic: "alarm-state-transitions"
+    notification_topic: "alarm-notifications"
+    notification_retry_topic: "retry-notifications"
+    periodic:
+        60: 60-seconds-notifications
+    max_offset_lag: 600  # In seconds, undefined for none
+
+database:
+  repo_driver: "monasca_notification.common.repositories.mysql.mysql_repo:MysqlRepo"
+
+mysql:
+    host: "{{ monasca_galera_address }}"
+    user: "{{ monasca_galera_user }}"
+    passwd: "{{ monasca_container_mysql_password }}"
+    db: "{{ monasca_galera_database }}"
+
+notification_types:
+
+    email:
+        server: "localhost"
+        port: 25
+        user: ""
+        password: ""
+        timeout: 15
+        from_addr: "monasca-notification@{{ ansible_hostname }}"
+
+    webhook:
+        timeout: 5
+
+    pagerduty:
+        timeout: 5
+        url: "https://events.pagerduty.com/generic/2010-04-15/create_event.json"
+
+    hipchat:
+        timeout: 5
+        insecure: False
+        ca_certs: "/etc/ssl/certs/ca-certificates.crt"
+
+    slack:
+        timeout: 5
+        insecure: False
+        ca_certs: "/etc/ssl/certs/ca-certificates.crt"
+
+processors:
+    alarm:
+        number: 2
+        ttl: 14400  # In seconds, undefined for none. Alarms older than this are not processed
+    notification:
+        number: 4
+
+retry:
+    interval: 30
+    max_attempts: 5
+
+queues:
+    alarms_size: 256
+    finished_size: 256
+    notifications_size: 256
+    sent_notifications_size: 50  # limiting this size reduces potential # of re-sent notifications after a failure
+
+zookeeper:
+    url: "{{ zookeeper_hosts }}"
+    notification_path: "/notification/alarms"
+    notification_retry_path: "/notification/retry"
+    periodic_path:
+        60: /notification/60_seconds
+
+logging: # Used in logging.dictConfig
+    version: 1
+    disable_existing_loggers: False
+    formatters:
+        default:
+            format: "%(asctime)s %(levelname)s %(name)s %(message)s"
+    handlers:
+        console:
+            class: logging.StreamHandler
+            formatter: default
+        file:
+            class: logging.handlers.RotatingFileHandler
+            filename: "/var/log/monasca/notification.log"
+            formatter: default
+            maxBytes: 10485760  # Rotate at file size ~10MB
+            backupCount: 5  # Keep 5 older logs around
+    loggers:
+        kazoo:
+            level: {{ monasca_log_level }}
+        kafka:
+            level: {{ monasca_log_level }}
+        statsd:
+            level: {{ monasca_log_level }}
+    root:
+        handlers:
+            - file
+        level: {{ monasca_log_level }}
+
+statsd:
+    host: 'localhost'
+    port: 8125
