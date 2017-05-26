@@ -18,69 +18,13 @@
 
 - name: Install monasca server
   hosts: monasca_all
-  max_fail_percentage: 20
-  user: root
+  remote_user: root
+  become: true
   gather_facts: true
   pre_tasks:
-    - name: Ensure rabbitmq vhost
-      rabbitmq_vhost:
-        name: "{{ monasca_rabbitmq_vhost }}"
-        state: "present"
-      delegate_to: "{{ hostvars[groups['rabbitmq_all'][0]]['ansible_host'] }}"
-      when: inventory_hostname == groups['monasca_all'][0]
-    - name: Ensure rabbitmq user
-      rabbitmq_user:
-        user: "{{ monasca_rabbitmq_userid }}"
-        password: "{{ monasca_rabbitmq_password }}"
-        vhost: "{{ monasca_rabbitmq_vhost }}"
-        configure_priv: ".*"
-        read_priv: ".*"
-        write_priv: ".*"
-        state: "present"
-      delegate_to: "{{ hostvars[groups['rabbitmq_all'][0]]['ansible_host'] }}"
-      when: inventory_hostname == groups['monasca_all'][0]
-    - name: Create DB for service
-      mysql_db:
-        login_user: "{{ galera_root_user }}"
-        login_password: "{{ galera_root_password }}"
-        login_host: "{{ monasca_galera_address }}"
-        name: "{{ item }}"
-        state: "present"
-      with_items:
-        - "{{ monasca_galera_database }}"
-        - "{{ monasca_grafana_galera_database }}"
-      delegate_to: "{{ hostvars[groups['galera_all'][0]]['ansible_host'] }}"
-      when: inventory_hostname == groups['monasca_all'][0]
-    - name: Grant access to the DB for the monasca service
-      mysql_user:
-        login_user: "{{ galera_root_user }}"
-        login_password: "{{ galera_root_password }}"
-        login_host: "{{ monasca_galera_address }}"
-        name: "{{ monasca_galera_database }}"
-        password: "{{ monasca_galera_password }}"
-        host: "{{ item }}"
-        state: "present"
-        priv: "{{ monasca_galera_database }}.*:ALL"
-      with_items:
-        - "localhost"
-        - "%"
-      delegate_to: "{{ hostvars[groups['galera_all'][0]]['ansible_host'] }}"
-      when: inventory_hostname == groups['monasca_all'][0]
-    - name: Grant access to the DB for the monasca grafana service
-      mysql_user:
-        login_user: "{{ galera_root_user }}"
-        login_password: "{{ galera_root_password }}"
-        login_host: "{{ monasca_galera_address }}"
-        name: "{{ monasca_grafana_galera_username }}"
-        password: "{{ monasca_grafana_galera_password }}"
-        host: "{{ item }}"
-        state: "present"
-        priv: "{{ monasca_grafana_galera_database }}.*:ALL"
-      with_items:
-        - "localhost"
-        - "%"
-      delegate_to: "{{ hostvars[groups['galera_all'][0]]['ansible_host'] }}"
-      when: inventory_hostname == groups['monasca_all'][0]
+    - include: common/create-grant-db.yml
+      db_name: "{{ monasca_galera_database }}"
+      db_password: "{{ monasca_container_mysql_password }}"
   roles:
     - role: "os_monasca"
   vars_files:

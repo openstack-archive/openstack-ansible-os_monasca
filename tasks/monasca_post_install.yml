@@ -1,0 +1,53 @@
+---
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Drop Monasca Config(s)
+  config_template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ monasca_system_user_name }}"
+    group: "{{ monasca_system_group_name }}"
+    mode: "0644"
+    config_overrides: "{{ item.config_overrides }}"
+    config_type: "{{ item.config_type }}"
+  with_items:
+    - src: "monasca-api/api-config.conf.j2"
+      dest: "/etc/monasca/api-config.conf"
+      config_overrides: "{{ monasca_api_config_overrides }}"
+      config_type: "ini"
+    - src: "monasca-api/api-config.ini.j2"
+      dest: "/etc/monasca/api-config.ini"
+      config_overrides: "{{ monasca_api_config_ini_overrides }}"
+      config_type: "ini"
+    - src: "monasca-api/api-logging.conf.j2"
+      dest: "/etc/monasca/api-logging.conf"
+      config_overrides: "{{ monasca_api_logging_config_overrides }}"
+      config_type: "ini"
+    - src: "monasca-persister/persister.conf.j2"
+      dest: "/etc/monasca/persister.conf"
+      config_overrides: "{{ monasca_persister_config_overrides }}"
+      config_type: "ini"
+    - src: "monasca-persister/persister-logging.conf.j2"
+      dest: "/etc/monasca/persister-logging.conf"
+      config_overrides: "{{ monasca_persister_logging_config_overrides }}"
+      config_type: "ini"
+    - src: "monasca-thresh/thresh-config.yml.j2"
+      dest: "/etc/monasca/thresh-config.yml"
+      config_overrides: "{{ monasca_thresh_config_overrides }}"
+      config_type: "yaml"
+    - src: "monasca-notification/notification.yaml.j2"
+      dest: "/etc/monasca/notification.yaml"
+      config_overrides: "{{ monasca_notification_config_overrides }}"
+      config_type: "yaml"
+  notify:
+    - Restart monasca services
