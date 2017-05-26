@@ -1,0 +1,10 @@
+---
+
+- name: Copy mysql schema script to host
+  template:
+    dest: "/opt/mon_mysql.sql"
+    owner: root
+    group: root
+    mode: 0640
+    src: mon_mysql.sql.j2
+  notify: Create monasca database schema

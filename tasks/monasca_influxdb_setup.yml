@@ -1,0 +1,37 @@
+- name: Install influxdb libs
+  pip:
+    name: influxdb
+    state: present
+
+- name: Create influxdb database
+  influxdb_database:
+    hostname: "{{ monasca_influxdb_host }}"
+    port: "{{ monasca_influxdb_port }}"
+    username: "{{ monasca_influxdb_admin }}"
+    password: "{{ monasca_influxdb_admin_password }}"
+    database_name: "{{ monasca_influxdb_database }}"
+    state: present
+
+- name: Create influxdb retention policy for database
+  influxdb_retention_policy:
+    hostname: "{{ monasca_influxdb_host }}"
+    port: "{{ monasca_influxdb_port }}"
+    database_name: "{{ monasca_influxdb_database }}"
+    username: "{{ monasca_influxdb_admin }}"
+    password: "{{ monasca_influxdb_admin_password }}"
+    policy_name: persister_all
+    duration: "{{ monasca_influxdb_retention_policy }}"
+    replication: "{{ monasca_influxdb_replication_factor }}"
+
+- name: Create influxdb users
+  influxdb_user:
+    hostname: "{{ monasca_influxdb_host }}"
+    port: "{{ monasca_influxdb_port }}"
+    database_name: "{{ monasca_influxdb_database }}"
+    username: "{{ monasca_influxdb_admin }}"
+    password: "{{ monasca_influxdb_admin_password }}"
+    user_name: "{{ item.username }}"
+    user_pass: "{{ item.password }}"
+  with_items:
+    - "{{ monasca_influxdb_users }}"
+

@@ -1,0 +1,9 @@
+
+- include: monasca_influxdb_setup.yml
+  when: inventory_hostname in groups['monasca_influxdb']
+
+- include: monasca_mysql_setup.yml
+  when: inventory_hostname in groups['monasca_api']
+
+- include: monasca_kafka_setup.yml
+  when: inventory_hostname in groups['monasca_kafka']

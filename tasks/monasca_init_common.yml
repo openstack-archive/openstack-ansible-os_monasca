@@ -13,18 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: monasca_init_upstart.yml
-  when:
-    - ansible_service_mgr == 'upstart'
-
 - include: monasca_init_systemd.yml
   when:
     - ansible_service_mgr == 'systemd'
 
 - name: Load service
   service:
-   name: "{{ item.value.service_name }}"
-   enabled: "yes"
+    name: "{{ item.value.service_name }}"
+    enabled: "yes"
   with_dict: "{{ monasca_services }}"
   when: inventory_hostname in groups[item.value.group]
   notify:

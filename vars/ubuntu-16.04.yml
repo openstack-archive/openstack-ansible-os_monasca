@@ -16,10 +16,17 @@
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 #
+
+## APT Cache options
+cache_timeout: 600
+
+## Common apt packages
 monasca_distro_packages:
   - build-essential
+  - git
+  - mailutils
+  - maven
   - openjdk-8-jdk
   - python-software-properties
   - python-dev
   - python-mysqldb
-  - python-pip

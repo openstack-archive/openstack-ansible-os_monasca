@@ -1,0 +1,9 @@
+monasca_venv_tag: "{{ venv_tag }}"
+monasca_venv_download_url: "{{ venv_base_download_url }}/monasca-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"
+
+influxdb_host: "{{ internal_lb_vip_address }}"
+influxdb_port: 8086
+
+zookeeper_hosts: "{% for host in groups['monasca_zookeeper'] %}{{ hostvars[host]['ansible_host'] }}:{{ zookeeper_client_port }}{% if not loop.last %},{% endif %}{% endfor %}"
+
+kafka_hosts: "{% for host in groups['monasca_kafka'] %}{{ hostvars[host]['ansible_host'] }}:{{ kafka_port }}{% if not loop.last %},{% endif %}{% endfor %}"

@@ -1,31 +1,27 @@
 ---
-# Copyright 2016 Internet Solutions (Pty) Ltd
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#    http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
-# (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 
 - name: Install distro packages
   package:
-    name: "{{ monasca_distro_packages }}"
+    name: "{{ item }}"
     state: "{{ monasca_package_state }}"
     update_cache: "{{ (ansible_pkg_mgr == 'apt') | ternary('yes', omit) }}"
     cache_valid_time: "{{ (ansible_pkg_mgr == 'apt') | ternary(cache_timeout, omit) }}"
   register: install_packages
-  until: install_packages | success
+  until: install_packages|success
   retries: 5
   delay: 2
+  with_items: "{{ monasca_distro_packages }}"
 
 - name: Create developer mode constraint file
   copy:
@@ -34,7 +30,8 @@
       {% for item in monasca_developer_constraints %}
       {{ item }}
       {% endfor %}
-  when: monasca_developer_mode | bool
+  when:
+    - monasca_developer_mode | bool
 
 - name: Install requires pip packages
   pip:
@@ -48,18 +45,11 @@
   retries: 5
   delay: 2
 
-- name: Retrieve checksum for venv download
-  uri:
-    url: "{{ monasca_venv_download_url | replace('tgz', 'checksum') }}"
-    return_content: yes
-  register: monasca_venv_checksum
-  when: monasca_venv_download | bool
-
 - name: Attempt venv download
   get_url:
     url: "{{ monasca_venv_download_url }}"
     dest: "/var/cache/{{ monasca_venv_download_url | basename }}"
-    checksum: "sha1:{{ monasca_venv_checksum.content | trim }}"
+    checksum: "sha1:{{ lookup('url', monasca_venv_download_url | replace('tgz', 'checksum')) }}"
   register: monasca_get_venv
   when: monasca_venv_download | bool
 
@@ -100,7 +90,16 @@
   retries: 5
   delay: 2
   when: monasca_get_venv | failed or monasca_get_venv | skipped
-  notify: Restart monasca services
+  notify:
+    - Restart monasca services
+
+- name: CentOS remove python from path first
+  file:
+    path:  "{{ monasca_bin | dirname }}/bin/python2.7"
+    state: "absent"
+  when:
+    - ansible_pkg_mgr == 'yum'
+    - monasca_get_venv | changed
 
 - name: Update virtualenv path
   command: >

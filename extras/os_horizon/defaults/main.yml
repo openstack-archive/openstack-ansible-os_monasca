@@ -1,0 +1,4 @@
+horizon_enable_monasca_ui: True
+horizon_grafana_url: "https://{{ external_lb_vip_address }}:3000"
+horizon_pip_packages:
+  - monasca-ui

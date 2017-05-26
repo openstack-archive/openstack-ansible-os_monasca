@@ -16,22 +16,30 @@
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 
-- name: Reload systemd daemon
-  command: "systemctl daemon-reload"
-  notify:
-    - Restart monasca services
+- name: Setup monasca-thresh
+  command: "mvn clean {{ item.action }} -DskipTests"
+  args:
+    chdir: "/usr/share/{{ item.dir }}"
+  with_items:
+   - dir: "monasca-common"
+     action: "install"
+   - dir: "monasca-thresh/thresh"
+     action: "package"
 
-- name: Reload upstart init scripts
-  command: initctl reload-configuration
-  notify:
-    - Restart monasca services
+- name: Create monasca database schema
+  mysql_db:
+    login_host: "{{ monasca_galera_address }}"
+    login_user: "{{ monasca_galera_user }}"
+    login_password: "{{ monasca_container_mysql_password }}"
+    name: "{{ monasca_galera_database }}"
+    state: import
+    target: "/opt/mon_mysql.sql"
 
 - name: Restart monasca services
   service:
     name: "{{ item.value.service_name }}"
+    enabled: yes
     state: "restarted"
-    pattern: "{{ item.value.service_name }}"
+    daemon_reload: "{{ (ansible_service_mgr == 'systemd') | ternary('yes', omit) }}"
   with_dict: "{{ monasca_services }}"
-  when:
-    - inventory_hostname in groups[item.value.group]
-    - "{{ item.value.condition | default(True) }}"
+  when: inventory_hostname in groups[item.value.group]
