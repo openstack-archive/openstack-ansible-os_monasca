@@ -1,0 +1,20 @@
+# The infra nodes that will be running the monasca services
+monasca-infra_hosts:
+  aio1:
+    ip: 172.29.236.100
+
+monasca-zookeeper_hosts:
+  aio1:
+    ip: 172.29.236.100
+
+monasca-kafka_hosts:
+  aio1:
+    ip: 172.29.236.100
+
+monasca-storm_hosts:
+  aio1:
+    ip: 172.29.236.100
+
+monasca-influxdb_hosts:
+  aio1:
+    ip: 172.29.236.100

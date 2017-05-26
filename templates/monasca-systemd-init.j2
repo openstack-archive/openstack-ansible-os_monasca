@@ -11,9 +11,9 @@ User={{ monasca_system_user_name }}
 Group={{ monasca_system_group_name }}
 
 {% if item.value.service_init_bin is defined %}
-ExecStart={{ item.value.service_init_bin }} {{ item.value.service_init_options |default('') }} --log-file=/var/log/monasca/{{ item.value.service_name }}.log
+ExecStart={{ item.value.service_init_bin }} {{ item.value.service_init_options |default('') }}
 {% else %}
-ExecStart={{ monasca_bin }}/{{ item.value.service_name }} {{ program_config_options|default('') }} --log-file=/var/log/monasca/{{ item.value.service_name }}.log
+ExecStart={{ monasca_bin }}/{{ item.value.service_name }} {{ program_config_options|default('') }}
 {% endif %}
 
 # Give a reasonable amount of time for the server to start up/shut down

@@ -16,88 +16,43 @@
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 
+# Monasca vars
+test_monasca_group: "{{ ((groups['monasca_all'] is defined) and (groups['monasca_all'] | length > 0)) | ternary('monasca_all', 'all_containers') }}"
+test_monasca_host: "{{ hostvars[groups[test_monasca_group][0]]['ansible_host'] }}"
 monasca_venv_tag: "testing"
-monasca_developer_mode: True
-monasca_galera_address: "{{ hostvars[groups['galera_all'][0]]['ansible_host'] }}"
-external_lb_vip_address: "{{ hostvars[groups['keystone_all'][0]]['ansible_host'] }}"
-internal_lb_vip_address: "{{ hostvars[groups['keystone_all'][0]]['ansible_host'] }}"
+monasca_developer_mode: true
+monasca_git_install_branch: master
+monasca_service_password: "secrete"
+monasca_galera_address: "{{ test_galera_host }}"
 monasca_galera_database: monasca
 monasca_galera_user: monasca
-monasca_galera_password: "secrete"
-monasca_keystone_auth_plugin: password
-monasca_rabbitmq_port: "{{ rabbitmq_port }}"
-monasca_rabbitmq_servers: "{{ rabbitmq_servers }}"
-monasca_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-monasca_rabbitmq_password: "secrete"
-monasca_rabbitmq_userid: monasca
-monasca_rabbitmq_vhost: /monasca
-monasca_api_requirements_git_install_branch: master
-monasca_log_api_requirements_git_install_branch: master
-monasca_ceilometer_requirements_git_install_branch: master
-monasca_common_requirements_git_install_branch: master
-monasca_transform_requirements_git_install_branch: master
-monasca_notification_requirements_git_install_branch: master
-monasca_persister_requirements_git_install_branch: master
-monasca_python_client_requirements_git_install_branch: master
-monasca_service_password: "secrete"
-monasca_readonly_password: "secrete"
-monasca_role_names:
-  - monasca-user
-  - anotherrole
-monasca_service_user_domain_name: default
-monasca_service_project_domain_name: Default
-monasca_service_project_name: service
-monasca_service_region: RegionOne
-monasca_service_user_name: monasca
-monasca_readonly_user_name: monasca-read-only
-monasca_bind_port: 8070
-monasca_log_api_bind_port: 5607
+monasca_service_port: 8070
+monasca_service_publicuri: "http://{{ test_monasca_host }}:{{ monasca_service_port }}"
+monasca_service_publicurl: "{{ monasca_service_publicuri }}/v2.0"
+monasca_service_internaluri: "http://{{ test_monasca_host }}:{{ monasca_service_port }}"
+monasca_service_internalurl: "{{ monasca_service_internaluri }}/v2.0"
+monasca_service_adminuri: "http://{{ test_monasca_host }}:{{ monasca_service_port }}"
+monasca_service_adminurl: "{{ monasca_service_adminuri }}/v2.0"
+monasca_container_mysql_password: "SuperSecrete"
 monasca_bin: "/openstack/venvs/monasca-{{ monasca_venv_tag }}/bin"
-storm_nimbus_enabled: true
-storm_supervisor_enabled: true
-nimbus_host: "{{ zookeeper_hosts }}"
-monasca_mysql_host: "{{ monasca_galera_address }}"
-monasca_mysql_admin: "{{ monasca_galera_user }}"
-monasca_mysql_admin_password: "{{ monasca_galera_password }}"
-monasca_mysql_db: "{{ monasca_galera_database }}"
-influxdb_admin: "monasca"
-influxdb_admin_password: "secrete"
-monasca_grafana_admin_password: "secrete"
-monasca_grafana_galera_password: "secrete"
-monasca_grafana_galera_database: grafana
-monasca_grafana_galera_username: grafana
+
 grafana_mysql_host: "{{ monasca_galera_address }}"
-grafana_admin_password: "{{ monasca_grafana_admin_password }}"
-grafana_mysql_db: "{{ monasca_grafana_galera_database }}"
-grafana_mysql_user: "{{ monasca_grafana_galera_username }}"
-grafana_mysql_password: "{{ monasca_grafana_galera_password }}"
-grafana_keystone_url: "{{ keystone_service_internalurl }}"
+grafana_admin_password: "secrete"
+grafana_galera_password: "secrete"
+monasca_influxdb_admin_password: "secrete"
+monasca_api_influxdb_password: "secrete"
+monasca_persister_influxdb_password: "secrete"
+monasca_agent_password: "secrete"
+monasca_agent_roles:
+  - monasca-agent
+  - anotherrole
+
 tempest_run: yes
-tempest_venv_tag: "{{ tempest_git_install_branch }}"
-tempest_venv_bin: "/opt/tempest_{{ tempest_venv_tag }}/bin"
-tempest_log_dir: "/var/log/"
+
 tempest_plugins:
   - name: monasca-api
     repo: https://git.openstack.org/openstack/monasca-api
     branch: master
+
 tempest_test_whitelist:
-  - monasca_tempest_tests.tests.api.test_alarm_definitions.TestAlarmDefinitions.test_create_alarm_definition
-  - monasca_tempest_tests.tests.api.test_alarm_definitions.TestAlarmDefinitions.test_create_alarm_definition_with_alarm_actions_exceeds_max_length
-  - monasca_tempest_tests.tests.api.test_alarm_definitions.TestAlarmDefinitions.test_create_alarm_definition_with_description_exceeds_max_length
-  - monasca_tempest_tests.tests.api.test_alarm_definitions.TestAlarmDefinitions.test_create_alarm_definition_with_invalid_severity
-  - monasca_tempest_tests.tests.api.test_alarm_definitions.TestAlarmDefinitions.test_create_alarm_definition_with_multiple_notifications
-  - monasca_tempest_tests.tests.api.test_alarm_definitions.TestAlarmDefinitions.test_create_alarm_definition_with_name_exceeds_max_length
-  - monasca_tempest_tests.tests.api.test_alarm_definitions.TestAlarmDefinitions.test_create_alarm_definition_with_notification
-  - monasca_tempest_tests.tests.api.test_alarm_definitions.TestAlarmDefinitions.test_create_alarm_definition_with_ok_actions_exceeds_max_length
-  - monasca_tempest_tests.tests.api.test_alarm_definitions.TestAlarmDefinitions.test_create_alarm_definition_with_special_chars_in_expression
-  - monasca_tempest_tests.tests.api.test_alarm_definitions.TestAlarmDefinitions.test_create_alarm_definition_with_undeterm_actions_exceeds_max_length
-  - monasca_tempest_tests.tests.api.test_alarm_definitions.TestAlarmDefinitions.test_create_alarm_definition_with_url_in_expression
-  - monasca_tempest_tests.tests.api.test_alarm_definitions.TestAlarmDefinitions.test_create_and_delete_alarm_definition
-  - monasca_tempest_tests.tests.api.test_alarm_definitions.TestAlarmDefinitions.test_create_deterministic_alarm_definition
-  - monasca_tempest_tests.tests.api.test_alarm_definitions.TestAlarmDefinitions.test_create_deterministic_alarm_definition_compound_expr
-  - monasca_tempest_tests.tests.api.test_alarm_definitions.TestAlarmDefinitions.test_update_notification_in_alarm_definition
-  - monasca_tempest_tests.tests.api.test_versions.TestVersions.*
-neutron_provider_networks:
-  network_types: "vxlan,flat"
-  network_mappings: "flat:eth12"
-  network_vxlan_ranges: "1:1000"
+  - monasca_tempest_tests.tests.api.*

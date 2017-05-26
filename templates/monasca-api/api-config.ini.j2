@@ -1,3 +1,5 @@
+# {{ ansible_managed }}
+
 [DEFAULT]
 name = monasca_api
 
@@ -8,7 +10,7 @@ pipeline = request_id auth api
 paste.app_factory = monasca_api.api.server:launch
 
 [filter:auth]
-paste.filter_factory = keystonemiddleware.auth_token:filter_factory
+paste.filter_factory = monasca_api.healthcheck.keystone_protocol:filter_factory
 
 [filter:request_id]
 paste.filter_factory = oslo_middleware.request_id:RequestId.factory
@@ -16,6 +18,8 @@ paste.filter_factory = oslo_middleware.request_id:RequestId.factory
 [server:main]
 use = egg:gunicorn#main
 host = 0.0.0.0
-port = {{ monasca_bind_port }}
-workers = 1
+port = {{ monasca_api_service_port }}
+workers = {{ monasca_api_workers }}
+worker-connections = 2000
+backlog = 1000
 proc_name = monasca_api
