@@ -1,0 +1,78 @@
+---
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+haproxy_extra_services:
+  - service:
+      haproxy_service_name: influxdb_admin
+      haproxy_backend_nodes: "{{ groups['monasca_influxdb'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_port: 8083
+      haproxy_balance_type: tcp
+      haproxy_backend_options:
+        - tcp-check
+      haproxy_whitelist_networks:
+        - 192.168.0.0/16
+        - 172.16.0.0/12
+        - 10.0.0.0/8
+  - service:
+      haproxy_service_name: influxdb
+      haproxy_backend_nodes: "{{ groups['monasca_influxdb'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_port: 8086
+      haproxy_backend_port: 8086
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - "httpchk HEAD /ping"
+      haproxy_whitelist_networks:
+        - 192.168.0.0/16
+        - 172.16.0.0/12
+        - 10.0.0.0/8
+      haproxy_acls:
+        read_queries:
+          rule: "path_sub -i query"
+        write_queries:
+          rule: "path_sub -i write"
+          backend_name: "influxdb_relay"
+  - service:
+      haproxy_service_name: influxdb_relay
+      haproxy_backend_nodes: "{{ groups['monasca_influxdb'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_port: 8086
+      haproxy_backend_port: 9096
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - tcp-check
+      haproxy_whitelist_networks:
+        - 192.168.0.0/16
+        - 172.16.0.0/12
+        - 10.0.0.0/8
+      haproxy_acls:
+        write_queries:
+           rule: "path_sub -i write"
+        read_queries:
+           rule: "path_sub -i query"
+           backend_name: "influxdb"
+  - service:
+      haproxy_service_name: grafana
+      haproxy_backend_nodes: "{{ groups['monasca_grafana'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_port: 3000
+      haproxy_balance_type: http
+  - service:
+      haproxy_service_name: monasca_api
+      haproxy_backend_nodes: "{{ groups['monasca_api'] | default([]) }}"
+      haproxy_ssl: "{{ haproxy_ssl }}"
+      haproxy_port: 8070
+      haproxy_balance_type: http
+      haproxy_backend_options:
+        - "httpchk /healthcheck"

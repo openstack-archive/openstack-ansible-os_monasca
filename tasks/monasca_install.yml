@@ -34,7 +34,8 @@
       {% for item in monasca_developer_constraints %}
       {{ item }}
       {% endfor %}
-  when: monasca_developer_mode | bool
+  when:
+    - monasca_developer_mode | bool
 
 - name: Install requires pip packages
   pip:
@@ -100,7 +101,16 @@
   retries: 5
   delay: 2
   when: monasca_get_venv | failed or monasca_get_venv | skipped
-  notify: Restart monasca services
+  notify:
+    - Restart monasca services
+
+- name: CentOS remove python from path first
+  file:
+    path:  "{{ monasca_bin | dirname }}/bin/python2.7"
+    state: "absent"
+  when:
+    - ansible_pkg_mgr == 'yum'
+    - monasca_get_venv | changed
 
 - name: Update virtualenv path
   command: >
