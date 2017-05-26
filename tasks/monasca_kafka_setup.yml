@@ -1,0 +1,20 @@
+- name: Create kafka topics logs dir
+  file:
+    path: "/opt/kafka/logs"
+    state: directory
+    owner: "kafka"
+    group: "kafka"
+    mode: "0766"
+
+- name: Check kafka topics
+  shell: "/opt/kafka/bin/kafka-topics.sh --list --zookeeper {{ zookeeper_hosts }} --topic {{ item.key }} | grep {{ item.key }}"
+  with_dict: "{{ kafka_topics }}"
+  ignore_errors: yes
+  register: check_result
+  changed_when: False
+
+- name: create topics
+  command: "/opt/kafka/bin/kafka-topics.sh --create --zookeeper {{ zookeeper_hosts }} --replication-factor {{ item.value.replicas }} --partitions {{ item.value.partitions }} --topic {{ item.key }}"
+  with_dict: "{{ kafka_topics }}"
+  when:
+   - check_result | failed

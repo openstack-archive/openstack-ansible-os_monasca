@@ -15,86 +15,44 @@
 #
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
-- name: Ensure the service for monasca exists
+
+# Create a service
+- name: Ensure monasca service
   keystone:
     command: "ensure_service"
     endpoint: "{{ keystone_service_adminurl }}"
     login_user: "{{ keystone_admin_user_name }}"
     login_password: "{{ keystone_auth_admin_password }}"
     login_project_name: "{{ keystone_admin_tenant_name }}"
-    insecure: "{{ keystone_service_adminuri_insecure }}"
     service_name: "{{ monasca_service_name }}"
     service_type: "{{ monasca_service_type }}"
     description: "{{ monasca_service_description }}"
-  register: add_monasca_service
-  until: add_monasca_service |success
+    insecure: "{{ keystone_service_adminuri_insecure }}"
+  register: add_service
+  until: add_service|success
   retries: 5
   delay: 2
-  tags:
-    - monasca-api-setup
-    - monasca-service-add
-    - monasca-setup
 
-- name: Ensure the monasca user exists
+# Create an admin user
+- name: Ensure monasca user
   keystone:
     command: "ensure_user"
     endpoint: "{{ keystone_service_adminurl }}"
     login_user: "{{ keystone_admin_user_name }}"
     login_password: "{{ keystone_auth_admin_password }}"
     login_project_name: "{{ keystone_admin_tenant_name }}"
-    insecure: "{{ keystone_service_adminuri_insecure }}"
     user_name: "{{ monasca_service_user_name }}"
     tenant_name: "{{ monasca_service_project_name }}"
-    password: "{{ monasca_service_password | default('changeme') }}"
-  register: add_monasca_user
-  until: add_monasca_user |success
-  retries: 5
-  delay: 2
-  tags:
-    - monasca-api-setup
-    - monasca-service-add
-    - monasca-user-add
-    - monasca-setup
-
-- name: Ensure the monasca read only user exists
-  keystone:
-    command: "ensure_user"
-    endpoint: "{{ keystone_service_adminurl }}"
-    login_user: "{{ keystone_admin_user_name }}"
-    login_password: "{{ keystone_auth_admin_password }}"
-    login_project_name: "{{ keystone_admin_tenant_name }}"
+    password: "{{ monasca_service_password }}"
     insecure: "{{ keystone_service_adminuri_insecure }}"
-    user_name: "{{ monasca_readonly_user_name }}"
-    tenant_name: "{{ monasca_service_project_name }}"
-    password: "{{ monasca_readonly_password }}"
-  register: add_monasca_readonly_user
-  until: add_monasca_readonly_user |success
+  register: add_user
+  when: not monasca_service_in_ldap | bool
+  until: add_user|success
   retries: 5
-  delay: 2
-  tags:
-    - monasca-api-setup
-    - monasca-service-add
-    - monasca-user-add
-    - monasca-setup
+  delay: 10
 
-- name: Ensure the monasca role exists
-  keystone:
-    command: "ensure_role"
-    endpoint: "{{ keystone_service_adminurl }}"
-    login_user: "{{ keystone_admin_user_name }}"
-    login_password: "{{ keystone_auth_admin_password }}"
-    login_project_name: "{{ keystone_admin_tenant_name }}"
-    user_name: "{{ monasca_service_user_name }}"
-    tenant_name: "{{ monasca_service_project_name }}"
-    role_name: "{{ item }}"
-    insecure: "{{ keystone_service_adminuri_insecure }}"
-  register: ensure_monasca_roles
-  until: ensure_monasca_roles |success
-  retries: 5
-  delay: 2
-  with_items: "{{ monasca_role_names }}"
-
-- name: Ensure the monasca user has the admin role
+# Add a role to the user
+- name: Ensure monasca user to admin role
   keystone:
     command: "ensure_user_role"
     endpoint: "{{ keystone_service_adminurl }}"
@@ -103,25 +61,102 @@
     login_project_name: "{{ keystone_admin_tenant_name }}"
     user_name: "{{ monasca_service_user_name }}"
     tenant_name: "{{ monasca_service_project_name }}"
+    role_name: "{{ monasca_role_name }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
+  register: add_user_role
+  when: not monasca_service_in_ldap | bool
+  until: add_user_role|success
+  retries: 5
+  delay: 10
+
+# Create monasca roles
+- name: Ensure monasca user, agent and read only roles
+  keystone:
+    command: "ensure_role"
+    endpoint: "{{ keystone_service_adminurl }}"
+    login_user: "{{ keystone_admin_user_name }}"
+    login_password: "{{ keystone_auth_admin_password }}"
+    login_project_name: "{{ keystone_admin_tenant_name }}"
     role_name: "{{ item }}"
     insecure: "{{ keystone_service_adminuri_insecure }}"
-  register: ensure_monasca_service_roles
-  until: ensure_monasca_service_roles |success
+  register: add_roles
+  when: not monasca_service_in_ldap | bool
+  until: add_roles|success
   retries: 5
-  delay: 2
-  with_items: "{{ monasca_service_role_names }}"
+  delay: 10
+  with_flattened:
+    - "{{ monasca_user_roles }}"
+    - "{{ monasca_agent_roles }}"
+    - "{{ monasca_read_only_user_roles }}"
 
-- name: Ensure the monasca endpoint is registered
+# Create an monasca-agent user
+- name: Ensure monasca-agent user
+  keystone:
+    command: "ensure_user"
+    endpoint: "{{ keystone_service_adminurl }}"
+    login_user: "{{ keystone_admin_user_name }}"
+    login_password: "{{ keystone_auth_admin_password }}"
+    login_project_name: "{{ keystone_admin_tenant_name }}"
+    user_name: "{{ monasca_agent_user_name }}"
+    tenant_name: "{{ monasca_agent_project_name }}"
+    password: "{{ monasca_agent_password }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
+  register: add_user
+  when: not monasca_service_in_ldap | bool
+  until: add_user|success
+  retries: 5
+  delay: 10
+
+# Add a role to the user
+- name: Ensure monasca-agent user to monasca-agent roles
+  keystone:
+    command: "ensure_user_role"
+    endpoint: "{{ keystone_service_adminurl }}"
+    login_user: "{{ keystone_admin_user_name }}"
+    login_password: "{{ keystone_auth_admin_password }}"
+    login_project_name: "{{ keystone_admin_tenant_name }}"
+    user_name: "{{ monasca_agent_user_name }}"
+    tenant_name: "{{ monasca_agent_project_name }}"
+    role_name: "{{ item }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
+  register: add_user_role
+  when: not monasca_service_in_ldap | bool
+  until: add_user_role|success
+  retries: 5
+  delay: 10
+  with_items: "{{ monasca_agent_roles }}"
+
+# Add a role to the user
+- name: Ensure admin user to monasca-user roles
+  keystone:
+    command: "ensure_user_role"
+    endpoint: "{{ keystone_service_adminurl }}"
+    login_user: "{{ keystone_admin_user_name }}"
+    login_password: "{{ keystone_auth_admin_password }}"
+    login_project_name: "{{ keystone_admin_tenant_name }}"
+    user_name: "{{ keystone_admin_user_name }}"
+    tenant_name: "{{ keystone_admin_tenant_name }}"
+    role_name: "{{ item }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
+  register: add_user_role
+  when: not monasca_service_in_ldap | bool
+  until: add_user_role|success
+  retries: 5
+  delay: 10
+  with_items: "{{ monasca_user_roles }}"
+
+# Create an endpoint
+- name: Ensure monasca endpoint
   keystone:
     command: "ensure_endpoint"
     endpoint: "{{ keystone_service_adminurl }}"
     login_user: "{{ keystone_admin_user_name }}"
     login_password: "{{ keystone_auth_admin_password }}"
     login_project_name: "{{ keystone_admin_tenant_name }}"
-    insecure: "{{ keystone_service_adminuri_insecure }}"
     region_name: "{{ monasca_service_region }}"
     service_name: "{{ monasca_service_name }}"
     service_type: "{{ monasca_service_type }}"
+    insecure: "{{ keystone_service_adminuri_insecure }}"
     endpoint_list:
       - url: "{{ monasca_service_publicurl }}"
         interface: "public"
@@ -129,7 +164,7 @@
         interface: "internal"
       - url: "{{ monasca_service_adminurl }}"
         interface: "admin"
-  register: add_monasca_endpoints
-  until: add_monasca_endpoints |success
+  register: add_endpoint
+  until: add_endpoint|success
   retries: 5
-  delay: 2
+  delay: 10

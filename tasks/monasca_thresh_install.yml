@@ -1,0 +1,26 @@
+- name: Get package from git
+  git:
+    repo: "{{ item.repo }}"
+    dest: "/usr/share/{{ item.dest }}"
+    clone: "yes"
+    update: "yes"
+    version: "{{ item.version }}"
+    force: yes
+    accept_hostkey: yes
+  register: git_clone
+  until: git_clone|success
+  retries: 5
+  delay: 2
+  with_items:
+    - repo: "{{ monasca_common_git_repo }}"
+      version: "{{ monasca_common_git_install_branch }}"
+      dest: "monasca-common"
+    - repo: "{{ monasca_thresh_git_repo }}"
+      version: "{{ monasca_thresh_git_install_branch }}"
+      dest: "monasca-thresh"
+  notify: Setup monasca-thresh
+
+- name: Get monasca-thresh version
+  shell: "grep -m 1 version /usr/share/monasca-thresh/thresh/pom.xml | awk -F '[<>]' '{print $3}'"
+  register: _monasca_thresh_version
+  changed_when: false
