@@ -1,0 +1,10 @@
+Code-Review+2: Major Hayden <major@mhtx.net>
+Code-Review+1: Stefano Canepa (sc) <sc@linux.it>
+Code-Review+2: Jesse Pretorius (odyssey4me) <jesse.pretorius@rackspace.co.uk>
+Workflow+1: Jesse Pretorius (odyssey4me) <jesse.pretorius@rackspace.co.uk>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 27 Jun 2017 18:02:12 +0000
+Reviewed-on: https://review.openstack.org/478013
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
