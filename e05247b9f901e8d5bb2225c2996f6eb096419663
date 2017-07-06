@@ -1,0 +1,10 @@
+Code-Review+2: Marc Gariépy <gariepy.marc@gmail.com>
+Code-Review+1: Stefano Canepa (sc) <sc@linux.it>
+Code-Review+2: Major Hayden <major@mhtx.net>
+Workflow+1: Major Hayden <major@mhtx.net>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Thu, 06 Jul 2017 13:28:50 +0000
+Reviewed-on: https://review.openstack.org/481044
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
