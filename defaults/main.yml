@@ -96,7 +96,6 @@ monasca_service_user_domain_name: default
 
 monasca_role_name: admin
 monasca_api_bind_address: 0.0.0.0
-monasca_api_service_port: 8070
 
 ## Service Type and Data
 monasca_service_region: RegionOne
@@ -265,6 +264,7 @@ monasca_requires_pip_packages:
 
 monasca_pip_packages:
   - cassandra-driver
+  - cryptography
   - gunicorn
   - influxdb
   - keystoneauth1
@@ -273,7 +273,6 @@ monasca_pip_packages:
   - monasca-persister
   - monasca-notification
   - monasca-statsd
-  - pycrypto
   - PyOpenSSL
   - python-monascaclient
   - python-memcached
