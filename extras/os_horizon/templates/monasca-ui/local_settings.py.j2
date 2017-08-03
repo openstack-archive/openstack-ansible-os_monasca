@@ -46,7 +46,18 @@ MONITORING_SERVICE_TYPE = getattr(
 )
 
 # Grafana button titles/file names (global across all projects):
-GRAFANA_LINKS = []
+GRAFANA_LINKS = [
+
+{% if (groups['ceph_all'] is defined) and (groups['ceph_all'] | length > 0) %}
+    {'title': 'Ceph Dashboard', 'path': 'ceph-dashboard'},
+    {'title': 'Ceph OSDs Dashboard', 'path': 'ceph-osds-dashboard'},
+    {'title': 'Ceph Pools Dashboard', 'path': 'ceph-pools-dashboard'},
+{% endif %}
+    {'title': 'Containers Dashboard', 'path': 'containers-dashboard'},
+    {'title': 'Hosts Dashboard', 'path': 'hosts-dashboard'},
+    {'title': 'Infra Dashboard', 'path': 'infra-dashboard'},
+    {'title': 'Instances Dashboard', 'path': 'instances-dashboard'}
+]
 DASHBOARDS = getattr(settings, 'GRAFANA_LINKS', GRAFANA_LINKS)
 
 #
@@ -64,7 +75,7 @@ DASHBOARDS = getattr(settings, 'GRAFANA_LINKS', GRAFANA_LINKS)
 #        {'title': _('OpenStack Dashboard'), 'path': 'project'}]}
 # ]
 
-GRAFANA_URL = { 'RegionOne': '{{ horizon_grafana_url }}', }
+GRAFANA_URL = { '{{ horizon_service_region }}': '{{ horizon_grafana_url }}', }
 
 ENABLE_KIBANA_BUTTON = getattr(settings, 'ENABLE_KIBANA_BUTTON', False)
 KIBANA_POLICY_RULE = getattr(settings, 'KIBANA_POLICY_RULE', 'admin_required')

@@ -37,28 +37,44 @@ options:
         description:
             - Keystone password to use for authentication, required unless a
               keystone_token is specified.
-    keystone_url:
+    keystone_auth_url:
         required: false
         description:
             - Keystone url to authenticate against, required unless
               keystone_token isdefined.
               Example http://192.168.10.5:5000/v3
+    keystone_insecure:
+        required: false
+        default: false
+        description:
+            - Specifies if insecure TLS (https) requests. If True,
+              the servers certificate will not be validated.
     keystone_token:
         required: false
         description:
             - Keystone token to use with the monasca api. If this is specified
               the monasca_api_url is required but
               the keystone_user and keystone_password aren't.
-    keystone_user:
+    keystone_username:
         required: false
         description:
             - Keystone user to log in as, required unless a keystone_token
               is specified.
-    keystone_project:
+    keystone_user_domain_name:
+        required: false
+        default: 'Default'
+        description:
+            - Keystone user domain name used for authentication.
+    keystone_project_name:
         required: false
         description:
             - Keystone project name to obtain a token for, defaults to the
               user's default project
+    keystone_project_domain_name:
+        required: false
+        default: 'Default'
+        description:
+            - Keystone project domain name used for authentication.
     match_by:
         required: false
         default: "[hostname]"
@@ -127,7 +143,6 @@ import os  # NOQA
 
 try:
     from monascaclient import client
-    from monascaclient import ksclient
 except ImportError:
     # In many installs the python-monascaclient is available in a venv, switch
     # to the most common location
@@ -136,7 +151,6 @@ except ImportError:
     try:
         execfile(activate_this, dict(__file__=activate_this))
         from monascaclient import client
-        from monascaclient import ksclient
     except ImportError:
         monascaclient_found = False
     else:
@@ -159,44 +173,38 @@ class MonascaAnsible(object):
 
     def __init__(self, module):
         self.module = module
-        self._keystone_auth()
-        self.exit_data = {
-            'keystone_token': self.token,
-            'monasca_api_url': self.api_url}
+        self.auth_kwargs = self._get_auth_credentials()
         self.monasca = client.Client(
             self.module.params['api_version'],
-            self.api_url,
-            token=self.token)
+            **self.auth_kwargs
+        )
 
     def _exit_json(self, **kwargs):
-        """ Exit with supplied kwargs combined with the self.exit_data
+        """ Exit with supplied kwargs
         """
-        kwargs.update(self.exit_data)
         self.module.exit_json(**kwargs)
 
-    def _keystone_auth(self):
-        """ Authenticate to Keystone and set self.token and self.api_url
+    def _get_auth_credentials(self):
+        """ Build kwargs for authentication
         """
+        kwargs = {
+            'auth_url': self.module.params['keystone_auth_url'],
+            'insecure': self.module.params['keystone_insecure'],
+            'endpoint': self.module.params['monasca_api_url'],
+            'project_name': self.module.params['keystone_project_name'],
+            'project_domain_name': self.module.params['keystone_project_domain_name']
+        }
         if self.module.params['keystone_token'] is None:
-            ks = ksclient.KSClient(
-                auth_url=self.module.params['keystone_url'],
-                username=self.module.params['keystone_user'],
-                password=self.module.params['keystone_password'],
-                project_name=self.module.params['keystone_project'])
-
-            self.token = ks.token
-            if self.module.params['monasca_api_url'] is None:
-                self.api_url = ks.monasca_url
-            else:
-                self.api_url = self.module.params['monasca_api_url']
+            kwargs.update({
+                'username': self.module.params['keystone_username'],
+                'password': self.module.params['keystone_password'],
+                'user_domain_name': self.module.params['keystone_user_domain_name']
+            })
         else:
-            if self.module.params['monasca_api_url'] is None:
-                self.module.fail_json(
-                    msg='Error: When specifying keystone_token, \
-                         monasca_api_url is required')
-            self.token = self.module.params['keystone_token']
-            self.api_url = self.module.params['monasca_api_url']
-
+            kwargs.update({
+                'token': self.module.params['keystone_token']
+            })
+        return kwargs
 
 class MonascaDefinition(MonascaAnsible):
     def run(self):
@@ -272,11 +280,16 @@ def main():
             api_version=dict(required=False, default='2_0', type='str'),
             description=dict(required=False, type='str'),
             expression=dict(required=False, type='str'),
-            keystone_password=dict(required=False, type='str'),
+            keystone_auth_url=dict(required=False, type='str'),
+            keystone_insecure=dict(required=False, default=False, type='bool'),
+            keystone_password=dict(required=False, type='str', no_log=True),
+            keystone_project_name=dict(required=False, type='str'),
+            keystone_project_domain_name=dict(required=False, default='Default',
+                                              type='str'),
             keystone_token=dict(required=False, type='str'),
-            keystone_url=dict(required=False, type='str'),
-            keystone_user=dict(required=False, type='str'),
-            keystone_project=dict(required=False, type='str'),
+            keystone_username=dict(required=False, type='str'),
+            keystone_user_domain_name=dict(required=False, default='Default',
+                                           type='str'),
             match_by=dict(default=['hostname'], type='list'),
             monasca_api_url=dict(required=False, type='str'),
             name=dict(required=True, type='str'),
@@ -290,7 +303,7 @@ def main():
     )
 
     if not monascaclient_found:
-        module.fail_json(msg="python-monascaclient >= 1.0.9 is required")
+        module.fail_json(msg="python-monascaclient >= 1.6.1 is required")
 
     definition = MonascaDefinition(module)
     definition.run()
