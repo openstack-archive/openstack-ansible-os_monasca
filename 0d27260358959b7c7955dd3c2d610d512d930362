@@ -1,0 +1,9 @@
+Code-Review+2: Major Hayden <major@mhtx.net>
+Code-Review+1: Nicolas Seyvet <nseyvet@op5.com>
+Workflow+1: Kevin Carter (cloudnull) <kevin@cloudnull.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 28 Aug 2017 14:02:57 +0000
+Reviewed-on: https://review.openstack.org/495230
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
