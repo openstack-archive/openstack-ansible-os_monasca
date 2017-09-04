@@ -1,0 +1,9 @@
+Code-Review+2: Major Hayden <major@mhtx.net>
+Code-Review+2: Markos Chandras (hwoarang) <mchandras@suse.de>
+Workflow+1: Markos Chandras (hwoarang) <mchandras@suse.de>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 04 Sep 2017 15:37:40 +0000
+Reviewed-on: https://review.openstack.org/499662
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
