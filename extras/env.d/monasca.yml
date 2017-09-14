@@ -20,13 +20,15 @@ component_skel:
   monasca_api:
     belongs_to:
       - monasca_all
-  monasca_events_api:
+  monasca_persister:
     belongs_to:
       - monasca_all
-  monasca_log_api:
+  monasca_thresh:
     belongs_to:
       - monasca_all
-
+  monasca_notification:
+    belongs_to:
+      - monasca_all
   monasca_zookeeper:
     belongs_to:
       - monasca_all
@@ -44,68 +46,51 @@ component_skel:
       - monasca_all
 
 container_skel:
-  monasca_api_container:
+  monasca_container:
     belongs_to:
       - monasca-infra_containers
     contains:
       - monasca_api
-      - monasca_common
+      - monasca_persister
+      - monasca_thresh
+      - monasca_notification
+      - monasca_storm
     properties:
       service_name: monasca
-  monasca_events_api_container:
-    belongs_to:
-      - monasca-infra_containers
-    contains:
-      - monasca_events_api
-      - monasca_common
-    properties:
-      service_name: monasca
-  monasca_log_api_container:
-    belongs_to:
-      - monasca-infra_containers
-    contains:
-      - monasca_log_api
-      - monasca_common
-    properties:
-      service_name: monasca
-
   monasca_zookeeper_container:
     belongs_to:
       - monasca-zookeeper_containers
     contains:
       - monasca_zookeeper
     properties:
-      service_name: monasca
+      service_name: zookeeper
   monasca_kafka_container:
     belongs_to:
       - monasca-kafka_containers
     contains:
       - monasca_kafka
     properties:
-      service_name: monasca
+      service_name: kafka
   monasca_influxdb_container:
     belongs_to:
       - monasca-influxdb_containers
     contains:
       - monasca_influxdb
     properties:
-      service_name: monasca
+      service_name: influxdb
   monasca_grafana_container:
     belongs_to:
       - monasca-infra_containers
     contains:
       - monasca_grafana
     properties:
-      service_name: monasca
+      service_name: grafana
 
 physical_skel:
   monasca-zookeeper_containers:
     belongs_to:
       - all_containers
   monasca-kafka_containers:
-    belongs_to:
-      - all_containers
-  monasca-storm_containers:
     belongs_to:
       - all_containers
   monasca-influxdb_containers:
@@ -121,9 +106,6 @@ physical_skel:
     belongs_to:
       - hosts
   monasca-kafka_hosts:
-    belongs_to:
-      - hosts
-  monasca-storm_hosts:
     belongs_to:
       - hosts
   monasca-influxdb_hosts:

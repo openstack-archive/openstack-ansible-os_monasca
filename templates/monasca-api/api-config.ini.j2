@@ -1,0 +1,29 @@
+# {{ ansible_managed }}
+
+[DEFAULT]
+name = monasca_api
+
+[pipeline:main]
+pipeline = request_id auth api
+
+[app:api]
+paste.app_factory = monasca_api.api.server:launch
+
+[filter:auth]
+paste.filter_factory = keystonemiddleware.auth_token:filter_factory
+
+[filter:request_id]
+paste.filter_factory = oslo_middleware.request_id:RequestId.factory
+
+[server:main]
+use = egg:gunicorn#main
+host = 0.0.0.0
+port = {{ monasca_service_port }}
+workers = {{ monasca_api_workers }}
+worker-connections = 2000
+backlog = 1000
+proc_name = monasca-api
+worker-class = eventlet
+timeout = 30
+backlog = 2048
+keepalive = 2

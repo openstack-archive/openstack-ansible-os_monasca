@@ -120,20 +120,6 @@ monasca_api_metrics_driver: "monasca_api.common.repositories.influxdb.metrics_re
 monasca_api_init_config_overrides: {}
 monasca_log_api_init_config_overrides: {}
 
-monasca_services:
-  monasca-api:
-    group: monasca_api
-    service_name: monasca-api
-    service_init_bin: "{{ monasca_bin }}/gunicorn"
-    service_init_options: "-n monasca-api -k eventlet --worker-connections=2000 --backlog=1000 --paste /etc/monasca/api-config.ini"
-    init_config_overrides: "{{ monasca_api_init_config_overrides }}"
-  monasca-log-api:
-    group: monasca_log_api
-    service_name: monasca-log-api
-    service_init_bin: "{{ monasca_bin }}/gunicorn"
-    service_init_options: "-n monasca-log-api -k eventlet --worker-connections=2000 --backlog=1000 --paste /etc/monasca/log-api-config.ini"
-    init_config_overrides: "{{ monasca_log_api_init_config_overrides }}"
-
 monasca_requires_pip_packages:
   - httplib2
   - python-glanceclient
@@ -147,6 +133,7 @@ monasca_pip_packages:
   - keystoneauth1
   - simport
   - gunicorn
+  - influxdb
   - python-memcached
   - monasca-common
   - monasca-api
@@ -154,7 +141,36 @@ monasca_pip_packages:
   - monasca-persister
   - monasca-transform
   - monasca-notification
-  - influxdb
+  - monasca-statsd
+  - pycrypto
+  - PyOpenSSL
+  - python-monascaclient
+  - python-memcached
+
+## Service Names
+monasca_services:
+  monasca-api:
+    group: monasca_api
+    service_name: monasca-api
+    service_init_bin: "{{ monasca_bin }}/gunicorn"
+    service_init_options: "-n monasca-api -k eventlet --worker-connections=2000 --backlog=1000 --paste /etc/monasca/api-config.ini -w {{ monasca_api_workers }}"
+    init_config_overrides: "{{ monasca_api_init_overrides }}"
+  monasca-persister:
+    group: monasca_persister
+    service_name: monasca-persister
+    service_init_bin: "{{ monasca_bin }}/python {{ monasca_bin }}/../lib/python2.7/site-packages/monasca_persister/persister.py"
+    service_init_options: "--config-file /etc/monasca/persister.conf"
+    init_config_overrides: "{{ monasca_persister_init_overrides }}"
+  monasca-thresh:
+    group: monasca_thresh
+    service_name: monasca-thresh
+    service_init_bin: "/opt/storm/current/bin/storm jar /usr/share/monasca-thresh/thresh/target/monasca-thresh-{{ _monasca_thresh_version.stdout | default('2.1.1') }}-shaded.jar"
+    service_init_options: "monasca.thresh.ThresholdingEngine /etc/monasca/thresh-config.yml thresh-cluster"
+    init_config_overrides: "{{ monasca_thresh_init_overrides }}"
+  monasca-notification:
+    group: monasca_notification
+    service_name: monasca-notification
+    init_config_overrides: "{{ monasca_notification_init_overrides }}"
 
 monasca_api_paste_ini_overrides: {}
 monasca_api_config_overrides: {}
