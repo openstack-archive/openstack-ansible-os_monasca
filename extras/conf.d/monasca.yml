@@ -1,3 +1,4 @@
+---
 # The infra nodes that will be running the monasca services
 monasca-infra_hosts:
   aio1:
