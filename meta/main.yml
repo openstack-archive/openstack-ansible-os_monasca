@@ -81,3 +81,6 @@ dependencies:
     tags:
       - grafana
       - skip_ansible_lint
+openstack_ansible_info:
+  maturity: complete
+  created_during: queens
