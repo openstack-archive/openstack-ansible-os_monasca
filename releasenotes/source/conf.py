@@ -63,7 +63,9 @@ target_name = 'openstack-ansible-' + role_name
 title = 'OpenStack-Ansible Release Notes: ' + role_name + 'role'
 
 # The link to the browsable source code (for the left hand menu)
-oslosphinx_cgit_link = 'https://git.openstack.org/cgit/openstack/' + target_name
+oslosphinx_cgit_link = (
+    "https://git.openstack.org/cgit/openstack/{}".format(target_name)
+)
 
 # Release notes do not need a version number in the title, they
 # cover multiple releases.
