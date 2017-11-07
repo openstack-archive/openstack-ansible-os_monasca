@@ -1,0 +1,9 @@
+Code-Review+2: Major Hayden <major@mhtx.net>
+Code-Review+2: Jimmy McCrory <jimmy.mccrory@gmail.com>
+Workflow+1: Jimmy McCrory <jimmy.mccrory@gmail.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Tue, 07 Nov 2017 00:46:03 +0000
+Reviewed-on: https://review.openstack.org/518073
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/stable/ocata
