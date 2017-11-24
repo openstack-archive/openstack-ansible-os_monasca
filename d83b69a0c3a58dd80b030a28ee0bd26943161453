@@ -1,0 +1,9 @@
+Code-Review+2: Major Hayden <major@mhtx.net>
+Workflow+1: Jean-Philippe Evrard <jean-philippe.evrard@rackspace.co.uk>
+Code-Review-1: Jean-Philippe Evrard <jean-philippe.evrard@rackspace.co.uk>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Fri, 24 Nov 2017 16:36:07 +0000
+Reviewed-on: https://review.openstack.org/516594
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/stable/pike
