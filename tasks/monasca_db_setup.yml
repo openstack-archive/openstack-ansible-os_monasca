@@ -12,10 +12,10 @@
 # limitations under the License.
 
 - include: monasca_influxdb_setup.yml
-  when: inventory_hostname in groups['monasca_influxdb']
+  when: "monasca_services['monasca-influxdb']['group'] in group_names"
 
 - include: monasca_mysql_setup.yml
-  when: inventory_hostname in groups['monasca_api']
+  when: "monasca_services['monasca-api']['group'] in group_names"
 
 - include: monasca_kafka_setup.yml
-  when: inventory_hostname in groups['monasca_kafka']
+  when: "monasca_services['monasca-kafka']['group'] in group_names"

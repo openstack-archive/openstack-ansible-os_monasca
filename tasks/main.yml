@@ -29,22 +29,22 @@
     - always
 
 - include: monasca_pre_install.yml
-  when: inventory_hostname in groups['monasca_api']
+  when: "monasca_services['monasca-api']['group'] in group_names"
   tags:
     - monasca-install
 
 - include: monasca_install.yml
-  when: inventory_hostname in groups['monasca_api']
+  when: "monasca_services['monasca-api']['group'] in group_names"
   tags:
     - monasca-install
 
 - include: monasca_thresh_install.yml
-  when: inventory_hostname in groups['monasca_api']
+  when: "monasca_services['monasca-api']['group'] in group_names"
   tags:
     - monasca-install
 
 - include: monasca_post_install.yml
-  when: inventory_hostname in groups['monasca_api']
+  when: "monasca_services['monasca-api']['group'] in group_names"
   tags:
     - monasca-config
 
