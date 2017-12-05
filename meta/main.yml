@@ -36,7 +36,6 @@ galaxy_info:
     - openstack
 
 dependencies:
-  - pip_install
   - galera_client
   - openstack_openrc
   - role: apt_package_pinning

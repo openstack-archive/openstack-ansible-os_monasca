@@ -26,10 +26,10 @@ Default variables
   :language: yaml
   :start-after: under the License.
 
-Required variables
-~~~~~~~~~~~~~~~~~~
+Dependencies
+~~~~~~~~~~~~
 
-None.
+This role needs pip >= 7.1 installed on the target host.
 
 Example playbook
 ~~~~~~~~~~~~~~~~
