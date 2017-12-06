@@ -1,0 +1,9 @@
+Code-Review+2: Jimmy McCrory <jimmy.mccrory@gmail.com>
+Code-Review+2: Markos Chandras (hwoarang) <mchandras@suse.de>
+Workflow+1: Markos Chandras (hwoarang) <mchandras@suse.de>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Wed, 06 Dec 2017 10:02:36 +0000
+Reviewed-on: https://review.openstack.org/525818
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
