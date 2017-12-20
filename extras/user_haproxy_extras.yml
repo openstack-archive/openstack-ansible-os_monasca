@@ -47,7 +47,7 @@ haproxy_extra_services:
       haproxy_service_name: influxdb_relay
       haproxy_backend_nodes: "{{ groups['monasca_influxdb'] | default([]) }}"
       haproxy_ssl: "{{ haproxy_ssl }}"
-      haproxy_port: 8086
+      haproxy_port: 9096
       haproxy_backend_port: 9096
       haproxy_balance_type: http
       haproxy_backend_options:
