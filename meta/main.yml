@@ -44,14 +44,14 @@ dependencies:
       - ansible_pkg_mgr == 'apt'
   - role: ansible-zookeeper
     when:
-      - "monasca_services['monasca-zookeeper']['group'] in group_names"
+      - inventory_hostname in groups['monasca_zookeeper']
     tags:
       - zookeeper
       - skip_ansible_lint
   - role: ansible-kafka
     kafka_listen_address: "{{ ansible_host }}"
     when:
-      - "monasca_services['monasca-kafka']['group'] in group_names"
+      - inventory_hostname in groups['monasca_kafka']
     tags:
       - kafka
       - skip_ansible_lint
@@ -60,13 +60,13 @@ dependencies:
     storm_supervisor_enabled: True
     nimbus_host: "{{ ansible_ssh_host }}"
     when:
-      - "monasca_services['monasca-api']['group'] in group_names"
+      - inventory_hostname in groups['monasca_api']
     tags:
       - storm
       - skip_ansible_lint
   - role: ansible-influxdb
     when:
-      - "monasca_services['monasca-influxdb']['group'] in group_names"
+      - inventory_hostname in groups['monasca_influxdb']
     tags:
       - influxdb
       - skip_ansible_lint
@@ -77,7 +77,7 @@ dependencies:
     grafana_mysql_password: "{{ grafana_galera_password }}"
     grafana_keystone_url: "{{ keystone_service_internaluri }}"
     when:
-      - "monasca_services['monasca-grafana']['group'] in group_names"
+      - inventory_hostname in groups['monasca_grafana']
     tags:
       - grafana
       - skip_ansible_lint
