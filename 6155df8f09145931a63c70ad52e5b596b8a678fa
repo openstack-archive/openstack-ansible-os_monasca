@@ -1,0 +1,9 @@
+Code-Review+2: Jean-Philippe Evrard <jean-philippe@evrard.me>
+Code-Review+2: Major Hayden <major@mhtx.net>
+Workflow+1: Major Hayden <major@mhtx.net>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Fri, 19 Jan 2018 12:37:19 +0000
+Reviewed-on: https://review.openstack.org/535063
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
