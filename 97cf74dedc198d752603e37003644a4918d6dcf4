@@ -1,0 +1,9 @@
+Code-Review+2: Kevin Carter (cloudnull) <kevin@cloudnull.com>
+Code-Review+2: Markos Chandras (hwoarang) <mchandras@suse.de>
+Workflow+1: Markos Chandras (hwoarang) <mchandras@suse.de>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Tue, 23 Jan 2018 12:02:32 +0000
+Reviewed-on: https://review.openstack.org/536431
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
