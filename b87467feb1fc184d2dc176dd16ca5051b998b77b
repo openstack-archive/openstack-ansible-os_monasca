@@ -1,0 +1,10 @@
+Code-Review+2: Markos Chandras (hwoarang) <mchandras@suse.de>
+Code-Review+1: Kaio Kassiano Moura Oliveira <kaiokmo@lsd.ufcg.edu.br>
+Code-Review+2: Major Hayden <major@mhtx.net>
+Workflow+1: Major Hayden <major@mhtx.net>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Wed, 24 Jan 2018 16:55:07 +0000
+Reviewed-on: https://review.openstack.org/516650
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
