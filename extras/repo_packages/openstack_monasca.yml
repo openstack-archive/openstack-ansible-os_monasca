@@ -17,33 +17,33 @@
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 
 monasca_api_git_repo: "https://git.openstack.org/openstack/monasca-api"
-monasca_api_git_install_branch: master
+monasca_api_git_install_branch: "stable/queens"
 monasca_api_git_dest: "/opt/monasca_{{ monasca_api_git_install_branch | replace('/', '_') }}"
 
 monasca_agent_git_repo: "https://git.openstack.org/openstack/monasca-agent"
-monasca_agent_git_install_branch: master
+monasca_agent_git_install_branch: "stable/queens"
 monasca_agent_git_dest: "/opt/monasca_{{ monasca_log_api_git_install_branch | replace('/', '_') }}"
 
 monasca_common_git_repo: "https://git.openstack.org/openstack/monasca-common"
-monasca_common_git_install_branch: master
+monasca_common_git_install_branch: "stable/queens"
 monasca_common_git_dest: "/opt/monasca_{{ monasca_api_git_install_branch | replace('/', '_') }}"
 
 monasca_thresh_git_repo: "https://git.openstack.org/openstack/monasca-thresh"
-monasca_thresh_git_install_branch: master
+monasca_thresh_git_install_branch: "stable/queens"
 monasca_thresh_git_dest: "/opt/monasca_{{ monasca_thresh_git_install_branch | replace('/', '_') }}"
 
 monasca_notification_git_repo: "https://git.openstack.org/openstack/monasca-notification"
-monasca_notification_git_install_branch: master
+monasca_notification_git_install_branch: "stable/queens"
 monasca_notification_git_dest: "/opt/monasca_{{ monasca_notification_git_install_branch | replace('/', '_') }}"
 
 monasca_persister_git_repo: "https://git.openstack.org/openstack/monasca-persister"
-monasca_persister_git_install_branch: master
+monasca_persister_git_install_branch: "stable/queens"
 monasca_persister_git_dest: "/opt/monasca_{{ monasca_persister_git_install_branch | replace('/', '_') }}"
 
 monasca_python_client_git_repo: "https://git.openstack.org/openstack/python-monascaclient"
-monasca_python_client_git_install_branch: master
+monasca_python_client_git_install_branch: "stable/queens"
 monasca_python_client_git_dest: "/opt/monasca_{{ monasca_python_client_git_install_branch | replace('/', '_') }}"
 
 monasca_ui_git_repo: "https://git.openstack.org/openstack/monasca-ui"
-monasca_ui_git_install_branch: master
+monasca_ui_git_install_branch: "stable/queens"
 monasca_ui_git_dest: "/opt/monasca_{{ monasca_ui_git_install_branch | replace('/', '_') }}"
