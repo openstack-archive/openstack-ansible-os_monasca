@@ -1,68 +1,68 @@
 - name: apt_package_pinning
   src: https://git.openstack.org/openstack/openstack-ansible-apt_package_pinning
   scm: git
-  version: master
+  version: stable/queens
 - name: pip_install
   src: https://git.openstack.org/openstack/openstack-ansible-pip_install
   scm: git
-  version: master
+  version: stable/queens
 - name: memcached_server
   src: https://git.openstack.org/openstack/openstack-ansible-memcached_server
   scm: git
-  version: master
+  version: stable/queens
 - name: openstack_hosts
   src: https://git.openstack.org/openstack/openstack-ansible-openstack_hosts
   scm: git
-  version: master
+  version: stable/queens
 - name: lxc_hosts
   src: https://git.openstack.org/openstack/openstack-ansible-lxc_hosts
   scm: git
-  version: master
+  version: stable/queens
 - name: lxc_container_create
   src: https://git.openstack.org/openstack/openstack-ansible-lxc_container_create
   scm: git
-  version: master
+  version: stable/queens
 - name: galera_client
   src: https://git.openstack.org/openstack/openstack-ansible-galera_client
   scm: git
-  version: master
+  version: stable/queens
 - name: galera_server
   src: https://git.openstack.org/openstack/openstack-ansible-galera_server
   scm: git
-  version: master
+  version: stable/queens
 - name: rabbitmq_server
   src: https://git.openstack.org/openstack/openstack-ansible-rabbitmq_server
   scm: git
-  version: master
+  version: stable/queens
 - name: openstack_openrc
   src: https://git.openstack.org/openstack/openstack-ansible-openstack_openrc
   scm: git
-  version: master
+  version: stable/queens
 - name: os_keystone
   src: https://git.openstack.org/openstack/openstack-ansible-os_keystone
   scm: git
-  version: master
+  version: stable/queens
 - name: os_tempest
   src: https://git.openstack.org/openstack/openstack-ansible-os_tempest
   scm: git
-  version: master
+  version: stable/queens
 - name: ansible-zookeeper
   src: https://github.com/Chillisystems/ansible-zookeeper
   scm: git
-  version: master
+  version: a856bc6e568d8104328af5d2cdfb86ab095d031f
 - name: ansible-kafka
   src: https://github.com/flaviodsr/ansible-kafka
   scm: git
-  version: master
+  version: f09820f5485883b272d4da724da699cb7e1e05cf
 - name: ansible-storm
   src: https://github.com/flaviodsr/ansible-storm
   scm: git
-  version: master
+  version: a1ba474cb2afc8d35599940c301952e1dba3f544
 - name: ansible-influxdb
   src: https://github.com/flaviodsr/ansible-influxdb
   scm: git
-  version: master
+  version: 6c25c6f46792ad4f2d00b9a6e6fbb86c6344c193
 - name: grafana-ansible
   src: https://github.com/flaviodsr/grafana-ansible
   scm: git
-  version: master
+  version: 796eb972d6712143a0430bc7b6a7aec2fbd9d231
