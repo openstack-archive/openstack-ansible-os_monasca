@@ -21,7 +21,6 @@ test_monasca_group: "{{ ((groups['monasca_all'] is defined) and (groups['monasca
 test_monasca_host: "{{ hostvars[groups[test_monasca_group][0]]['ansible_host'] }}"
 monasca_venv_tag: "testing"
 monasca_developer_mode: true
-monasca_git_install_branch: master
 monasca_service_password: "secrete"
 monasca_galera_address: "{{ test_galera_host }}"
 monasca_galera_database: monasca
@@ -52,7 +51,7 @@ tempest_run: yes
 tempest_plugins:
   - name: monasca-api
     repo: https://git.openstack.org/openstack/monasca-api
-    branch: master
+    branch: stable/queens
 
 tempest_test_whitelist:
   - monasca_tempest_tests.tests.api.*
