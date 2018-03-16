@@ -1,0 +1,10 @@
+Code-Review+2: Logan V <logan2211@gmail.com>
+Code-Review+1: zhongshengping <chdzsp@163.com>
+Code-Review+2: Kevin Carter (cloudnull) <kevin@cloudnull.com>
+Workflow+1: Kevin Carter (cloudnull) <kevin@cloudnull.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Fri, 16 Mar 2018 07:26:43 +0000
+Reviewed-on: https://review.openstack.org/553543
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
