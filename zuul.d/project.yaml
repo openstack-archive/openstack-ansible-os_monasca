@@ -18,8 +18,7 @@
     check:
       jobs:
         - openstack-ansible-linters
-        - openstack-ansible-functional-ubuntu-xenial
+        - openstack-ansible-functional-ubuntu-xenial-nv
     gate:
       jobs:
         - openstack-ansible-linters
-        - openstack-ansible-functional-ubuntu-xenial
