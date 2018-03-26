@@ -1,0 +1,10 @@
+Code-Review+2: Jean-Philippe Evrard <jean-philippe@evrard.me>
+Code-Review-1: Nguyen Hai <nguyentrihai93@gmail.com>
+Code-Review+2: Jesse Pretorius (odyssey4me) <jesse.pretorius@rackspace.co.uk>
+Workflow+1: Jesse Pretorius (odyssey4me) <jesse.pretorius@rackspace.co.uk>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Mon, 26 Mar 2018 04:21:35 +0000
+Reviewed-on: https://review.openstack.org/551120
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
