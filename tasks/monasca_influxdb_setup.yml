@@ -24,6 +24,7 @@
     password: "{{ monasca_influxdb_admin_password }}"
     database_name: "{{ monasca_influxdb_database }}"
     state: present
+  no_log: True
 
 - name: Create influxdb retention policy for database
   influxdb_retention_policy:
@@ -35,6 +36,7 @@
     policy_name: persister_all
     duration: "{{ monasca_influxdb_retention_policy }}"
     replication: "{{ monasca_influxdb_replication_factor }}"
+  no_log: True
 
 - name: Create influxdb users
   influxdb_user:
@@ -47,4 +49,5 @@
     user_pass: "{{ item.password }}"
   with_items:
     - "{{ monasca_influxdb_users }}"
+  no_log: True
 
