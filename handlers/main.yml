@@ -34,6 +34,7 @@
     name: "{{ monasca_galera_database }}"
     state: import
     target: "/opt/mon_mysql.sql"
+  no_log: True
 
 - name: Restart monasca services
   service:
