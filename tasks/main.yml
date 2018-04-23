@@ -27,6 +27,7 @@
     - "{{ ansible_os_family | lower }}.yml"
   tags:
     - always
+  no_log: True
 
 - include: monasca_pre_install.yml
   when: inventory_hostname in groups['monasca_api']
