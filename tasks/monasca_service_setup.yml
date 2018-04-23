@@ -32,6 +32,7 @@
   until: add_service|success
   retries: 5
   delay: 2
+  no_log: True
 
 # Create an admin user
 - name: Ensure monasca user
@@ -50,6 +51,7 @@
   until: add_user|success
   retries: 5
   delay: 10
+  no_log: True
 
 # Add a role to the user
 - name: Ensure monasca user to admin role
@@ -68,6 +70,7 @@
   until: add_user_role|success
   retries: 5
   delay: 10
+  no_log: True
 
 # Create monasca roles
 - name: Ensure monasca user, agent and read only roles
@@ -84,6 +87,7 @@
   until: add_roles|success
   retries: 5
   delay: 10
+  no_log: True
   with_flattened:
     - "{{ monasca_user_roles }}"
     - "{{ monasca_agent_roles }}"
@@ -106,6 +110,7 @@
   until: add_user|success
   retries: 5
   delay: 10
+  no_log: True
 
 # Add a role to the user
 - name: Ensure monasca-agent user to monasca-agent roles
@@ -124,6 +129,7 @@
   until: add_user_role|success
   retries: 5
   delay: 10
+  no_log: True
   with_items: "{{ monasca_agent_roles }}"
 
 # Add a role to the user
@@ -143,6 +149,7 @@
   until: add_user_role|success
   retries: 5
   delay: 10
+  no_log: True
   with_items: "{{ monasca_user_roles }}"
 
 # Create an endpoint
@@ -168,3 +175,4 @@
   until: add_endpoint|success
   retries: 5
   delay: 10
+  no_log: True
