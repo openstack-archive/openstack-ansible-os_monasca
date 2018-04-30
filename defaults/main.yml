@@ -260,7 +260,6 @@ monasca_requires_pip_packages:
   - python-keystoneclient
   - python-monascaclient
   - virtualenv
-  - virtualenv-tools
 
 monasca_pip_packages:
   - cassandra-driver
