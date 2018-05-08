@@ -1,0 +1,9 @@
+Code-Review+2: Mohammed Naser <mnaser@vexxhost.com>
+Code-Review+2: Jean-Philippe Evrard <jean-philippe@evrard.me>
+Workflow+1: Jean-Philippe Evrard <jean-philippe@evrard.me>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Tue, 08 May 2018 07:33:57 +0000
+Reviewed-on: https://review.openstack.org/566637
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/stable/queens
