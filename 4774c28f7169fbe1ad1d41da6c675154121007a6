@@ -1,0 +1,9 @@
+Code-Review+2: Jesse Pretorius (odyssey4me) <jesse.pretorius@rackspace.co.uk>
+Code-Review+2: Kevin Carter (cloudnull) <kevin@cloudnull.com>
+Workflow+1: Kevin Carter (cloudnull) <kevin@cloudnull.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Thu, 10 May 2018 13:09:26 +0000
+Reviewed-on: https://review.openstack.org/567527
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
