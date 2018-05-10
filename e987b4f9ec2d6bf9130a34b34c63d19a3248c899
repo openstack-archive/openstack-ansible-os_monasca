@@ -1,0 +1,8 @@
+Code-Review+2: Kevin Carter (cloudnull) <kevin@cloudnull.com>
+Workflow+1: Kevin Carter (cloudnull) <kevin@cloudnull.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Thu, 10 May 2018 02:07:35 +0000
+Reviewed-on: https://review.openstack.org/566489
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
