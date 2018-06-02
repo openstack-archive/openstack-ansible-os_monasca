@@ -1,0 +1,8 @@
+Code-Review+2: Jesse Pretorius (odyssey4me) <jesse.pretorius@rackspace.co.uk>
+Workflow+1: Jesse Pretorius (odyssey4me) <jesse.pretorius@rackspace.co.uk>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Sat, 02 Jun 2018 08:00:24 +0000
+Reviewed-on: https://review.openstack.org/571865
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
