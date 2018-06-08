@@ -272,6 +272,7 @@ monasca_pip_packages:
   - monasca-persister
   - monasca-notification
   - monasca-statsd
+  - osprofiler
   - PyOpenSSL
   - python-monascaclient
   - python-memcached
