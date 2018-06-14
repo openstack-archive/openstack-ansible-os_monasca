@@ -1,0 +1,9 @@
+Code-Review+2: Jean-Philippe Evrard <jean-philippe@evrard.me>
+Code-Review+2: Marc Gariépy (mgariepy) <gariepy.marc@gmail.com>
+Workflow+1: Marc Gariépy (mgariepy) <gariepy.marc@gmail.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Thu, 14 Jun 2018 19:34:38 +0000
+Reviewed-on: https://review.openstack.org/575289
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
