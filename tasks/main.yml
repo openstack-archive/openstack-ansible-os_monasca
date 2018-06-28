@@ -38,6 +38,10 @@
   tags:
     - monasca-install
 
+- include: monasca_install_dependencies.yml
+  tags:
+   - monasca-install
+
 - include: monasca_thresh_install.yml
   when: inventory_hostname in groups['monasca_api']
   tags:
