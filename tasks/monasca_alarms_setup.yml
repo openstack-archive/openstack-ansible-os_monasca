@@ -31,7 +31,8 @@
     keystone_project_name: "{{ keystone_admin_tenant_name }}"
     monasca_api_url: "{{ monasca_service_internalurl }}"
   register: default_notification
-  no_log: True
+  #TODO(evrardjp): remove this
+  #no_log: True
 
 - name: Create default alarm definitions
   monasca_alarm_definition:
@@ -52,4 +53,5 @@
     keystone_project_name: "{{ keystone_admin_tenant_name }}"
     monasca_api_url: "{{ monasca_service_internalurl }}"
   with_items: "{{ monasca_default_alarms }}"
-  no_log: True
+  #TODO(evrardjp): remove this
+  #no_log: True
