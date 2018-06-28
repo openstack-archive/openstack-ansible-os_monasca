@@ -11,6 +11,6 @@
 - name: ansible-influxdb
   scm: git
   src: https://github.com/flaviodsr/ansible-influxdb
-- name: grafana-ansible
+- name: ansible-grafana
   scm: git
-  src: https://github.com/flaviodsr/grafana-ansible
+  src: https://github.com/cloudalchemy/ansible-grafana
