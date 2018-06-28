@@ -67,8 +67,8 @@ monasca_system_comment: monasca system user
 monasca_system_user_home: "/var/lib/{{ monasca_system_user_name }}"
 
 ## DB info
-magnum_db_setup_host: "{{ ('galera_all' in groups) | ternary(groups['galera_all'][0], 'localhost') }}"
-magnum_galera_address: "{{ galera_address | default('127.0.0.1') }}"
+monasca_db_setup_host: "{{ ('galera_all' in groups) | ternary(groups['galera_all'][0], 'localhost') }}"
+monasca_galera_address: "{{ galera_address | default('127.0.0.1') }}"
 monasca_galera_database: monasca
 monasca_galera_user: monasca
 
@@ -278,6 +278,7 @@ monasca_pip_packages:
   - PyOpenSSL
   - python-monascaclient
   - python-memcached
+  - future
 
 ## Service Names
 monasca_services:
@@ -322,3 +323,4 @@ monasca_persister_config_overrides: {}
 monasca_persister_logging_config_overrides: {}
 monasca_thresh_config_overrides: {}
 monasca_notification_config_overrides: {}
+
