@@ -16,6 +16,8 @@
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 
+- include: monasca-dependencies.yml
+
 - name: Install monasca server
   hosts: monasca_all
   remote_user: root
