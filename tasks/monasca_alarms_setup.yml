@@ -32,6 +32,14 @@
     monasca_api_url: "{{ monasca_service_internalurl }}"
   register: default_notification
   no_log: True
+  # TODO(evrardjp): Add conditional for deploy from
+  # packages to set the python_interpreter to the
+  # system's one.
+  # Make sure the module doesn't load the code on the
+  # target node, but inside target node's venv when
+  # deploying from source
+  vars:
+    ansible_python_interpreter: "{{ monasca_bin }}/python"
 
 - name: Create default alarm definitions
   monasca_alarm_definition:
@@ -53,3 +61,11 @@
     monasca_api_url: "{{ monasca_service_internalurl }}"
   with_items: "{{ monasca_default_alarms }}"
   no_log: True
+  # TODO(evrardjp): Add conditional for deploy from
+  # packages to set the python_interpreter to the
+  # system's one.
+  # Make sure the module doesn't load the code on the
+  # target node, but inside target node's venv when
+  # deploying from source
+  vars:
+    ansible_python_interpreter: "{{ monasca_bin }}/python"
