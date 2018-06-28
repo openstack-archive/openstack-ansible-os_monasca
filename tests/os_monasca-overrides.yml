@@ -23,8 +23,6 @@ monasca_venv_tag: "testing"
 monasca_developer_mode: true
 monasca_service_password: "secrete"
 monasca_galera_address: "{{ test_galera_host }}"
-monasca_galera_database: monasca
-monasca_galera_user: monasca
 monasca_service_port: 8070
 monasca_service_publicuri: "http://{{ test_monasca_host }}:{{ monasca_service_port }}"
 monasca_service_publicurl: "{{ monasca_service_publicuri }}/v2.0"

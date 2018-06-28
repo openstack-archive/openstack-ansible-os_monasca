@@ -21,10 +21,6 @@
   remote_user: root
   become: true
   gather_facts: true
-  pre_tasks:
-    - include: common/create-grant-db.yml
-      db_name: "{{ monasca_galera_database }}"
-      db_password: "{{ monasca_container_mysql_password }}"
   roles:
     - role: "os_monasca"
   vars_files:
