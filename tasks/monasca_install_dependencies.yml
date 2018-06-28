@@ -1,0 +1,50 @@
+---
+- name: Install ansible-zookeeper
+  hosts: monasca_zookeeper
+  roles:
+    - ansible-zookeeper
+  tags:
+    - zookeeper
+    - skip_ansible_lint
+
+- name: Install ansible-kafka
+  hosts: monasca_kafka
+  roles:
+    - ansible-kafka
+  vars:
+    kafka_listen_address: "{{ ansible_host }}"
+  tags:
+    - kafka
+    - skip_ansible_lint
+
+- name: Install ansible-storm
+  hosts: monasca_api
+  roles:
+    - ansible-storm
+  vars:
+    storm_nimbus_enabled: True
+    storm_supervisor_enabled: True
+    nimbus_host: "{{ ansible_ssh_host }}"
+  tags:
+    - storm
+    - skip_ansible_lint
+
+- name: Install ansible-influxdb
+  hosts: monasca_influxdb
+  roles:
+    - ansible-influxdb
+  tags:
+    - influxdb
+    - skip_ansible_lint
+
+- name: Install ansible-grafana
+  hosts: monasca_grafana
+  roles:
+    - ansible-grafana
+  vars:
+    grafana_security:
+      admin_user: admin
+      admin_password: "{{ monasca_grafana_password | default('password') }}" #TODO(evrardjp) remove this when ready
+  tags:
+    - grafana
+    - skip_ansible_lint
