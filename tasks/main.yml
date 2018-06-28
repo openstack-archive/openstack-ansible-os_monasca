@@ -53,6 +53,54 @@
   tags:
     - monasca-config
 
+- include_role:
+    name: ansible-zookeeper
+  when:
+    - "inventory_hostname in groups['monasca_zookeeper']"
+  tags:
+    - zookeeper
+    - skip_ansible_lint
+
+- include_role:
+    name: ansible-kafka
+  when:
+    - "inventory_hostname in groups['monasca_kafka']"
+  vars:
+    kafka_listen_address: "{{ ansible_host }}"
+  tags:
+    - kafka
+    - skip_ansible_lint
+
+- include_role:
+    name: ansible-storm
+  vars:
+    storm_nimbus_enabled: True
+    storm_supervisor_enabled: True
+    nimbus_host: "{{ ansible_ssh_host }}"
+  when:
+    - inventory_hostname in groups['monasca_api']
+  tags:
+    - storm
+    - skip_ansible_lint
+
+- include_role:
+    name: ansible-influxdb
+  when:
+    - inventory_hostname in groups['monasca_influxdb']
+  tags:
+    - influxdb
+    - skip_ansible_lint
+
+- include_role:
+    name: ansible-grafana
+  vars:
+    grafana_security: "{{ grafana_security }}"
+  when:
+    - inventory_hostname in groups['monasca_grafana']
+  tags:
+    - grafana
+    - skip_ansible_lint
+
 - include: monasca_db_setup.yml
   tags:
     - monasca-config
