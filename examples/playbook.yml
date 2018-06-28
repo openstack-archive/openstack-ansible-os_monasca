@@ -11,6 +11,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Please check your inventory to install the appropriate
+# dependencies for your monasca install
+
+# Please also make sure the appropriate roles are installed.
+- name: Install monasca dependencies
+  include: monasca-dependencies.yml
+
 - name: Install monasca server
   hosts: monasca_all
   user: root
