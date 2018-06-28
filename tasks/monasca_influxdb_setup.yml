@@ -42,11 +42,10 @@
   influxdb_user:
     hostname: "{{ monasca_influxdb_host }}"
     port: "{{ monasca_influxdb_port }}"
-    database_name: "{{ monasca_influxdb_database }}"
     username: "{{ monasca_influxdb_admin }}"
     password: "{{ monasca_influxdb_admin_password }}"
     user_name: "{{ item.username }}"
-    user_pass: "{{ item.password }}"
+    user_password: "{{ item.password }}"
   with_items:
     - "{{ monasca_influxdb_users }}"
   no_log: True
