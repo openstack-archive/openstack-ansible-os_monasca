@@ -260,6 +260,7 @@ monasca_requires_pip_packages:
   - python-keystoneclient
   - python-monascaclient
   - virtualenv
+  - MySQL-python
 
 monasca_pip_packages:
   - cassandra-driver
@@ -272,7 +273,9 @@ monasca_pip_packages:
   - monasca-persister
   - monasca-notification
   - monasca-statsd
+  - MySQL-python
   - osprofiler
+  - PyMySQL
   - PyOpenSSL
   - python-monascaclient
   - python-memcached
