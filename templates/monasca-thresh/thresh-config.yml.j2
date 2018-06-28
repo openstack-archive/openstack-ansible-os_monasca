@@ -109,8 +109,8 @@ sporadicMetricNamespaces:
   - foo
 
 database:
-  driverClass: "com.mysql.jdbc.jdbc2.optional.MysqlDataSource"
-  url: "jdbc:mysql://{{ monasca_galera_address }}/{{ monasca_galera_database }}?useSSL=true"
+  driverClass: "org.drizzle.jdbc.DrizzleDriver"
+  url: "jdbc:drizzle://{{ monasca_galera_address }}:3306/{{ monasca_galera_database }}"
   user: "{{ monasca_galera_user }}"
   password: "{{ monasca_container_mysql_password }}"
   properties:

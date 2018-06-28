@@ -120,17 +120,7 @@ import os  # NOQA
 try:
     from monascaclient import client
 except ImportError:
-    # In many installs the python-monascaclient is available in a venv, switch
-    # to the most common location
-    activate_this = os.path.realpath(
-        '/opt/venvs/monasca-client/bin/activate_this.py')
-    try:
-        execfile(activate_this, dict(__file__=activate_this))
-        from monascaclient import client
-    except ImportError:
-        monascaclient_found = False
-    else:
-        monascaclient_found = True
+    monascaclient_found = False
 else:
     monascaclient_found = True
 
@@ -251,7 +241,7 @@ def main():
     )
 
     if not monascaclient_found:
-        module.fail_json(msg="python-monascaclient >= 1.6.1 is required")
+        module.fail_json(msg="python-monascaclient is required")
 
     notification = MonascaNotification(module)
     notification.run()
