@@ -272,7 +272,9 @@ monasca_pip_packages:
   - monasca-persister
   - monasca-notification
   - monasca-statsd
+  - MySQL-python
   - osprofiler
+  - PyMySQL
   - PyOpenSSL
   - python-monascaclient
   - python-memcached
