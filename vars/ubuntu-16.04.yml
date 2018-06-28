@@ -30,3 +30,5 @@ monasca_distro_packages:
   - python-software-properties
   - python-dev
   - python-mysqldb
+
+grafana_dependencies: []
