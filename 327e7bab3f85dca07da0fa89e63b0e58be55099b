@@ -1,0 +1,9 @@
+Code-Review+2: Jesse Pretorius (odyssey4me) <jesse.pretorius@rackspace.co.uk>
+Code-Review+2: Mohammed Naser <mnaser@vexxhost.com>
+Workflow+1: Mohammed Naser <mnaser@vexxhost.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Mon, 02 Jul 2018 18:47:10 +0000
+Reviewed-on: https://review.openstack.org/579638
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
