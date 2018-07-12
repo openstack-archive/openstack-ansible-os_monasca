@@ -29,7 +29,7 @@
     description: "{{ monasca_service_description }}"
     insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_service
-  until: add_service|success
+  until: add_service is success
   retries: 5
   delay: 2
   no_log: True
@@ -48,7 +48,7 @@
     insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_user
   when: not monasca_service_in_ldap | bool
-  until: add_user|success
+  until: add_user is success
   retries: 5
   delay: 10
   no_log: True
@@ -67,7 +67,7 @@
     insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_user_role
   when: not monasca_service_in_ldap | bool
-  until: add_user_role|success
+  until: add_user_role is success
   retries: 5
   delay: 10
   no_log: True
@@ -84,7 +84,7 @@
     insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_roles
   when: not monasca_service_in_ldap | bool
-  until: add_roles|success
+  until: add_roles is success
   retries: 5
   delay: 10
   no_log: True
@@ -107,7 +107,7 @@
     insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_user
   when: not monasca_service_in_ldap | bool
-  until: add_user|success
+  until: add_user is success
   retries: 5
   delay: 10
   no_log: True
@@ -126,7 +126,7 @@
     insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_user_role
   when: not monasca_service_in_ldap | bool
-  until: add_user_role|success
+  until: add_user_role is success
   retries: 5
   delay: 10
   no_log: True
@@ -146,7 +146,7 @@
     insecure: "{{ keystone_service_adminuri_insecure }}"
   register: add_user_role
   when: not monasca_service_in_ldap | bool
-  until: add_user_role|success
+  until: add_user_role is success
   retries: 5
   delay: 10
   no_log: True
@@ -172,7 +172,7 @@
       - url: "{{ monasca_service_adminurl }}"
         interface: "admin"
   register: add_endpoint
-  until: add_endpoint|success
+  until: add_endpoint is success
   retries: 5
   delay: 10
   no_log: True

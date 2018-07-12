@@ -16,7 +16,7 @@
     url: "{{ monasca_service_internalurl }}"
     status_code: 401
   register: result
-  until: result|success
+  until: result is success
   retries: 5
   delay: 2
 
