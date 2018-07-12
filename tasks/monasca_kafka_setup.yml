@@ -30,4 +30,4 @@
   command: "/opt/kafka/bin/kafka-topics.sh --create --zookeeper {{ zookeeper_hosts }} --replication-factor {{ item.value.replicas }} --partitions {{ item.value.partitions }} --topic {{ item.key }}"
   with_dict: "{{ kafka_topics }}"
   when:
-   - check_result | failed
+   - check_result  is failed
