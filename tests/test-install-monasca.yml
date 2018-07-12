@@ -19,7 +19,6 @@
 - name: Install monasca server
   hosts: monasca_all
   remote_user: root
-  become: true
   gather_facts: true
   roles:
     - role: "os_monasca"

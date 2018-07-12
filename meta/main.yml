@@ -37,7 +37,6 @@ galaxy_info:
 
 dependencies:
   - galera_client
-  - openstack_openrc
   - role: apt_package_pinning
     when:
       - ansible_pkg_mgr == 'apt'

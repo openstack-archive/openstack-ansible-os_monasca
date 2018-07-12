@@ -19,6 +19,11 @@
 ## Verbosity Options
 debug: False
 
+# Set the host which will execute the shade modules
+# for the service setup. The host must already have
+# clouds.yaml properly configured.
+monasca_service_setup_host: "{{ openstack_service_setup_host | default('localhost') }}"
+
 # Set the package install state for distribution and pip packages
 # Options are 'present' and 'latest'
 monasca_package_state: "latest"
@@ -255,13 +260,6 @@ monasca_persister_workers_max: 16
 monasca_persister_workers: "{{ [[ansible_processor_vcpus|default(2) // 2, 1] | max, monasca_persister_workers_max] | min }}"
 
 monasca_service_in_ldap: False
-
-## Monasca packages that must be installed before anything else
-monasca_requires_pip_packages:
-  - httplib2
-  - python-keystoneclient
-  - python-monascaclient
-  - virtualenv
 
 monasca_pip_packages:
   - cassandra-driver
