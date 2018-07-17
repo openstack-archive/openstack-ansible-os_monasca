@@ -53,6 +53,25 @@
   tags:
     - monasca-config
 
+- include_tasks: mq_setup.yml
+  when:
+    - "monasca_services['monasca-api']['group'] in group_names"
+    - "inventory_hostname == ((groups[monasca_services['monasca-api']['group']]| intersect(ansible_play_hosts)) | list)[0]"
+  with_items:
+    - oslomsg_setup_host: "{{ monasca_oslomsg_rpc_setup_host }}"
+      oslomsg_userid: "{{ monasca_oslomsg_rpc_userid }}"
+      oslomsg_password: "{{ monasca_oslomsg_rpc_password }}"
+      oslomsg_vhost: "{{ monasca_oslomsg_rpc_vhost }}"
+      oslomsg_transport: "{{ monasca_oslomsg_rpc_transport }}"
+    - oslomsg_setup_host: "{{ monasca_oslomsg_notify_setup_host }}"
+      oslomsg_userid: "{{ monasca_oslomsg_notify_userid }}"
+      oslomsg_password: "{{ monasca_oslomsg_notify_password }}"
+      oslomsg_vhost: "{{ monasca_oslomsg_notify_vhost }}"
+      oslomsg_transport: "{{ monasca_oslomsg_notify_transport }}"
+  no_log: true
+  tags:
+    - monasca-config
+
 - include: monasca_db_setup.yml
   tags:
     - monasca-config

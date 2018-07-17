@@ -320,3 +320,7 @@ monasca_persister_config_overrides: {}
 monasca_persister_logging_config_overrides: {}
 monasca_thresh_config_overrides: {}
 monasca_notification_config_overrides: {}
+monasca_oslomsg_rpc_host_group: "{{ oslomsg_rpc_host_group | default('rabbitmq_all') }}"
+monasca_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group | default('rabbitmq_all') }}"
+monasca_oslomsg_rpc_setup_host: "{{ (monasca_oslomsg_rpc_host_group in groups) | ternary(groups[monasca_oslomsg_rpc_host_group][0], 'localhost') }}"
+monasca_oslomsg_notify_setup_host: "{{ (monasca_oslomsg_notify_host_group in groups) | ternary(groups[monasca_oslomsg_notify_host_group][0], 'localhost') }}"
