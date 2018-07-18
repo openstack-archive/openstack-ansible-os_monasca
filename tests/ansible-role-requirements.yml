@@ -60,11 +60,11 @@
   scm: git
   version: master
 - name: ansible-influxdb
-  src: https://github.com/flaviodsr/ansible-influxdb
+  src: https://github.com/guilhermesteinmuller/ansible-influxdb.git
   scm: git
   version: master
-- name: grafana-ansible
-  src: https://github.com/flaviodsr/grafana-ansible
+- name: ansible-grafana
+  src: https://github.com/cloudalchemy/ansible-grafana
   scm: git
   version: master
 - name: systemd_service
