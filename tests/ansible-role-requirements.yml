@@ -56,7 +56,7 @@
   scm: git
   version: master
 - name: ansible-storm
-  src: https://github.com/flaviodsr/ansible-storm
+  src: https://github.com/guilhermesteinmuller/ansible-storm
   scm: git
   version: master
 - name: ansible-influxdb
