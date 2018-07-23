@@ -57,7 +57,6 @@ monasca_developer_constraints:
 monasca_venv_tag: untagged
 monasca_bin: "/openstack/venvs/monasca-{{ monasca_venv_tag }}/bin"
 monasca_etc_dir: "{{ monasca_bin | dirname }}/etc/monasca"
-_monasca_thresh_version: "2.1.1"
 
 # venv_download, even when true, will use the fallback method of building the
 # venv from scratch if the venv download fails.
@@ -80,9 +79,9 @@ monasca_galera_user: monasca
 ## InfluxDB info
 monasca_influxdb_database: monasca
 monasca_api_influxdb_user: monasca_api
-monasca_api_influxdb_password: password
+#monasca_api_influxdb_password: password
 monasca_persister_influxdb_user: monasca_persister
-monasca_persister_influxdb_password: password
+#monasca_persister_influxdb_password: password
 monasca_influxdb_host: "{{ influxdb_host }}"
 monasca_influxdb_port: "{{ influxdb_port }}"
 monasca_influxdb_admin: root
@@ -262,7 +261,6 @@ monasca_persister_workers: "{{ [[ansible_processor_vcpus|default(2) // 2, 1] | m
 monasca_service_in_ldap: False
 
 monasca_pip_packages:
-  - cassandra-driver
   - cryptography
   - gunicorn
   - influxdb
