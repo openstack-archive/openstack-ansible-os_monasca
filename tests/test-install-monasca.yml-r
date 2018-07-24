@@ -16,17 +16,13 @@
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 
-# Setup the host
-- include_tasks_tasks_tasks_tasks_tasks: common/test-setup-host.yml
+- include: "{{ playbook_dir }}/../examples/monasca-dependencies.yml"
 
-# Install RabbitMQ/MariaDB
-- include_tasks_tasks_tasks_tasks_tasks: common/test-install-infra.yml
-
-# Install keystone
-- include_tasks_tasks_tasks_tasks_tasks: common/test-install-keystone.yml
-
-# Install monasca
-- include_tasks_tasks_tasks_tasks_tasks: test-install-monasca.yml
-
-# Install tempest
-- include_tasks_tasks_tasks_tasks_tasks: common/test-install-tempest.yml
+- name: Install monasca server
+  hosts: monasca_all
+  remote_user: root
+  gather_facts: true
+  roles:
+    - role: "os_monasca"
+  vars_files:
+    - common/test-vars.yml
