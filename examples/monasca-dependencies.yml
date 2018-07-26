@@ -59,12 +59,49 @@
 
 - name: Install ansible-grafana
   hosts: monasca_grafana
+  pre_tasks:
+    - name: Create DB for grafana service
+      mysql_db:
+        login_user: "{{ grafana_mysql_root_user }}"
+        login_password: "{{ grafana_mysql_root_password }}"
+        login_host: "{{ monasca_galera_address }}"
+        login_port: "{{ monasca_galera_port }}"
+        name: "{{ grafana_mysql_db }}"
+        state: "present"
+      delegate_to: "{{ monasca_db_setup_host }}"
+#      no_log: True
+
+    - name: Grant access to grafana DB
+      mysql_user:
+        login_user: "{{ grafana_mysql_root_user }}"
+        login_password: "{{ grafana_mysql_root_password }}"
+        login_host: "{{ monasca_galera_address }}"
+        login_port: "{{ monasca_galera_port }}"
+        name: "{{ grafana_mysql_db }}"
+        password: "{{ grafana_mysql_password  }}"
+        host: "{{ item }}"
+        state: "present"
+        priv: "{{ grafana_mysql_db }}.*:ALL"
+      with_items:
+        - "localhost"
+        - "%"
+      delegate_to: "{{ monasca_db_setup_host }}"
+#      no_log: True
+
   roles:
     - ansible-grafana
   vars:
     grafana_security:
       admin_user: admin
-      admin_password: "{{ monasca_grafana_password | default('password') }}" #TODO(evrardjp) remove this when ready
+      admin_password: "{{ grafana_security_password }}"
+    grafana_plugins:
+      - monasca-datasource
+    grafana_database:
+      type: mysql
+      host: "{{ monasca_galera_address }}:{{ monasca_galera_port }}"
+      name: "{{ grafana_mysql_db }}"
+      user: "{{ grafana_mysql_user }}"
+      password: "{{ grafana_mysql_password }}"
   tags:
     - grafana
     - skip_ansible_lint

@@ -19,10 +19,14 @@
 # Monasca vars
 test_monasca_group: "{{ ((groups['monasca_all'] is defined) and (groups['monasca_all'] | length > 0)) | ternary('monasca_all', 'all_containers') }}"
 test_monasca_host: "{{ hostvars[groups[test_monasca_group][0]]['ansible_host'] }}"
+test_galera_host: "{{ hostvars[groups[test_galera_group][0]]['ansible_host'] }}"
+test_galera_group: "{{ ((groups['galera_all'] is defined) and (groups['galera_all'] | length > 0)) | ternary('galera_all', 'all_containers') }}"
+monasca_db_setup_host: "{{ ('galera_all' in groups) | ternary(groups['galera_all'][0], 'localhost') }}"
 monasca_venv_tag: "testing"
 monasca_developer_mode: true
 monasca_service_password: "secrete"
 monasca_galera_address: "{{ test_galera_host }}"
+monasca_galera_port: 3306
 monasca_service_port: 8070
 monasca_service_publicuri: "http://{{ test_monasca_host }}:{{ monasca_service_port }}"
 monasca_service_publicurl: "{{ monasca_service_publicuri }}/v2.0"
@@ -31,9 +35,15 @@ monasca_service_internalurl: "{{ monasca_service_internaluri }}/v2.0"
 monasca_service_adminuri: "http://{{ test_monasca_host }}:{{ monasca_service_port }}"
 monasca_service_adminurl: "{{ monasca_service_adminuri }}/v2.0"
 monasca_container_mysql_password: "SuperSecrete"
+monasca_grafana_mysql_password: "MegaSecret"
 monasca_bin: "/openstack/venvs/monasca-{{ monasca_venv_tag }}/bin"
 
-grafana_mysql_host: "{{ monasca_galera_address }}"
+grafana_security_password: "secrete"
+grafana_mysql_root_user: root
+grafana_mysql_root_password: "secrete"
+grafana_mysql_db: grafana
+grafana_mysql_user: grafana
+grafana_mysql_password: "secrete"
 grafana_admin_password: "secrete"
 grafana_galera_password: "secrete"
 monasca_influxdb_admin_password: "secrete"
