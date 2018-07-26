@@ -77,6 +77,10 @@ monasca_galera_address: "{{ galera_address | default('127.0.0.1') }}"
 monasca_galera_database: monasca
 monasca_galera_user: monasca
 
+## Grafana info
+grafana_galera_database: galera
+grafana_galera_user: grafana
+
 ## InfluxDB info
 monasca_influxdb_database: monasca
 monasca_api_influxdb_user: monasca_api
