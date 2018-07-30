@@ -20,10 +20,12 @@
     check:
       jobs:
         - openstack-ansible-linters
+        - openstack-ansible-functional-ubuntu-bionic
         - openstack-ansible-functional-ubuntu-xenial
         - openstack-ansible-functional-ubuntu-bionic
     gate:
       jobs:
         - openstack-ansible-linters
+        - openstack-ansible-functional-ubuntu-bionic
         - openstack-ansible-functional-ubuntu-xenial
         - openstack-ansible-functional-ubuntu-bionic
