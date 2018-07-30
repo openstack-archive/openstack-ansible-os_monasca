@@ -27,6 +27,7 @@ galaxy_info:
   platforms:
     - name: Ubuntu
       versions:
+        - bionic
         - xenial
   categories:
     - cloud
