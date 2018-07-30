@@ -52,7 +52,7 @@
   scm: git
   version: master
 - name: ansible-kafka
-  src: https://github.com/flaviodsr/ansible-kafka
+  src: https://github.com/guilhermesteinmuller/ansible-kafka
   scm: git
   version: master
 - name: ansible-storm
