@@ -19,4 +19,5 @@ influxdb_port: 8086
 
 zookeeper_hosts: "{% for host in groups['monasca_zookeeper'] %}{{ hostvars[host]['ansible_host'] }}:{{ zookeeper_client_port }}{% if not loop.last %},{% endif %}{% endfor %}"
 
+kafka_port: 9092
 kafka_hosts: "{% for host in groups['monasca_kafka'] %}{{ hostvars[host]['ansible_host'] }}:{{ kafka_port }}{% if not loop.last %},{% endif %}{% endfor %}"
