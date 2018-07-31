@@ -14,11 +14,5 @@
 # limitations under the License.
 
 - project:
-    check:
-      jobs:
-        - openstack-ansible-linters
-        - openstack-ansible-functional-ubuntu-xenial
-    gate:
-      jobs:
-        - openstack-ansible-linters
-        - openstack-ansible-functional-ubuntu-xenial
+    templates:
+      - openstack-ansible-role-jobs
