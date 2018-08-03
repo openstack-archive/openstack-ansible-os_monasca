@@ -1,6 +1,4 @@
 ---
-# Copyright 2017, Rackspace US, Inc.
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,16 +11,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- project:
-    check:
-      jobs:
-        - openstack-ansible-linters
-        - openstack-ansible-functional-opensuse-150:
-            voting: false
-        - openstack-ansible-functional-opensuse-423
-        - openstack-ansible-functional-ubuntu-xenial
-    gate:
-      jobs:
-        - openstack-ansible-linters
-        - openstack-ansible-functional-opensuse-423
-        - openstack-ansible-functional-ubuntu-xenial
+monasca_external_repo:
+  - name: "devel-tools-building"
+    uri: "{{ monasca_opensuse_mirror_url }}/repositories/devel:/tools:/building/openSUSE_Leap_{{ ansible_distribution_version }}/"
+
+monasca_distro_packages:
+  - devel_basis
+  - git
+  - mailutils
+  - maven
+  - python-devel
+  - python-mysqldb
+  - python-MySQL-python
+  - python-pip
