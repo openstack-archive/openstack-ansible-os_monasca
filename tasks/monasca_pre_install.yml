@@ -70,3 +70,18 @@
     runrefresh: yes
   when: ansible_pkg_mgr == 'zypper'
   with_items: "{{ monasca_external_repo }}"
+
+- name: Add the EPEL repository
+  yum_repository:
+    name: epel-release
+    baseurl: "{{ (centos_epel_mirror | default ('http://download.fedoraproject.org/pub/epel')) }}/{{ ansible_distribution_major_version }}/{{ ansible_architecture }}/Packages/e/epel-release-{{ ansible_distribution_major_version }}-11.noarch.rpm"
+    description: 'Extra Packages for Enterprise Linux 7 - $basearch'
+    gpgcheck: yes
+    enabled: yes
+    state: present
+    includepkgs: 'python-pip'
+  register: install_epel_repo
+  until: install_epel_repo is success
+  when: ansible_pkg_mgr == 'yum'
+  retries: 5
+  delay: 2
