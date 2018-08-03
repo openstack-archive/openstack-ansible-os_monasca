@@ -32,6 +32,20 @@
   when:
     - monasca_developer_mode | bool
 
+# TODO(kaiokmo):
+# Simplify the install of distro patterns for openSUSE
+# using python_venv_build approach.
+- name: Install distro patterns (openSUSE)
+  zypper:
+    name: "{{ monasca_distro_patterns }}"
+    state: "{{ monasca_pattern_state }}"
+    type: pattern
+  register: install_patterns
+  until: install_patterns is success
+  retries: 5
+  delay: 2
+  when: monasca_distro_patterns is defined
+
 - name: Ensure remote wheel building is disabled in developer mode
   set_fact:
     venv_build_host: "{{ ansible_hostname }}"
