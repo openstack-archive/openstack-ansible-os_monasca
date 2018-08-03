@@ -70,3 +70,10 @@
     runrefresh: yes
   when: ansible_pkg_mgr == 'zypper'
   with_items: "{{ monasca_external_repo }}"
+
+- name: Add centos epel-repository
+  package:
+    name: "{{ item.name }}"
+    state: present
+  when: ansible_pkg_mgr == 'yum'
+  with_items: "{{ monasca_aditional_repos }}"
