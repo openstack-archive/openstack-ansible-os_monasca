@@ -60,3 +60,13 @@
     group: "{{ monasca_system_group_name }}"
     mode: "0755"
   when: log_dir.rc != 0
+
+- name: Add zypper maven repository
+  zypper_repository:
+    auto_import_keys: yes
+    autorefresh: yes
+    name: "{{ item.name }}"
+    repo: "{{ item.uri }}"
+    runrefresh: yes
+  when: "ansible_os_family == 'Suse'"
+  with_items: "{{ monasca_external_repo }}"

@@ -29,6 +29,11 @@ galaxy_info:
       versions:
         - xenial
         - bionic
+    - name: opensuse
+      versions:
+        - 42.1
+        - 42.2
+        - 42.3
   categories:
     - cloud
     - python
