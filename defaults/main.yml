@@ -24,9 +24,10 @@ debug: False
 # clouds.yaml properly configured.
 monasca_service_setup_host: "{{ openstack_service_setup_host | default('localhost') }}"
 
-# Set the package install state for distribution and pip packages
+# Set the package/pattern install state for distribution and pip packages
 # Options are 'present' and 'latest'
 monasca_package_state: "latest"
+monasca_pattern_state: "latest"
 monasca_pip_package_state: "latest"
 
 monasca_developer_mode: false
@@ -331,3 +332,4 @@ monasca_persister_logging_config_overrides: {}
 monasca_thresh_config_overrides: {}
 monasca_notification_config_overrides: {}
 
+monasca_opensuse_mirror_url: "http://download.opensuse.org"
