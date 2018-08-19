@@ -29,4 +29,5 @@ monasca_distro_packages:
   - openjdk-8-jdk
   - python-software-properties
   - python-dev
+  - python-influxdb
   - python-mysqldb

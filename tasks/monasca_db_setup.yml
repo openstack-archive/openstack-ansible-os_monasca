@@ -12,7 +12,9 @@
 # limitations under the License.
 
 - include: monasca_influxdb_setup.yml
-  when: inventory_hostname in groups['monasca_influxdb']
+  when: inventory_hostname in groups['monasca_api']
+  vars:
+    ansible_python_interpreter: "{{ monasca_bin | dirname }}"
 
 - include: monasca_mysql_setup.yml
   when: inventory_hostname in groups['monasca_api']
