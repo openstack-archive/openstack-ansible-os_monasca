@@ -17,7 +17,7 @@
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 
 - name: Gather variables for each operating system
-  include_vars: "{{ item }}"
+  include_tasks_vars: "{{ item }}"
   with_first_found:
     - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
     - "{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
@@ -28,36 +28,36 @@
   tags:
     - always
 
-- include: monasca_pre_install.yml
+- include_tasks: monasca_pre_install.yml
   when: inventory_hostname in groups['monasca_api']
   tags:
     - monasca-install
 
-- include: monasca_install.yml
+- include_tasks: monasca_install.yml
   when: inventory_hostname in groups['monasca_api']
   tags:
     - monasca-install
 
-- include: monasca_thresh_install.yml
+- include_tasks: monasca_thresh_install.yml
   when: inventory_hostname in groups['monasca_api']
   tags:
     - monasca-install
 
-- include: monasca_post_install.yml
+- include_tasks: monasca_post_install.yml
   when: inventory_hostname in groups['monasca_api']
   tags:
     - monasca-config
 
-- include: monasca_init_{{ ansible_service_mgr }}.yml
+- include_tasks: monasca_init_{{ ansible_service_mgr }}.yml
   when: inventory_hostname in groups['monasca_api']
   tags:
     - monasca-config
 
-- include: monasca_db_setup.yml
+- include_tasks: monasca_db_setup.yml
   tags:
     - monasca-config
 
-- include: monasca_service_setup.yml
+- include_tasks: monasca_service_setup.yml
   when: inventory_hostname == groups['monasca_api'][0]
   tags:
     - monasca-config
@@ -65,7 +65,7 @@
 - name: Flush handlers
   meta: flush_handlers
 
-- include: monasca_alarms_setup.yml
+- include_tasks: monasca_alarms_setup.yml
   when: inventory_hostname == groups['monasca_api'][0]
   tags:
     - monasca-alarms
