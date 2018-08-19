@@ -16,7 +16,7 @@
 # (c) 2016 Donovan Francesco <donovan.francesco@is.co.za>
 # (c) 2016 Paul Stevens <paul.stevens@is.co.za>
 
-- include: "{{ playbook_dir }}/../examples/monasca-dependencies.yml"
+- import_playbook: "{{ playbook_dir }}/../examples/monasca-dependencies.yml"
 
 - name: Install monasca server
   hosts: monasca_all
