@@ -11,11 +11,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install influxdb libs
-  pip:
-    name: influxdb
-    state: present
-
 - name: Create influxdb database
   influxdb_database:
     hostname: "{{ monasca_influxdb_host }}"
