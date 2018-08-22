@@ -1,0 +1,9 @@
+Code-Review+2: Jean-Philippe Evrard <jean-philippe@evrard.me>
+Code-Review+2: Jonathan Rosser <jonathan.rosser@rd.bbc.co.uk>
+Workflow+1: Jonathan Rosser <jonathan.rosser@rd.bbc.co.uk>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Wed, 22 Aug 2018 12:49:22 +0000
+Reviewed-on: https://review.openstack.org/593426
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
