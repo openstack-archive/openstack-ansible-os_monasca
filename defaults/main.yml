@@ -53,8 +53,19 @@ monasca_developer_constraints:
   - "git+{{ monasca_persister_git_repo }}@{{ monasca_persister_git_install_branch }}#egg=monasca-persister"
   - "git+{{ monasca_python_client_git_repo }}@{{ monasca_python_client_git_install_branch }}#egg=python-monascaclient"
 
+# TODO(odyssey4me):
+# This can be simplified once all the roles are using
+# python_venv_build. We can then switch to using a
+# set of constraints in pip.conf inside the venv,
+# perhaps prepared by giving a giving a list of
+# constraints to the role.
+monasca_pip_install_args: >-
+  {{ monasca_developer_mode | ternary(pip_install_developer_constraints | default('--constraint /opt/developer-pip-constraints.txt'), '') }}
+  {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''), '') }}
+  {{ pip_install_options | default('') }}
+
 # Name of the virtual env to deploy into
-monasca_venv_tag: untagged
+monasca_venv_tag: "{{ venv_tag | default('untagged') }}"
 monasca_bin: "/openstack/venvs/monasca-{{ monasca_venv_tag }}/bin"
 monasca_etc_dir: "{{ monasca_bin | dirname }}/etc/monasca"
 
