@@ -1,0 +1,9 @@
+Code-Review+2: Jonathan Rosser <jonathan.rosser@rd.bbc.co.uk>
+Code-Review+2: Kevin Carter (cloudnull) <kevin@cloudnull.com>
+Workflow+1: Kevin Carter (cloudnull) <kevin@cloudnull.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Sun, 23 Sep 2018 21:30:57 +0000
+Reviewed-on: https://review.openstack.org/604364
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
