@@ -1,0 +1,9 @@
+Code-Review+2: Jonathan Rosser <jonathan.rosser@rd.bbc.co.uk>
+Code-Review+2: Mohammed Naser <mnaser@vexxhost.com>
+Workflow+1: Mohammed Naser <mnaser@vexxhost.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Mon, 24 Sep 2018 14:33:19 +0000
+Reviewed-on: https://review.openstack.org/604715
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/stable/rocky
