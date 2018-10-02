@@ -1,0 +1,9 @@
+Code-Review+2: Mohammed Naser <mnaser@vexxhost.com>
+Code-Review+2: Markos Chandras (hwoarang) <mchandras@suse.de>
+Workflow+1: Markos Chandras (hwoarang) <mchandras@suse.de>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Tue, 02 Oct 2018 09:51:04 +0000
+Reviewed-on: https://review.openstack.org/588584
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
