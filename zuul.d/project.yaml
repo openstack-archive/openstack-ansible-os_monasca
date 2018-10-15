@@ -17,7 +17,6 @@
       - check-requirements
       - publish-openstack-sphinx-docs
       - release-notes-jobs
-    name: openstack/openstack-ansible-os_monasca
     check:
       jobs:
         - openstack-ansible-linters
