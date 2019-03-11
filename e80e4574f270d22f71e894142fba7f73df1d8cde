@@ -1,0 +1,11 @@
+Code-Review+2: Jesse Pretorius (odyssey4me) <jesse.pretorius@rackspace.co.uk>
+Code-Review+2: Jonathan Rosser <jonathan.rosser@rd.bbc.co.uk>
+Workflow+1: Jonathan Rosser <jonathan.rosser@rd.bbc.co.uk>
+Code-Review+2: Jean-Philippe Evrard <jean-philippe@evrard.me>
+Code-Review+1: wu.chunyang <wu.chunyang@99cloud.net>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Mon, 11 Mar 2019 11:27:51 +0000
+Reviewed-on: https://review.openstack.org/609296
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/stable/rocky
