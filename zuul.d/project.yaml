@@ -15,16 +15,6 @@
 - project:
     templates:
       - check-requirements
-      - openstack-ansible-role-jobs
+      - openstack-ansible-linters
       - publish-openstack-docs-pti
       - release-notes-jobs-python3
-    check:
-      jobs:
-        # TODO(kaiokmo): Remove this once centos-7 patch is done
-        - openstack-ansible-functional-centos-7:
-            voting: false
-    gate:
-      jobs:
-        # TODO(kaiokmo): Remove this once centos-7 patch is done
-        - openstack-ansible-functional-centos-7:
-            voting: false
