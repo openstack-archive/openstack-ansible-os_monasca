@@ -1,0 +1,8 @@
+Code-Review+2: Mohammed Naser <mnaser@vexxhost.com>
+Workflow+1: Mohammed Naser <mnaser@vexxhost.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Mon, 15 Apr 2019 08:56:34 +0000
+Reviewed-on: https://review.openstack.org/639540
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
