@@ -1,0 +1,8 @@
+Code-Review+2: Dmitriy Rabotjagov (noonedeadpunk) <noonedeadpunk@ya.ru>
+Workflow+1: Dmitriy Rabotjagov (noonedeadpunk) <noonedeadpunk@ya.ru>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Mon, 22 Apr 2019 16:25:03 +0000
+Reviewed-on: https://review.opendev.org/654523
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/stable/stein
