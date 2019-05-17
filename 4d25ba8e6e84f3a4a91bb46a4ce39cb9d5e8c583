@@ -1,0 +1,10 @@
+Code-Review+2: Jonathan Rosser <jonathan.rosser@rd.bbc.co.uk>
+Code-Review+1: Nicolas Bock <nicolasbock@gmail.com>
+Code-Review+2: Guilherme  Steinmuller Pimentel <gsteinmuller@vexxhost.com>
+Workflow+1: Guilherme  Steinmuller Pimentel <gsteinmuller@vexxhost.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Fri, 17 May 2019 13:53:33 +0000
+Reviewed-on: https://review.opendev.org/659758
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/master
