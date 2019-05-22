@@ -48,7 +48,7 @@ tempest_run: yes
 
 tempest_plugins:
   - name: monasca-tempest-plugins
-    repo: https://git.openstack.org/openstack/monasca-tempest-plugin
+    repo: https://opendev.org/openstack/monasca-tempest-plugin
     branch: master
 
 tempest_test_whitelist:
