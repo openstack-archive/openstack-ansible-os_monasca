@@ -1,0 +1,8 @@
+Code-Review+2: Mohammed Naser <mnaser@vexxhost.com>
+Workflow+1: Mohammed Naser <mnaser@vexxhost.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Sat, 08 Jun 2019 17:29:14 +0000
+Reviewed-on: https://review.opendev.org/664096
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/stable/queens
