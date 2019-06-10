@@ -1,0 +1,8 @@
+Code-Review+2: Dmitriy Rabotyagov (noonedeadpunk) <noonedeadpunk@ya.ru>
+Workflow+1: Dmitriy Rabotyagov (noonedeadpunk) <noonedeadpunk@ya.ru>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Mon, 10 Jun 2019 17:27:46 +0000
+Reviewed-on: https://review.opendev.org/664351
+Project: openstack/openstack-ansible-os_monasca
+Branch: refs/heads/stable/pike
